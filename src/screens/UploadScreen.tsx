@@ -22,7 +22,7 @@ function UploadScreen({navigation}) {
     const openImagePickerAsync = async () => {
         let permissionResult =
             await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (permissionResult.granted === false) {
+        if (!permissionResult.granted) {
             alert("Permission to access camera roll is required!");
             return;
         }
@@ -30,7 +30,7 @@ function UploadScreen({navigation}) {
             quality: 1,
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
         });
-        if (pickerResult.canceled === true) return;
+        if (pickerResult.canceled) return;
         setSelectedImage(pickerResult.assets[0]);
     };
 
