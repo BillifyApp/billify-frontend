@@ -1,11 +1,12 @@
-import {Button, Text, View} from "react-native";
+import {Button, SafeAreaView, Text, View} from "react-native";
 import * as React from "react";
+import CustomSafeAreaView from "../components/CustomSafeAreaView";
 
 // @ts-ignore
 export default function SearchScreen({navigation}) {
     return (
-        <View>
+        <CustomSafeAreaView>
             <Text>Search Screen</Text>
-        </View>
+        </CustomSafeAreaView>
     )
 }

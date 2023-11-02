@@ -12,6 +12,7 @@ function LoginScreen({navigation}: any) {
     const login = async () => {
         console.log('Login button pressed')
         const result = await onLogin!(username, password);
+
         if (result && result.error) {
             alert(result.msg);
         }

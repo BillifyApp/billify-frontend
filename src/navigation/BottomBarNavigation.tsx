@@ -8,6 +8,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import GroupScreen from "../screens/GroupScreen";
 import SearchScreen from "../screens/SearchScreen";
+import HomeNavigation from "./HomeNavigation";
 
 
 //Screens name
@@ -24,6 +25,7 @@ export default function BottomBarNavigation() {
         <Tab.Navigator
             initialRouteName={homeName}
             screenOptions={({route}) => ({
+                headerShown: false,
                 tabBarIcon: ({focused, color, size}) => {
                     let iconName;
                     let rn = route.name

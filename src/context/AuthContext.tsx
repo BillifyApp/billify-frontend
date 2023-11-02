@@ -3,14 +3,15 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
-import {TOKEN_KEY, url} from "../stores/constants";
+import {TOKEN_KEY, url, USER_KEY} from "../stores/constants";
 
 interface AuthProps {
     authState?: {
         access_token: string | null;
-        authenticated: boolean | null
+        authenticated: boolean | null;
+        id: string | null;
     };
-    onRegister?: (username: string, email: string, password: string, firstname?: string, lastname?: string) => Promise<any>;
+    onRegister?: (username: string, email: string, password: string, name?: object) => Promise<any>;
     onLogin?: (username: string, password: string) => Promise<any>;
     onLogout?: () => Promise<any>;
 }
@@ -27,23 +28,42 @@ export const AuthProvider = ({children}: any) => {
     const [authState, setAuthState] = useState<{
         access_token: string | null;
         authenticated: boolean | null;
+        id: string | null;
     }>({
         access_token: null,
-        authenticated: null
+        authenticated: null,
+        id: null
     });
 
     useEffect(() => {
         const loadToken = async () => {
             const access_token = await SecureStore.getItemAsync(TOKEN_KEY);
+            const user_id = await SecureStore.getItemAsync(USER_KEY);
             console.log("stored: ", access_token);
 
             if (access_token) {
+                //TODO check validation send request to backend
                 axios.defaults.headers.common['Authorization'] = `${addtion} ${access_token}`; //TODO
 
-                setAuthState({
-                    access_token: access_token,
-                    authenticated: true
-                });
+                const isValid: boolean = await validation();
+                if (isValid) {
+                    setAuthState({
+                        access_token: access_token,
+                        authenticated: true,
+                        id: user_id
+                    });
+                } else {
+                    await SecureStore.deleteItemAsync(TOKEN_KEY);
+                    await SecureStore.deleteItemAsync(USER_KEY);
+
+                    axios.defaults.headers.common['Authorization'] = ``;
+
+                    setAuthState({
+                        access_token: null,
+                        authenticated: false,
+                        id: null
+                    });
+                }
             }
         }
 
@@ -51,10 +71,18 @@ export const AuthProvider = ({children}: any) => {
     }, []);
 
 
-    const register = async (username: string, email: string, password: string, firstname?: string, lastname?: string) => {
+    const register = async (username: string, email: string, password: string, ...name: any) => {
         try {
-            const result = await axios.post(`${url}/users/signup`, {username: username, email: email, password: password})
-            //TODO UPDATE user with info firstname: firstname, lastname: lastname
+            const result = await axios.post(
+                `${url}/users/signup`,
+                {
+                    username: username,
+                    email: email,
+                    password: password,
+                    name: name
+                }
+            )
+
         } catch (e) {
             return {error: true, msg: (e as any).response.data.msg}
         }
@@ -66,16 +94,17 @@ export const AuthProvider = ({children}: any) => {
 
             const result = await axios.post(`${url}/users/login`, {username, password});
 
-
             setAuthState({
                 access_token: result.data.access_token,
-                authenticated: true
+                authenticated: true,
+                id: result.data?.id
             });
 
-            axios.defaults.headers.common['Authorization'] = `${addtion}${result.data.access_token}`; //TODO
+            axios.defaults.headers.common['Authorization'] = `${addtion} ${result.data.access_token}`; //TODO
             try {
-                console.log(result.data.access_token)
+                console.log(result.data)
                 await SecureStore.setItemAsync(TOKEN_KEY, result.data.access_token);
+                await SecureStore.setItemAsync(USER_KEY, result.data.id);
             } catch (e) {
                 console.log(`Fail Login SetItem in SecureStore with: ${e}`)
             }
@@ -87,7 +116,10 @@ export const AuthProvider = ({children}: any) => {
             //console.log(e.response.status)
             if (e.response!.status == 401) {
                 console.log(`Unauthorized`)
-                alert(`${e?.response.status} Unauthorized`)
+                alert(`${e?.response.status} - Unauthorized`)
+            } else if (e.response!.status == 406) {
+                console.log('No User with this name')
+                alert(`${e?.response.status} - no user with this name found`)
             } else {
                 console.log(`Login Button error ${e}`)
                 //return Promise.reject(e); //{error: true, msg: (e as any).response.data.msg}
@@ -96,15 +128,16 @@ export const AuthProvider = ({children}: any) => {
     };
 
     const logout = async () => {
-        console.log("test")
         try {
             await SecureStore.deleteItemAsync(TOKEN_KEY);
+            await SecureStore.deleteItemAsync(USER_KEY);
 
             axios.defaults.headers.common['Authorization'] = ``;
 
             setAuthState({
                 access_token: null,
-                authenticated: false
+                authenticated: false,
+                id: null
             });
 
             console.log("Logged out")
@@ -112,6 +145,18 @@ export const AuthProvider = ({children}: any) => {
             console.log(`Logout Error: ${e.response.status}`)
         }
     };
+
+    const validation = async () => {
+        try {
+            return await axios.get(`${url}/valid`).then(req => {
+                return req.data
+            });
+        } catch (e: any) {
+            //TODO error msg
+            alert(`${e} - Not logged in anymore, jwt token expired`);
+            return false;
+        }
+    }
 
     const value = {
         onRegister: register,

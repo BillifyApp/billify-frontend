@@ -13,4 +13,5 @@ export const urlRender = 'https://billify-backend.onrender.com'
 
 export const url = urlEliHttp;
 
-export const TOKEN_KEY = "my-jwt"
+export const TOKEN_KEY = "billify-jwt"
+export const USER_KEY = "billify-user_id"

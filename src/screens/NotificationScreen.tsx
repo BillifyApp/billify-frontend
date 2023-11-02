@@ -1,11 +1,12 @@
-import {Button, Text, View} from "react-native";
+import {Button, SafeAreaView, Text, View} from "react-native";
 import React from "react";
+import CustomSafeAreaView from "../components/CustomSafeAreaView";
 
 // @ts-ignore
 export default function NotificationScreen({navigation}) {
     return (
-        <View>
+        <CustomSafeAreaView>
             <Text>Notification Screen</Text>
-        </View>
+        </CustomSafeAreaView>
     )
 }

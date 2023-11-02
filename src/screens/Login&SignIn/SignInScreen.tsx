@@ -4,6 +4,7 @@ import {SafeAreaView, StyleSheet, TextInput} from "react-native";
 import CustomButton from "../../components/CustomButton";
 import {useAuth} from "../../context/AuthContext";
 import isExisting from "../../stores/actions/db.users";
+import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 
 function SignInScreen({navigation}: any) {
     const [username, setUsername] = useState<string>('');
@@ -20,7 +21,7 @@ function SignInScreen({navigation}: any) {
     const p0 = useRef<TextInput>(null);
     const p1 = useRef<TextInput>(null);
     const [inputs, setInputs] = useState<React.TextInput[]>([]);
-    const {onRegister} = useAuth();
+    const {onRegister, onLogin} = useAuth();
 
     useEffect(() => {
         getInputs();
@@ -39,83 +40,102 @@ function SignInScreen({navigation}: any) {
         setInputs(tempInput);
     }
 
-    const register = async () => {
-        const result = await onRegister!(username, email, password);
+    const login = async () => {
+        const result = await onLogin!(username, password);
+
         if (result && result.error) {
-            alert(result.msg);
+            //alert(result.msg);
+        }
+    }
+
+    const register = async () => {
+        const name = {
+            firstname: firstname.trim().length !== 0 ? firstname : null,
+            lastname: lastname.trim().length !== 0 ? firstname : null
+        }
+        const result = await onRegister!(username, email, password, name);
+        if (result && result.error) {
+            //alert(result.msg);
         } else {
-            console.log("Failed Signin")
+            console.log("Failed Sign-In")
             //await login();
         }
     }
 
+
     async function validate() {
-        getInputs();
-        let tempMessages = new Array(5); //delete all and check again
-
-        for (let i = 0; i < tempMessages.length; i++) {
-            tempMessages[i] = [];
-        }
-
-        const existing = await isExisting(username);
-
-        console.log(existing)
+        try {
 
 
-        //TODO validate
-        if (username.trim().length === 0) {
-            tempMessages[0].push("Please enter a username");
-        } else if (existing /* TODO change to look up function in db */) {
-            tempMessages[0].push('This username already exists');
-        }
-        if (email.trim().length === 0) {
-            tempMessages[1].push("Please enter an E-mail-address");
-        }
-        /*
-                if (firstname.trim().length === 0) {
-                    tempMessages[2].push('Please enter your firstname');
-                }
+            getInputs();
+            let tempMessages = new Array(5); //delete all and check again
 
-                if (lastname.trim().length === 0) {
-                    tempMessages[3].push('Please enter your lastname');
-                }
-        */
-        if (password.trim().length === 0) {
-            tempMessages[4].push('Please enter a password');
-
-        } else { //password is verified then check repeated pw
-            if (password !== passwordRepeat) {
-                tempMessages[5].push('Repeated Password differs.');
+            for (let i = 0; i < tempMessages.length; i++) {
+                tempMessages[i] = [];
             }
-        }
 
-        //console.log(inputs);
+            const existing = await isExisting(username);
 
-        setMessages(tempMessages);
+            //console.log(existing)
 
-        console.log(messages)
-        //console.log(`Message String: ${messages}`)
 
-        let errors = 0;
-        for (let i = 0; i < tempMessages.length; i++) {
-            if (tempMessages[i].length != 0) {
-                //console.log(inputs[i].setNativeProps)
-                //inputs[i]?.props. = {styles: styles.error});
-                errors++;
-            } else {
-                //inputs[i]?.setNativeProps({styles: styles.input});
-                alert()
+            //TODO validate
+            if (username.trim().length === 0) {
+                tempMessages[0].push("Please enter a username");
+            } else if (existing /* TODO change to look up function in db */) {
+                tempMessages[0].push('This username already exists');
             }
-        }
+            if (email.trim().length === 0) {
+                tempMessages[1].push("Please enter an E-mail-address");
+            }
+            /*
+                    if (firstname.trim().length === 0) {
+                        tempMessages[2].push('Please enter your firstname');
+                    }
 
-        if (errors == 0) {
-            register().then(navigation.navigate("home"));
+                    if (lastname.trim().length === 0) {
+                        tempMessages[3].push('Please enter your lastname');
+                    }
+            */
+            if (password.trim().length === 0) {
+                tempMessages[4].push('Please enter a password');
+
+            } else { //password is verified then check repeated pw
+                if (password !== passwordRepeat) {
+                    tempMessages[5].push('Repeated Password differs.');
+                }
+            }
+
+            //console.log(inputs);
+
+            setMessages(tempMessages);
+
+            //console.log(messages)
+            //console.log(`Message String: ${messages}`)
+
+            let errors = 0;
+            for (let i = 0; i < tempMessages.length; i++) {
+                if (tempMessages[i].length != 0) {
+                    //inputs[i].setNativeProps({styles: styles.error});
+                    errors++;
+                    alert('Not valid')
+                } else {
+                    //inputs[i]?.setNativeProps({styles: styles.input});
+                }
+            }
+
+            if (errors == 0) {
+                await register();
+                await login();
+            }
+        } catch (e) {
+            alert("Fail login while validation " + e);
         }
     }
 
     return (
         <>
-            <SafeAreaView>
+            <CustomSafeAreaView>
                 <Text>Create Account</Text>
                 <TextInput
                     ref={u}
@@ -162,7 +182,7 @@ function SignInScreen({navigation}: any) {
 
                 <CustomButton title="Sign in" onPress={validate}/>
 
-            </SafeAreaView>
+            </CustomSafeAreaView>
         </>
     );
 }

@@ -1,7 +1,9 @@
-import {Button, Text, View} from "react-native";
+import {Button, SafeAreaView, Text, StyleSheet, View} from "react-native";
 import * as React from "react";
 import CustomButton from "../components/CustomButton";
 import {useAuth} from "../context/AuthContext";
+import CustomSafeAreaView from "../components/CustomSafeAreaView";
+
 
 // @ts-ignore
 export default function HomeScreen({navigation}) {
@@ -14,9 +16,8 @@ export default function HomeScreen({navigation}) {
         }
     };
 
-
     return (
-        <View>
+        <CustomSafeAreaView>
             <Text>Home Screen</Text>
             <Button
                 title="Go to Settings"
@@ -26,6 +27,18 @@ export default function HomeScreen({navigation}) {
                 title="Logout"
                 onPress={logout}
             />
-        </View>
+            <CustomButton
+                title="Upload Bill"
+                onPress={() => {
+                    navigation.navigate('Upload')
+                }}/>
+        </CustomSafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'red'
+    }
+});
