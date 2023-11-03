@@ -26,6 +26,7 @@ export default function BottomBarNavigation() {
             initialRouteName={homeName}
             screenOptions={({route}) => ({
                 headerShown: false,
+                gestureEnabled: true, // If you want to swipe back like iOS on Android
                 tabBarIcon: ({focused, color, size}) => {
                     let iconName;
                     let rn = route.name

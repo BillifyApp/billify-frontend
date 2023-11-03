@@ -3,8 +3,12 @@ import * as React from "react";
 import {useState} from "react";
 import {useAuth} from "../../context/AuthContext";
 import CustomButton from "../../components/CustomButton";
+import {Trans, useTranslation} from "react-i18next";
+import i18n from 'i18next';
+import i18next from "i18next";
 
 function LoginScreen({navigation}: any) {
+    const {t} = useTranslation();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const {onLogin, onRegister, onLogout} = useAuth();
@@ -28,35 +32,34 @@ function LoginScreen({navigation}: any) {
     return (
         <>
             <SafeAreaView>
-                <Text>Login Screen</Text>
+                <Text>{t('common.login')}</Text>
                 <TextInput
                     style={styles.input}
                     value={username}
                     onChangeText={setUsername}
-                    placeholder="Username"
+                    placeholder={t('common.username')+ "/" + t('common.email')}
                 />
                 <TextInput
                     style={styles.input}
                     value={password}
                     onChangeText={setPassword}
-                    placeholder="Password"
+                    placeholder={t('common.password')}
                     secureTextEntry={true}
                 />
 
-                <Text>No Account yet?
+                <Text>{t('common.no_acc')}
                     <Text
                         onPress={() => navigation.navigate('SignIn')}
                         style={styles.link}
-                    >Sign in!
+                    >{t('common.sign_in')}
                     </Text>
                 </Text>
 
-                <Button title="Login" onPress={login}/>
+                <Button title={t('common.login')} onPress={login}/>
 
                 {/*<CustomButton title="Logout" onPress={logout} style={styles.input}/>*/}
             </SafeAreaView>
         </>
-
     )
 }
 

@@ -4,11 +4,14 @@ import * as React from 'react';
 import MainContainer from "./src/containers/MainContainer";
 import {AuthProvider} from "./src/context/AuthContext";
 
+// import i18n (needs to be bundled ;))
+import './i18n';
 
 export default function App() {
+
     return (
         <AuthProvider>
-                <MainContainer/>
+            <MainContainer/>
         </AuthProvider>
     );
 }
