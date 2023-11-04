@@ -15,12 +15,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "NSAppTransportSecurity": "true",
+        "networkSecurityConfig": "./network_security_config.xml"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "networkSecurityConfig": "network_security_config.xml"
       }
     },
     "web": {

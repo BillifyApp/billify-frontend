@@ -1,0 +1,11 @@
+{
+  "common": {
+    "username": "Username",
+    "password": "Passwort",
+    "login": "Login",
+    "sign_in": "Registrieren",
+    "no_acc": "Du hast noch keinen Account?",
+    "welcome": "Willkommen",
+    "change_language": "Sprache ändern"
+  }
+}
