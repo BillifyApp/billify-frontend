@@ -8,6 +8,7 @@ import LastBillsOverview from "../components/template/LastBillsOverview";
 import CategoryOverview from "../components/template/CategoryOverview";
 import GroupOverview from "../components/template/GroupOverview";
 import {settingsName, uploadName} from "../stores/route_names";
+import {styles} from "../styles/styles";
 
 
 // @ts-ignore
@@ -28,10 +29,10 @@ export default function HomeScreen({navigation}) {
     return (
         <CustomSafeAreaView>
             <ScrollView>
-                <Text>
+                <Text style={styles.h1}>
                     {t('common.welcome')}, {authState?.firstname ? authState.firstname : authState?.username}
                 </Text>
-                <Text>TODO Search</Text>
+                <Text style={styles.h2}>TODO Search</Text>
                 <LastBillsOverview bills={[1, 2]}/>
                 <CategoryOverview categories={['Lol', 'Ein', 'Test']}/>
                 <GroupOverview groups={[{name: 'Eine Testgruppe'}, {name: 'Zweite Testgruppe'}]}/>
@@ -50,11 +51,3 @@ export default function HomeScreen({navigation}) {
         </CustomSafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor:
-            'red'
-    }
-});

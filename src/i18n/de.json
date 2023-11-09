@@ -12,6 +12,8 @@
     "categories.one": "Kategorie",
     "categories.many": "Kategorien",
     "groups.one": "Gruppe",
-    "groups.many": "Gruppen"
+    "groups.many": "Gruppen",
+
+    "add_bill": "Rechnung hinzufügen"
   }
 }

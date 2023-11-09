@@ -13,7 +13,10 @@
     "categories.one": "Category",
     "categories.many": "Categories",
     "groups.one": "Group",
-    "groups.many": "Groups"
+    "groups.many": "Groups",
+
+    "add_bill": "Add Bill",
+    "": ""
   },
 
 

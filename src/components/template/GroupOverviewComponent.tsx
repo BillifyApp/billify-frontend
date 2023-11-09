@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, Text, View} from "react-native";
-import {url} from "../../stores/constants";
+import {Text, View} from "react-native";
+import FlexImage from "../atom/FlexImage";
 
 interface GroupOverviewComponentProps {
     group_name: string;
@@ -10,17 +10,12 @@ interface GroupOverviewComponentProps {
 
 function GroupOverviewComponent({group_name, images}: GroupOverviewComponentProps) {
     return (
-        <View>
-            <View>
-                {
-                    images.map((path, key) =>
-                        <Image key={key}
-                               style={{width: '10%', height: '10%'}}
-                               source={{uri: `${url}${path}`}}
-                        />
-                    )
-                }
-            </View>
+        <View style={{height: 200}}>
+            {
+                images.map((path, key) =>
+                    <FlexImage key={key} path={path}></FlexImage>
+                )
+            }
             <Text>{group_name}</Text>
             <Text>Beschreibung?</Text>
         </View>
