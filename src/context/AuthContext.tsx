@@ -13,7 +13,7 @@ interface AuthProps {
         username: string | null;
         firstname: string | null;
     };
-    onRegister?: (username: string, email: string, password: string, name?: object) => Promise<any>;
+    onRegister?: (username: string, email: string, password: string, firstname?: string, lastname? : string) => Promise<any>;
     onLogin?: (username: string, password: string) => Promise<any>;
     onLogout?: () => Promise<any>;
 }
@@ -85,7 +85,7 @@ export const AuthProvider = ({children}: any) => {
     }, []);
 
 
-    const register = async (username: string, email: string, password: string, ...name: any) => {
+    const register = async (username: string, email: string, password: string, firstname?: string, lastname?: string) => {
         try {
             const result = await axios.post(
                 `${url}/users/signup`,
@@ -93,7 +93,8 @@ export const AuthProvider = ({children}: any) => {
                     username: username,
                     email: email,
                     password: password,
-                    name: name
+                    firstname: firstname,
+                    lastname: lastname
                 }
             )
 

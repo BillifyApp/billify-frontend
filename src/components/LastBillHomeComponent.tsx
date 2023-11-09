@@ -1,21 +1,29 @@
 import React, {useEffect} from 'react';
-import {StyleSheet} from "react-native";
-import {url} from "../stores/constants";
+import {Pressable, StyleSheet} from "react-native";
 import FlexImage from "./atom/FlexImage";
 
 interface LastBillHomeComponentProps {
-    bill: [];
+    path: string;
+    receipt_id: string;
 }
 
 
-function LastBillHomeComponent(props: LastBillHomeComponentProps) {
+function LastBillHomeComponent({path, receipt_id}: LastBillHomeComponentProps) {
 
     useEffect(() => {
-        console.log(`${url}/uploads/bills/smus_1698884992322.png`)
-    });
+        console.log(path)
+    }, []);
+
+    const processPath = (path: string) => {
+        return path.replaceAll('\\', '/')
+    }
 
     return (
-        <FlexImage height='100%' width={150} path='/uploads/bills/smus_1698884992322.png'/>
+        <Pressable onPress={() => {
+            alert(`receipt_id: ${receipt_id}`)
+        }}>
+            <FlexImage height='100%' width={150} path={`/${processPath(path)}`}/>
+        </Pressable>
     );
 }
 

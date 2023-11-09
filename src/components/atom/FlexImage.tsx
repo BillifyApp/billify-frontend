@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Image, StyleSheet, View} from "react-native";
 import {url} from "../../stores/constants";
 
@@ -10,6 +10,9 @@ interface FlexImageProps {
 
 function FlexImage({path, width, height}: FlexImageProps) {
 
+    useEffect(() => {
+        console.log(`${url}${path}`)
+    }, []);
     return (
         <View style={{
             width: width, height: height,
@@ -28,11 +31,11 @@ function FlexImage({path, width, height}: FlexImageProps) {
 }
 
 const styles = StyleSheet.create({
-   /* container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-    },*/
+    /* container: {
+         flex: 1,
+         justifyContent: "center",
+         alignItems: "center",
+     },*/
     image: {
         //flex: 1,
         width: "100%",
