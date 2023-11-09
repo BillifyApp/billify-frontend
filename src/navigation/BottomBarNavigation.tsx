@@ -1,4 +1,4 @@
-import {Text} from "react-native";
+import {Image, Text} from "react-native";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import * as React from "react";
 
@@ -9,14 +9,15 @@ import NotificationScreen from "../screens/NotificationScreen";
 import GroupScreen from "../screens/GroupScreen";
 import SearchScreen from "../screens/SearchScreen";
 import HomeNavigation from "./HomeNavigation";
+import {groupName, homeName, notificationName, profileName, searchName} from "../stores/route_names";
 
+//Icons
+export const iconHome_outline = require('../assets/bottom-bar-nav/home.png');
+export const iconProfile_outline = require('../assets/bottom-bar-nav/user.png');
+export const iconNotif_outline = require('../assets/bottom-bar-nav/notificationon.png');
+export const iconGroup_outline = require('../assets/bottom-bar-nav/users.png');
+export const iconSearch_outline = require('../assets/bottom-bar-nav/search.png');
 
-//Screens name
-const searchName = "Search"
-const groupName = "Group"
-const homeName = "Home";
-const notificationName = "Notification"
-const profileName = "Profile"
 
 const Tab = createBottomTabNavigator();
 
@@ -31,19 +32,20 @@ export default function BottomBarNavigation() {
                     let iconName;
                     let rn = route.name
                     if (rn === searchName) {
-                        iconName = focused ? 'search' : 'search-outline'
+                        iconName = focused ? 'search' : iconSearch_outline
                     } else if (rn === groupName) {
-                        iconName = focused ? 'group' : 'group-outline'
+                        iconName = focused ? 'group' : iconGroup_outline
                     } else if (rn === homeName) {
-                        iconName = focused ? 'home' : 'home-outline'
+                        iconName = focused ? 'home' : iconHome_outline
                     } else if (rn === notificationName) {
-                        iconName = focused ? 'notification' : 'notification-outline'
+                        iconName = focused ? 'notification' : iconNotif_outline
                     } else if (rn === profileName) {
-                        iconName = focused ? 'profile' : 'profile-outline'
+                        iconName = focused ? 'profile' : iconProfile_outline
                     }
 
                     //TODO return icon not text
-                    return <Text>iconName</Text>;
+                    return <Image style={{width: '80%', height:'80%'}}
+                                  source={iconName}/>;
                 }
             })}>
             <Tab.Screen name={searchName} component={SearchScreen}></Tab.Screen>

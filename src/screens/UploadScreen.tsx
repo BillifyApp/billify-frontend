@@ -79,7 +79,7 @@ function UploadScreen({navigation}) {
         console.log(`User_Id in Img upload: ${id}`)
 
         try {
-            //TODO fucking axios afoch beim ersten hochladen fetten network error?? why tho??
+            //Error nur beim lokalen entwickeln
             const data = await axios.post(`${url}/images/upload`, formData, {
                 headers: {'content-type': 'multipart/form-data'},
             });
