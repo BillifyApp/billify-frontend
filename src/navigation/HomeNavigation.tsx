@@ -1,17 +1,26 @@
 import React from 'react';
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
-import uploadScreen from "../screens/UploadScreen";
+import UploadScreen from "../screens/UploadScreen";
+import {createStackNavigator} from "@react-navigation/stack";
 
-const HomeStack = createNativeStackNavigator();
+//https://reactnavigation.org/docs/modal/
 
-function HomeNavigation({}) {
+//https://medium.com/@my.maithi/react-native-navigation-add-custom-button-in-the-middle-of-tabbar-6c390201a2bb
+
+const HomeRootStack = createStackNavigator();
+
+function HomeNavigation() {
     return (
         <>
-            <HomeStack.Navigator>
-                <HomeStack.Screen name="homescreen" component={HomeScreen}/>
-                <HomeStack.Screen name="Upload" component={uploadScreen}/>
-            </HomeStack.Navigator>
+            <HomeRootStack.Navigator screenOptions={{headerShown: false,}}>
+                <HomeRootStack.Group>
+                    <HomeRootStack.Screen name="Home" component={HomeScreen}/>
+                    {/* <HomeRootStack.Screen name="Details" component={DetailsScreen}/>*/}
+                </HomeRootStack.Group>
+                <HomeRootStack.Group screenOptions={{presentation: 'modal'}}>
+                    <HomeRootStack.Screen name="MyModal" component={UploadScreen}/>
+                </HomeRootStack.Group>
+            </HomeRootStack.Navigator>
         </>
     );
 }

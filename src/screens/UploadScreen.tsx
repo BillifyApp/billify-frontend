@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Platform, Image} from "react-native";
+import {Button, Platform, Image, Text} from "react-native";
 import {url} from "../stores/constants";
 import {launchImageLibrary} from 'react-native-image-picker';
 import * as ImagePicker from "expo-image-picker";
@@ -9,6 +9,8 @@ import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import {Thumbnail} from "../components/Thumbnail";
 import axios from "axios";
 import {useAuth} from "../context/AuthContext";
+import {useTranslation} from "react-i18next";
+import {homeNavName} from "../stores/route_names";
 
 //TUT https://blog.logrocket.com/how-to-upload-images-react-native-laravel-api/#setting-up-the-laravel-image-upload-api
 
@@ -16,6 +18,7 @@ import {useAuth} from "../context/AuthContext";
 // @ts-ignore
 function UploadScreen({navigation}) {
     const [selectedImage, setSelectedImage] = useState<ImagePicker.ImageInfo>();
+    const {t} = useTranslation();
 
     const auth = useAuth();
 
@@ -79,7 +82,7 @@ function UploadScreen({navigation}) {
         console.log(`User_Id in Img upload: ${id}`)
 
         try {
-            //TODO fucking axios afoch beim ersten hochladen fetten network error?? why tho??
+            //Error nur beim lokalen entwickeln
             const data = await axios.post(`${url}/images/upload`, formData, {
                 headers: {'content-type': 'multipart/form-data'},
             });
@@ -101,9 +104,14 @@ function UploadScreen({navigation}) {
     return (
         <>
             <CustomSafeAreaView>
-                <Button title="Back" onPress={() => {
+                <Button title="<" onPress={() => {
+                    navigation.navigate(homeNavName)
+                }}></Button>
+                <Text>{t('common.add_bill')}</Text>
+                <Button title="manuell" onPress={() => {
                     navigation.navigate('Home')
                 }}></Button>
+
                 {selectedImage ? (
                     <>
                         <Thumbnail uri={selectedImage.uri}/>

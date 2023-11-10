@@ -7,7 +7,16 @@
     "sign_in": "Sign-in",
     "no_acc": "No Account yet?",
     "welcome": "Welcome",
-    "change_language": "Change Language"
+    "change_language": "Change Language",
+    "show_all": "Show all",
+    "last_purchases": "Last purchases",
+    "categories.one": "Category",
+    "categories.many": "Categories",
+    "groups.one": "Group",
+    "groups.many": "Groups",
+
+    "add_bill": "Add Bill",
+    "": ""
   },
 
 

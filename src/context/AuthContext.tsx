@@ -3,15 +3,17 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store';
-import {TOKEN_KEY, url, USER_KEY} from "../stores/constants";
+import {FIRSTNAME_KEY, TOKEN_KEY, url, USER_KEY, USERNAME_KEY} from "../stores/constants";
 
 interface AuthProps {
     authState?: {
         access_token: string | null;
         authenticated: boolean | null;
         id: string | null;
+        username: string | null;
+        firstname: string | null;
     };
-    onRegister?: (username: string, email: string, password: string, name?: object) => Promise<any>;
+    onRegister?: (username: string, email: string, password: string, firstname?: string, lastname? : string) => Promise<any>;
     onLogin?: (username: string, password: string) => Promise<any>;
     onLogout?: () => Promise<any>;
 }
@@ -29,16 +31,22 @@ export const AuthProvider = ({children}: any) => {
         access_token: string | null;
         authenticated: boolean | null;
         id: string | null;
+        username: string | null;
+        firstname: string | null;
     }>({
         access_token: null,
         authenticated: null,
-        id: null
+        id: null,
+        username: null,
+        firstname: null,
     });
 
     useEffect(() => {
         const loadToken = async () => {
             const access_token = await SecureStore.getItemAsync(TOKEN_KEY);
             const user_id = await SecureStore.getItemAsync(USER_KEY);
+            const username = await SecureStore.getItemAsync(USERNAME_KEY);
+            const firstname = await SecureStore.getItemAsync(FIRSTNAME_KEY);
             console.log("stored: ", access_token);
 
             if (access_token) {
@@ -50,18 +58,24 @@ export const AuthProvider = ({children}: any) => {
                     setAuthState({
                         access_token: access_token,
                         authenticated: true,
-                        id: user_id
+                        id: user_id,
+                        username: username,
+                        firstname: firstname
                     });
                 } else {
                     await SecureStore.deleteItemAsync(TOKEN_KEY);
                     await SecureStore.deleteItemAsync(USER_KEY);
+                    await SecureStore.deleteItemAsync(USERNAME_KEY);
+                    await SecureStore.deleteItemAsync(FIRSTNAME_KEY);
 
                     axios.defaults.headers.common['Authorization'] = ``;
 
                     setAuthState({
                         access_token: null,
                         authenticated: false,
-                        id: null
+                        id: null,
+                        username: null,
+                        firstname: null,
                     });
                 }
             }
@@ -71,7 +85,7 @@ export const AuthProvider = ({children}: any) => {
     }, []);
 
 
-    const register = async (username: string, email: string, password: string, ...name: any) => {
+    const register = async (username: string, email: string, password: string, firstname?: string, lastname?: string) => {
         try {
             const result = await axios.post(
                 `${url}/users/signup`,
@@ -79,7 +93,8 @@ export const AuthProvider = ({children}: any) => {
                     username: username,
                     email: email,
                     password: password,
-                    name: name
+                    firstname: firstname,
+                    lastname: lastname
                 }
             )
 
@@ -97,7 +112,9 @@ export const AuthProvider = ({children}: any) => {
             setAuthState({
                 access_token: result.data.access_token,
                 authenticated: true,
-                id: result.data?.id
+                id: result.data?.id,
+                username: result.data?.username,
+                firstname: result.data?.firstname
             });
 
             axios.defaults.headers.common['Authorization'] = `${addtion} ${result.data.access_token}`; //TODO
@@ -105,6 +122,8 @@ export const AuthProvider = ({children}: any) => {
                 console.log(result.data)
                 await SecureStore.setItemAsync(TOKEN_KEY, result.data.access_token);
                 await SecureStore.setItemAsync(USER_KEY, result.data.id);
+                await SecureStore.setItemAsync(USERNAME_KEY, result.data.username);
+                await SecureStore.setItemAsync(FIRSTNAME_KEY, result.data.firstname);
             } catch (e) {
                 console.log(`Fail Login SetItem in SecureStore with: ${e}`)
             }
@@ -131,13 +150,17 @@ export const AuthProvider = ({children}: any) => {
         try {
             await SecureStore.deleteItemAsync(TOKEN_KEY);
             await SecureStore.deleteItemAsync(USER_KEY);
+            await SecureStore.deleteItemAsync(USERNAME_KEY);
+            await SecureStore.deleteItemAsync(FIRSTNAME_KEY);
 
             axios.defaults.headers.common['Authorization'] = ``;
 
             setAuthState({
                 access_token: null,
                 authenticated: false,
-                id: null
+                id: null,
+                username: null,
+                firstname:null
             });
 
             console.log("Logged out")

@@ -6,6 +6,14 @@
     "sign_in": "Registrieren",
     "no_acc": "Du hast noch keinen Account?",
     "welcome": "Willkommen",
-    "change_language": "Sprache ändern"
+    "change_language": "Sprache ändern",
+    "show_all": "Alle anzeigen",
+    "last_purchases": "Letzte Einkäufe",
+    "categories.one": "Kategorie",
+    "categories.many": "Kategorien",
+    "groups.one": "Gruppe",
+    "groups.many": "Gruppen",
+
+    "add_bill": "Rechnung hinzufügen"
   }
 }
