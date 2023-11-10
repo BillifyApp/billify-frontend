@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Image, StyleSheet, View} from "react-native";
+import {Image, StyleSheet, Text, View} from "react-native";
 import {url} from "../../stores/constants";
 
 interface FlexImageProps {
@@ -10,9 +10,17 @@ interface FlexImageProps {
 
 function FlexImage({path, width, height}: FlexImageProps) {
 
+    // const [image, setImage] = useState<any>('')
+
     useEffect(() => {
-        console.log(`${url}${path}`)
+        console.log(`${url}/${processPath(path)}`)
+        //setImage(`${url}/${processPath(path)}`)
     }, []);
+
+    const processPath = (path: string) => {
+        return path.replaceAll('\\', '/')
+    }
+
     return (
         <View style={{
             width: width, height: height,
@@ -20,12 +28,13 @@ function FlexImage({path, width, height}: FlexImageProps) {
             justifyContent: "center",
             alignItems: "center",
         }}>
-            <Image
-                style={styles.image}
-                source={{
-                    uri: `${url}${path}`
-                }}
-            />
+            {path != undefined ?
+                <Image
+                    style={styles.image}
+                    source={{uri: `${url}/${processPath(path)}`}}
+                /> :
+                <Text>Image should be here, rep</Text>
+            }
         </View>
     );
 }

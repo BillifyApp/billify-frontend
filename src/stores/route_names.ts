@@ -9,4 +9,5 @@ export const profileName = "Profile"
 
 //region -----------------------------  -----------------------------
 export const uploadName = "Upload"
+export const addReceiptAutoName = "addReceiptAuto"
 export const settingsName = "Settings"

@@ -49,11 +49,10 @@ function SignInScreen({navigation}: any) {
     }
 
     const register = async () => {
-        const name = {
-            firstname: firstname.trim().length !== 0 ? firstname : null,
-            lastname: lastname.trim().length !== 0 ? firstname : null
-        }
-        const result = await onRegister!(username, email, password, name);
+        const firstName = firstname.trim().length !== 0 ? firstname : undefined;
+        const lastName = lastname.trim().length !== 0 ? firstname : undefined;
+
+        const result = await onRegister!(username, email, password, firstName, lastName);
         if (result && result.error) {
             //alert(result.msg);
         } else {

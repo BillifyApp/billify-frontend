@@ -23,7 +23,7 @@ function GroupOverview({groups}: GroupOverviewProps) {
             {groups.map((g, key) => <GroupOverviewComponent
                 key={key}
                 group_name={g.name}
-                images={[`/uploads/bills/smus_1698884992322.png`, `/uploads/bills/smus_1698884992322.png`, `/uploads/bills/smus_1698884992322.png`]}/>)}
+                images={[`uploads/bills/smus_1698884992322.png`, `uploads/bills/smus_1698884992322.png`, `uploads/bills/smus_1698884992322.png`]}/>)}
         </View>
     );
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import HomeScreen from "../screens/HomeScreen";
 import UploadScreen from "../screens/UploadScreen";
 import {createStackNavigator} from "@react-navigation/stack";
+import {addReceiptAutoName, homeName, uploadName} from "../stores/route_names";
+import AddReceiptAutoScreen from "../screens/AddReceiptAutoScreen";
 
 //https://reactnavigation.org/docs/modal/
 
@@ -14,11 +16,11 @@ function HomeNavigation() {
         <>
             <HomeRootStack.Navigator screenOptions={{headerShown: false,}}>
                 <HomeRootStack.Group>
-                    <HomeRootStack.Screen name="Home" component={HomeScreen}/>
-                    {/* <HomeRootStack.Screen name="Details" component={DetailsScreen}/>*/}
+                    <HomeRootStack.Screen name={homeName} component={HomeScreen}/>
+                    <HomeRootStack.Screen name={addReceiptAutoName} component={AddReceiptAutoScreen} initialParams={{ receipts_id: null }}/>
                 </HomeRootStack.Group>
                 <HomeRootStack.Group screenOptions={{presentation: 'modal'}}>
-                    <HomeRootStack.Screen name="MyModal" component={UploadScreen}/>
+                    <HomeRootStack.Screen name={uploadName} component={UploadScreen}/>
                 </HomeRootStack.Group>
             </HomeRootStack.Navigator>
         </>

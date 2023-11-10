@@ -13,7 +13,7 @@ function GroupOverviewComponent({group_name, images}: GroupOverviewComponentProp
         <View style={{height: 200}}>
             {
                 images.map((path, key) =>
-                    <FlexImage key={key} path={path}></FlexImage>
+                    <FlexImage key={key} path={path} width={50} height={50}></FlexImage>
                 )
             }
             <Text>{group_name}</Text>
