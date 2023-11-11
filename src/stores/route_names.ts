@@ -10,4 +10,8 @@ export const profileName = "Profile"
 //region -----------------------------  -----------------------------
 export const uploadName = "Upload"
 export const addReceiptAutoName = "addReceiptAuto"
+export const addReceiptManuellName = "addReceiptManuell"
+
+export const successfullyAddedName = "successfullyAdded"
+export const oneReceiptName = "oneReceipt"
 export const settingsName = "Settings"

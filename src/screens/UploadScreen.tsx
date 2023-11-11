@@ -50,7 +50,7 @@ function UploadScreen({navigation}) {
         }
     }
 
-    const checkFileSize = async (fileURI: string, maxSize = 2): Promise<boolean> => {
+    const checkFileSize = async (fileURI: string, maxSize = 10): Promise<boolean> => {
         const fileInfo = await FileSystem.getInfoAsync(fileURI);
         if (!fileInfo.size) return false;
         const sizeInMb = fileInfo.size / 1024 / 1024;
@@ -77,10 +77,8 @@ function UploadScreen({navigation}) {
         if (!permissionResult.granted) {
             alert('No permission for camera')
         }
-
-
         let imageResult = await ImagePicker.launchCameraAsync({
-            quality: 0.5,
+            quality: 1,
             base64: true,
 
         })
@@ -109,7 +107,6 @@ function UploadScreen({navigation}) {
                ? (match ? `image/${match[1]}` : '')
                : `image`;*/
 
-
         const id: string | null | undefined = auth.authState?.id;
 
         const formData = new FormData();
@@ -123,22 +120,33 @@ function UploadScreen({navigation}) {
         console.log(`User_Id in Img upload: ${id}`)
 
         try {
+            setIsProcessing(true)
             //Error nur beim lokalen entwickeln
-
             const data = await axios.post(`${url}/images/upload`, formData, {
-                headers: {'content-type': 'multipart/form-data'},
-            });
+                    headers: {'content-type': 'multipart/form-data'},
+                }
+            )
 
             if (!data) {
                 alert("Image upload failed!");
                 return;
             }
             console.log("Image Uploaded");
-            navigation.navigate({name: addReceiptAutoName,  params: {receipt_id: data.data.receipt_id, path: data.data.image.path}});
+
+            navigation.navigate({
+                name: addReceiptAutoName,
+                params:
+                    {
+                        ocr_receipt: data.data.receipt,
+                        image_path: data.data.image_path
+                    },
+            })
+
         } catch (err) {
             console.log(err);
             alert(`Something went wrong ${err}`);
         } finally {
+            setIsProcessing(false);
             setSelectedImage(undefined);
         }
     };

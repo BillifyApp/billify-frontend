@@ -1,16 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
-import {Pressable, Text, View} from "react-native";
+import {Pressable, Switch, Text, View} from "react-native";
+import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
+import {homeName, successfullyAddedName} from "../stores/route_names";
 import axios from "axios";
 import {url} from "../stores/constants";
-import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
-import {homeName} from "../stores/route_names";
-import FlexImage from "../components/atom/FlexImage";
+import {useAuth} from "../context/AuthContext";
 
-interface Image {
-    path: string;
-    date_uploaded: string;
-}
 
 interface Item {
     quantity: number;
@@ -19,11 +15,6 @@ interface Item {
 }
 
 interface Receipt {
-    _id: string;
-    user_id: string;
-    image: Image;
-    date_created: string;
-    date_payed: string;
     comp_name: string;
     address: string;
     items: Array<Item>;
@@ -32,41 +23,72 @@ interface Receipt {
 
 // @ts-ignore
 function AddReceiptAutoScreen({route, navigation}) {
-    const [receipt, setReceipt] = useState<Receipt | null>(null);
-    const [path, setPath] = useState(route.params.path)
+    const auth = useAuth().authState;
+    const {image_path, ocr_receipt: receipt} = route.params;
+    const [isEnabled, setIsEnabled] = useState(false);
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
 
     useEffect(() => {
-        async function getReceipt() {
-            return await axios.post(
-                `${url}/receipts/findById`,
+        console.log(route)
+    }, [route]);
+
+    const addReceipt = async () => {
+        //todo post receipt
+        let result = false
+        try {
+            result = await axios.post(
+                `${url}/receipts/add-receipt`,
                 {
-                    receipt_id: route.params.receipt_id
-                }
-            ).then(res => {
-                console.log(res.data)
-                setReceipt(res.data);
-            })
+                    user_id: auth?.id,
+                    receipt: receipt,
+                    image_path: image_path
+                })
+        } catch (e) {
+            //todo print fail
         }
 
-        getReceipt();
-        return () => {
-        };
-    }, []);
+        if (result) {
+            navigation.navigate(successfullyAddedName)
+        }
+
+        //todo print fail
+    }
+
+    const dismissUpload = async () => {
+        let result = false;
+        try {
+            result = await axios.delete(
+                `${url}/images/one`,
+                {
+                    data: {
+                        image_path: image_path
+                    }
+                }
+            );
+        } catch (e) {
+            //todo print fail
+        }
+
+        if (result) {
+            navigation.navigate(homeName);
+        }
+
+        return;
+        //todo print fail
+    }
 
 
     return (
         <CustomSafeAreaView>
+            <Pressable onPress={dismissUpload}><Text>Back</Text></Pressable>
 
-            <Pressable onPress={() => navigation.navigate(homeName)}><Text>Back</Text></Pressable>
-            <Text>{receipt?._id}</Text>
-            <Text>{receipt?.image.path}</Text>
-            <View style={{height: 500}}>
-                <FlexImage path={path} width={50} height={50}/>
+            <View style={{height: 200}}>
                 <Text>{receipt?.comp_name}</Text>
                 <Text>{receipt?.address}</Text>
                 <Text>{receipt?.date_payed}</Text>
             </View>
-            {receipt?.items?.map((i, key) => {
+            {receipt ? receipt.items.map((i: Item, key: number) => {
                     return (
                         <ReceiptItemEntry
                             count={key}
@@ -77,8 +99,20 @@ function AddReceiptAutoScreen({route, navigation}) {
                         />
                     )
                 }
-            )}
+            ) : undefined}
             <Text>{`${receipt?.total} €`}</Text>
+
+            <Switch
+                trackColor={{false: '#767577', true: '#81b0ff'}}
+                thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+            />
+
+            {isEnabled ? <View><Text>Insert groups here</Text></View> : <></>}
+
+            <Pressable onPress={addReceipt}><Text>TODO Hinzufügen</Text></Pressable>
         </CustomSafeAreaView>
     );
 }

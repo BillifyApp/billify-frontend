@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Pressable, StyleSheet} from "react-native";
 import FlexImage from "./atom/FlexImage";
 import {useNavigation} from "@react-navigation/native";
-import {addReceiptAutoName} from "../stores/route_names";
+import {addReceiptAutoName, oneReceiptName} from "../stores/route_names";
 
 interface LastBillHomeComponentProps {
     path: string;
@@ -24,9 +24,9 @@ function LastBillHomeComponent({path, receipt_id}: LastBillHomeComponentProps) {
     return (
         <Pressable onPress={() => {
             // @ts-ignore
-            navigation.navigate({name: addReceiptAutoName, params: {receipt_id: receipt_id, path: path}})
-        }}>
-            <FlexImage height='100%' width={150} path={path}/>
+            navigation.navigate({name: oneReceiptName, params: {receipt_id: receipt_id, path: path}})
+        }} style={{height: '100%', width: '100%', flexShrink: 1 }}>
+            <FlexImage height={'100%'} width={'100%'} path={path}/>
         </Pressable>
     );
 }

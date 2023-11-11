@@ -60,7 +60,7 @@ export default function BottomBarNavigation() {
             )}>
             <Tab.Screen name={searchName} component={SearchScreen}></Tab.Screen>
             <Tab.Screen name={groupName} component={GroupScreen}></Tab.Screen>
-            <Tab.Screen name={homeNavName} component={HomeNavigation}></Tab.Screen>
+            <Tab.Screen name={homeNavName} component={HomeNavigation} options={{ unmountOnBlur: true}} ></Tab.Screen>
             <Tab.Screen name={notificationName} component={NotificationScreen}></Tab.Screen>
             <Tab.Screen name={profileName} component={ProfileScreen}></Tab.Screen>
         </Tab.Navigator>

@@ -30,11 +30,10 @@ function LastBillsOverview({bills}: LastBillsOverviewProps) {
         <View style={{height: 400}}>
             <Text style={styles.h1}>{t('common.last_purchases')}</Text>
             <Text>{t('common.show_all')}</Text>
-            <ScrollView style={{
-                width: windowWidth * 2, height: 50, backgroundColor: 'gray', padding: 10
-            }}
-                        horizontal={true}>
-                {bills.map((b, key) => <LastBillHomeComponent key={key} path={b.image.path} receipt_id={b._id}/>)}
+            <ScrollView horizontal={true}>
+                <View style={{ width: windowWidth * 2, height: 350, backgroundColor: 'gray', padding: 10, flex: 1, flexDirection: "row"}}>
+                    {bills.map((b, key) => <LastBillHomeComponent key={key} path={b.image.path} receipt_id={b._id}/>)}
+                </View>
             </ScrollView>
         </View>
     );
