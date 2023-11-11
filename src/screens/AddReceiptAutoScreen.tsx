@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
-import {Pressable, Switch, Text, View} from "react-native";
+import {BackHandler, Pressable, ScrollView, Switch, Text, View} from "react-native";
 import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
-import {homeName, successfullyAddedName} from "../stores/route_names";
+import {homeName, successfullyAddedName, uploadName} from "../stores/route_names";
 import axios from "axios";
 import {url} from "../stores/constants";
 import {useAuth} from "../context/AuthContext";
+import CustomButton from "../components/CustomButton";
+import {useFocusEffect} from "@react-navigation/native";
 
 
 interface Item {
@@ -28,14 +30,41 @@ function AddReceiptAutoScreen({route, navigation}) {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
+    useFocusEffect(
+        useCallback(() => {
+            const dismissUpload = async () => {
+                try {
+                    const result = await axios.delete(
+                        `${url}/images/one`,
+                        {
+                            data: {
+                                image_path: image_path
+                            }
+                        }
+                    );
+
+                    if (result) {
+                        navigation.navigate(uploadName);
+                    }
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+
+            const subscription = BackHandler.addEventListener('hardwareBackPress', dismissUpload);
+
+            return () => subscription.remove();
+        }, [])
+    )
 
     useEffect(() => {
         console.log(route)
+
     }, [route]);
 
     const addReceipt = async () => {
         //todo post receipt
-        let result = false
+        let result = null;
         try {
             result = await axios.post(
                 `${url}/receipts/add-receipt`,
@@ -46,12 +75,14 @@ function AddReceiptAutoScreen({route, navigation}) {
                 })
         } catch (e) {
             //todo print fail
+            alert(e)
         }
 
         if (result) {
             navigation.navigate(successfullyAddedName)
         }
 
+        console.log('fail i guess')
         //todo print fail
     }
 
@@ -67,7 +98,7 @@ function AddReceiptAutoScreen({route, navigation}) {
                 }
             );
         } catch (e) {
-            //todo print fail
+            console.log(e)
         }
 
         if (result) {
@@ -83,23 +114,25 @@ function AddReceiptAutoScreen({route, navigation}) {
         <CustomSafeAreaView>
             <Pressable onPress={dismissUpload}><Text>Back</Text></Pressable>
 
-            <View style={{height: 200}}>
+            <View>
                 <Text>{receipt?.comp_name}</Text>
                 <Text>{receipt?.address}</Text>
                 <Text>{receipt?.date_payed}</Text>
             </View>
-            {receipt ? receipt.items.map((i: Item, key: number) => {
-                    return (
-                        <ReceiptItemEntry
-                            count={key}
-                            key={key}
-                            itemName={i.itemName}
-                            quantity={i.quantity}
-                            unitPrice={i.unitPrice}
-                        />
-                    )
-                }
-            ) : undefined}
+            <ScrollView>
+                {receipt ? receipt.items.map((i: Item, key: number) => {
+                        return (
+                            <ReceiptItemEntry
+                                count={key}
+                                key={key}
+                                itemName={i.itemName}
+                                quantity={i.quantity}
+                                unitPrice={i.unitPrice}
+                            />
+                        )
+                    }
+                ) : undefined}
+            </ScrollView>
             <Text>{`${receipt?.total} €`}</Text>
 
             <Switch
@@ -112,7 +145,8 @@ function AddReceiptAutoScreen({route, navigation}) {
 
             {isEnabled ? <View><Text>Insert groups here</Text></View> : <></>}
 
-            <Pressable onPress={addReceipt}><Text>TODO Hinzufügen</Text></Pressable>
+            <CustomButton onPress={addReceipt}>TODO Hinzufügen</CustomButton>
+
         </CustomSafeAreaView>
     );
 }
