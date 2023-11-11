@@ -12,6 +12,7 @@ import {styles} from "../styles/styles";
 import axios from "axios";
 import {url} from "../stores/constants";
 import LastBillsOverview from "../components/template/LastBillsOverview";
+import {useIsFocused} from "@react-navigation/native";
 
 
 // @ts-ignore
@@ -21,8 +22,14 @@ export default function HomeScreen({navigation}) {
     const {t} = useTranslation();
     const [latestReceipts, setLatestReceipts] = useState<any | null>(null);
 
+    // check if screen is focused
+    const isFocused = useIsFocused();
+
+    // listen for isFocused, if useFocused changes
+    // call the function that you use to mount the component.
 
     useEffect(() => {
+
         async function getReceipts() {
             return await axios.post(
                 `${url}/receipts/latest/overview`,
@@ -34,9 +41,10 @@ export default function HomeScreen({navigation}) {
             })
         }
 
-        getReceipts();
-        return() => {};
-    }, [latestReceipts]);
+        isFocused && getReceipts();
+        return () => {
+        };
+    }, [latestReceipts, isFocused]);
 
 
     const logout = async () => {
@@ -57,7 +65,8 @@ export default function HomeScreen({navigation}) {
                 <Text style={styles.h2}>TODO Search</Text>
 
                 {latestReceipts != null ?
-                    <LastBillsOverview bills={latestReceipts}/> :
+                    <LastBillsOverview bills={latestReceipts}/>
+                    :
                     <View><Text>LOL todo here maybe vorschlag zum hinzufügen von einer rechnung?</Text></View>
                 }
 
@@ -68,11 +77,13 @@ export default function HomeScreen({navigation}) {
                     title="Logout"
                     onPress={logout}
                 />
+
                 <CustomButton
                     title="Upload Bill"
                     onPress={() => {
                         navigation.navigate(uploadName)
-                    }}/>
+                    }}
+                />
             </ScrollView>
         </CustomSafeAreaView>
     )

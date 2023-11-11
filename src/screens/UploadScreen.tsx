@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {Button, Platform, Image, Text} from "react-native";
+import React, {useEffect, useRef, useState} from 'react';
+import {Button, Platform, Text, TouchableOpacity} from "react-native";
 import {url} from "../stores/constants";
-import {launchImageLibrary} from 'react-native-image-picker';
+import {Camera} from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import {StatusBar} from "expo-status-bar";
@@ -10,7 +10,7 @@ import {Thumbnail} from "../components/Thumbnail";
 import axios from "axios";
 import {useAuth} from "../context/AuthContext";
 import {useTranslation} from "react-i18next";
-import {homeNavName} from "../stores/route_names";
+import {addReceiptAutoName, homeName, homeNavName} from "../stores/route_names";
 
 //TUT https://blog.logrocket.com/how-to-upload-images-react-native-laravel-api/#setting-up-the-laravel-image-upload-api
 
@@ -19,8 +19,43 @@ import {homeNavName} from "../stores/route_names";
 function UploadScreen({navigation}) {
     const [selectedImage, setSelectedImage] = useState<ImagePicker.ImageInfo>();
     const {t} = useTranslation();
-
     const auth = useAuth();
+
+    const cameraRef = useRef<Camera>();
+    const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
+    const [hasPermission, setHasPermission] = useState(null);
+    const [isCameraReady, setIsCameraReady] = useState(false);
+    const [isProcessing, setIsProcessing] = useState(false);
+
+    useEffect(() => {
+        (async () => {
+            const {status} = await Camera.requestCameraPermissionsAsync();
+            setHasPermission(status === "granted");
+        })();
+    }, []);
+
+    const onCameraReady = () => {
+        setIsCameraReady(true);
+    };
+
+    const takePicture = async () => {
+        if (cameraRef.current) {
+            const options = {quality: 0.5, base64: true, skipProcessing: true};
+            const data = await cameraRef.current.takePictureAsync(options);
+            const source = data.uri;
+            if (source) {
+                await cameraRef.current.pausePreview();
+                console.log("picture source", source);
+            }
+        }
+    }
+
+    const checkFileSize = async (fileURI: string, maxSize = 10): Promise<boolean> => {
+        const fileInfo = await FileSystem.getInfoAsync(fileURI);
+        if (!fileInfo.size) return false;
+        const sizeInMb = fileInfo.size / 1024 / 1024;
+        return sizeInMb < maxSize;
+    };
 
     const openImagePickerAsync = async () => {
         let permissionResult =
@@ -37,14 +72,18 @@ function UploadScreen({navigation}) {
         setSelectedImage(pickerResult.assets[0]);
     };
 
-    const checkFileSize = async (
-        fileURI: string,
-        maxSize = 2
-    ): Promise<boolean> => {
-        const fileInfo = await FileSystem.getInfoAsync(fileURI);
-        if (!fileInfo.size) return false;
-        const sizeInMb = fileInfo.size / 1024 / 1024;
-        return sizeInMb < maxSize;
+    const launchCameraFunc = async () => {
+        let permissionResult = await Camera.requestCameraPermissionsAsync();
+        if (!permissionResult.granted) {
+            alert('No permission for camera')
+        }
+        let imageResult = await ImagePicker.launchCameraAsync({
+            quality: 1,
+            base64: true,
+
+        })
+        if (imageResult.canceled) return;
+        setSelectedImage(imageResult.assets[0])
     };
 
     const uploadImage = async () => {
@@ -68,7 +107,6 @@ function UploadScreen({navigation}) {
                ? (match ? `image/${match[1]}` : '')
                : `image`;*/
 
-
         const id: string | null | undefined = auth.authState?.id;
 
         const formData = new FormData();
@@ -82,10 +120,12 @@ function UploadScreen({navigation}) {
         console.log(`User_Id in Img upload: ${id}`)
 
         try {
+            setIsProcessing(true)
             //Error nur beim lokalen entwickeln
             const data = await axios.post(`${url}/images/upload`, formData, {
-                headers: {'content-type': 'multipart/form-data'},
-            });
+                    headers: {'content-type': 'multipart/form-data'},
+                }
+            )
 
             if (!data) {
                 alert("Image upload failed!");
@@ -93,10 +133,20 @@ function UploadScreen({navigation}) {
             }
             console.log("Image Uploaded");
 
+            navigation.navigate({
+                name: addReceiptAutoName,
+                params:
+                    {
+                        ocr_receipt: data.data.receipt,
+                        image_path: data.data.image_path
+                    },
+            })
+
         } catch (err) {
             console.log(err);
             alert(`Something went wrong ${err}`);
         } finally {
+            setIsProcessing(false);
             setSelectedImage(undefined);
         }
     };
@@ -109,18 +159,34 @@ function UploadScreen({navigation}) {
                 }}></Button>
                 <Text>{t('common.add_bill')}</Text>
                 <Button title="manuell" onPress={() => {
-                    navigation.navigate('Home')
+                    navigation.navigate(homeName)
                 }}></Button>
 
                 {selectedImage ? (
                     <>
                         <Thumbnail uri={selectedImage.uri}/>
-                        <Button onPress={uploadImage} title="Upload"/>
+                        {!isProcessing ? <Button onPress={uploadImage} title="Upload"/> : <StatusBar/>}
+
                     </>
                 ) : (
                     <Button onPress={openImagePickerAsync} title="Pick a photo"/>
                 )}
+                <TouchableOpacity
+                    onPress={launchCameraFunc}>
+                    <Text>Directly Launch Camera</Text>
+
+                    <Camera
+                        ref={cameraRef}
+                        type={cameraType}
+                        //flashMode={Camera.Constants.FlashMode}
+                        onCameraReady={onCameraReady}
+                        onMountError={(error) => {
+                            console.log("camera error", error);
+                        }}
+                    />
+                </TouchableOpacity>
                 <StatusBar style="auto"/>
+
             </CustomSafeAreaView>
         </>
     );
