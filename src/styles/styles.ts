@@ -20,14 +20,14 @@ export const styles = StyleSheet.create({
     height: "100%",
   },
   button: {
-    backgroundColor: "#3498db",
-    padding: 10,
-    borderRadius: 5,
+    backgroundColor: "#eee",
+    padding: 15,
+    borderRadius: 25,
     alignItems: "center",
     margin: 5,
   },
   buttonText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 16,
   },
   headingMargin: {

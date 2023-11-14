@@ -1,22 +1,19 @@
 import React, { useEffect } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View, Text } from "react-native";
 import FlexImage from "./atom/FlexImage";
 import { useNavigation } from "@react-navigation/native";
 import { addReceiptAutoName, oneReceiptName } from "../stores/route_names";
+import { styles } from "../styles/styles";
 
 interface LastBillHomeComponentProps {
-  path: string;
-  receipt_id: string;
+  receipt: any;
 }
 
-function LastBillHomeComponent({
-  path,
-  receipt_id,
-}: LastBillHomeComponentProps) {
+function LastBillHomeComponent({ receipt }: LastBillHomeComponentProps) {
   const navigation = useNavigation();
 
   useEffect(() => {
-    console.log(path);
+    console.log(receipt);
   }, []);
 
   const processPath = (path: string) => {
@@ -29,27 +26,30 @@ function LastBillHomeComponent({
         // @ts-ignore
         navigation.navigate({
           name: oneReceiptName,
-          params: { receipt_id: receipt_id, path: path },
+          params: { receipt_id: receipt._id, path: receipt.image.path },
         });
       }}
     >
-      <View style={styles.container}>
-        <FlexImage height={"100%"} width={"100%"} path={path} />
+      <View style={localStyles.container}>
+        <Text style={styles.h2}>€ {receipt.total}</Text>
+        <Text>{receipt.comp_name}</Text>
+        {receipt.items && <Text>{receipt.items.length} items</Text>}
       </View>
     </Pressable>
   );
 }
 
-const styles = StyleSheet.create({
+const localStyles = StyleSheet.create({
   container: {
     flex: 1,
     width: 150,
-    height: '100%',
+    padding: 15,
+    height: "100%",
     marginHorizontal: 10,
     borderRadius: 10,
-    backgroundColor: '#eee',
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: "#eee",
+    justifyContent: "flex-end",
+    
   },
   image: {
     //flex: 1,

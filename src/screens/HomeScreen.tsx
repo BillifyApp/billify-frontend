@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     async function getReceipts() {
       return await axios
-        .post(`${url}/receipts/latest/overview`, {
+        .post(`${url}/receipts/latest`, {
           user_id: authState?.id,
         })
         .then((res) => {

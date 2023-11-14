@@ -36,7 +36,7 @@ function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
   }, []);
 
   return (
-    <View style={{ height: 270 }}>
+    <View style={{ height: 240 }}>
       <View style={styles.headingMargin}>
         <Text style={[styles.h2 ]}>
           {t("common.last_purchases")}
@@ -54,7 +54,7 @@ function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
         <View
           style={{
             width: 870,
-            height: 230,
+            height: 200,
             padding: 10,
             flex: 1,
             flexDirection: "row",
@@ -63,8 +63,8 @@ function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
           {bills.map((b, key) => (
             <LastBillHomeComponent
               key={key}
-              path={b.image.path}
-              receipt_id={b._id}
+              receipt={b}
+
             />
           ))}
         </View>
