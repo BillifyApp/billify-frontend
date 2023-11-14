@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
-import { Dimensions, Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Dimensions,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+} from "react-native";
 import { useTranslation } from "react-i18next";
 import { styles } from "../../styles/styles";
 import LastBillHomeComponent from "../LastBillHomeComponent";
@@ -15,7 +22,7 @@ interface bills {
 
 interface LastBillsOverviewProps {
   bills: bills[];
-  navigation: any
+  navigation: any;
 }
 
 const windowWidth = Dimensions.get("window").width;
@@ -29,17 +36,25 @@ function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
   }, []);
 
   return (
-    <View style={{ height: 400 }}>
-      <Text style={styles.h1}>{t("common.last_purchases")}</Text>
-      <Pressable onPress={()=>{navigation.navigate(allReceiptsName)}}>
-        <Text>{t("common.show_all")}</Text>
-      </Pressable>
-      <ScrollView horizontal={true}>
+    <View style={{ height: 270 }}>
+      <View style={styles.headingMargin}>
+        <Text style={[styles.h2 ]}>
+          {t("common.last_purchases")}
+        </Text>
+        <Pressable
+          onPress={() => {
+            navigation.navigate(allReceiptsName);
+          }}
+        >
+          <Text>{t("common.show_all")}</Text>
+        </Pressable>
+      </View>
+
+      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View
           style={{
-            width: windowWidth * 2,
-            height: 350,
-            backgroundColor: "gray",
+            width: 870,
+            height: 230,
             padding: 10,
             flex: 1,
             flexDirection: "row",
@@ -57,5 +72,4 @@ function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
     </View>
   );
 }
-
 export default LastBillsOverview;
