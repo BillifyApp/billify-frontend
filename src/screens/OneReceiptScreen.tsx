@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import {
+  Pressable,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import axios from "axios";
 import { url } from "../stores/constants";
 import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
-import { homeName } from "../stores/route_names";
+import { editReceiptName, homeName } from "../stores/route_names";
 import FlexImage from "../components/atom/FlexImage";
+import { styles } from "../styles/styles";
 
 interface Image {
   path: string;
@@ -86,9 +93,17 @@ function AddReceiptAutoScreen({ route, navigation }) {
           );
         })}
         <Text>{`${receipt?.total} €`}</Text>
-        <Pressable onPress={deleteReceipt}>
-          <Text>Delete</Text>
-        </Pressable>
+        <TouchableOpacity onPress={deleteReceipt} style={styles.button}>
+          <Text style={styles.buttonText}>Delete</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate(editReceiptName, { receipt });
+          }}
+        >
+          <Text style={styles.buttonText}>Edit</Text>
+        </TouchableOpacity>
       </ScrollView>
     </CustomSafeAreaView>
   );

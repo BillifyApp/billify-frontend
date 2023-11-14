@@ -2,11 +2,12 @@ import React from 'react';
 import HomeScreen from "../screens/HomeScreen";
 import UploadScreen from "../screens/UploadScreen";
 import {createStackNavigator} from "@react-navigation/stack";
-import {addReceiptAutoName, allReceiptsName, homeName, oneReceiptName, successfullyAddedName, uploadName} from "../stores/route_names";
+import {addReceiptAutoName, allReceiptsName, editReceiptName, homeName, oneReceiptName, successfullyAddedName, uploadName} from "../stores/route_names";
 import AddReceiptAutoScreen from "../screens/AddReceiptAutoScreen";
 import oneReceiptScreen from "../screens/OneReceiptScreen";
 import SuccessfullyAddedScreen from "../screens/SuccessfullyAddedScreen";
 import AllReceiptsScreen from '../screens/AllReceiptsScreen';
+import EditReceiptScreen from '../screens/EditReceiptScreen';
 
 //https://reactnavigation.org/docs/modal/
 
@@ -23,6 +24,7 @@ function HomeNavigation() {
                     <HomeRootStack.Screen name={homeName} component={HomeScreen} />
                     <HomeRootStack.Screen name={oneReceiptName} component={oneReceiptScreen}/>
                     <HomeRootStack.Screen name={allReceiptsName} component={AllReceiptsScreen}/>
+                    <HomeRootStack.Screen name={editReceiptName} component={EditReceiptScreen}/>
 
                 </HomeRootStack.Group>
                 <HomeRootStack.Group screenOptions={{presentation: 'modal'}}>
