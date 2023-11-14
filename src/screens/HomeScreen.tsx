@@ -65,7 +65,7 @@ export default function HomeScreen({navigation}) {
                 <Text style={styles.h2}>TODO Search</Text>
 
                 {latestReceipts != null ?
-                    <LastBillsOverview bills={latestReceipts}/>
+                    <LastBillsOverview bills={latestReceipts} navigation={navigation}/>
                     :
                     <View><Text>LOL todo here maybe vorschlag zum hinzufügen von einer rechnung?</Text></View>
                 }

@@ -9,7 +9,7 @@ export const urlAndroid = 'https://10.0.2.2:443'
 //export const urlServer = 'https://:::443'
 export const urlEliHttp = 'http://10.0.0.198:3000'
 export const urlEliHttps = 'https://10.0.0.198:443'
-export const urlTobiHttp = "http://192.168.137.1:3000"
+export const urlTobiHttp = "http://192.168.0.16:3000"
 export const urlRender = 'https://billify-backend-api-srti.onrender.com'
 export const url = urlTobiHttp;
 

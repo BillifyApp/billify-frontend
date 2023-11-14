@@ -63,7 +63,7 @@ function AddReceiptAutoScreen({ route, navigation }) {
   return (
     <CustomSafeAreaView>
       <ScrollView>
-        <Pressable onPress={() => navigation.navigate(homeName)}>
+        <Pressable onPress={() => navigation.goBack()}>
           <Text>Back</Text>
         </Pressable>
         <Text>{receipt?._id}</Text>
