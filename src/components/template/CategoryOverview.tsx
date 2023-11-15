@@ -18,8 +18,8 @@ function CategoryOverview({ categories }: CategoryOverviewProps) {
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: "row", paddingTop: 10 }}>
           {categories.map((c, key) => (
-            <View style={styles.categoryItem}>
-              <Text key={key}>{c}</Text>
+            <View key={key} style={styles.categoryItem}>
+              <Text >{c}</Text>
             </View>
           ))}
         </View>

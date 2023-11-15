@@ -47,7 +47,7 @@ const localStyles = StyleSheet.create({
     height: "100%",
     marginHorizontal: 10,
     borderRadius: 10,
-    backgroundColor: "#eee",
+    backgroundColor: "#F6F6F6",
     justifyContent: "flex-end",
     
   },

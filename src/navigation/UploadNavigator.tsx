@@ -1,20 +1,24 @@
-import React from 'react';
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import UploadScreen from "../screens/UploadScreen";
-import {View} from "react-native";
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { View } from "react-native";
+import ProcessingScreen from "../screens/ProcessingScreen";
+import UploadModal from "../screens/UploadModal";
+import HomeScreen from "../screens/HomeScreen";
 
 const UploadStack = createNativeStackNavigator();
 
 function UploadNavigator({}) {
-    return (
-        <>
-            <View>
-                <UploadStack.Navigator>
-                    <UploadStack.Screen name="upload" component={UploadScreen}/>
-                </UploadStack.Navigator>
-            </View>
-        </>
-    );
+  return (
+    <>
+      <View>
+        <UploadStack.Navigator>
+          <UploadStack.Screen name="upload" component={UploadModal} />
+          <UploadStack.Screen name="processing" component={ProcessingScreen} />
+          <UploadStack.Screen name="home" component={HomeScreen} />
+        </UploadStack.Navigator>
+      </View>
+    </>
+  );
 }
 
 export default UploadNavigator;

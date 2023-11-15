@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import {
   Pressable,
@@ -6,6 +12,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
+  SafeAreaView,
+  Dimensions,
 } from "react-native";
 import axios from "axios";
 import { url } from "../stores/constants";
@@ -13,22 +22,20 @@ import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
 import { editReceiptName, homeName } from "../stores/route_names";
 import FlexImage from "../components/atom/FlexImage";
 import { styles } from "../styles/styles";
-
-interface Image {
-  path: string;
-  date_uploaded: string;
-}
+import CustomButton from "../components/CustomButton";
+import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 interface Item {
   quantity: number;
   itemName: string;
   unitPrice: number;
+  subtotal: number;
 }
 
 interface Receipt {
   _id: string;
   user_id: string;
-  image: Image;
+  image: any;
   date_created: string;
   date_payed: string;
   comp_name: string;
@@ -66,46 +73,112 @@ function AddReceiptAutoScreen({ route, navigation }) {
     });
     navigation.navigate(homeName);
   };
-
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log("handleSheetChanges", index);
+  }, []);
+  const snapPoints = useMemo(() => ["25%", "66%"], []);
+  const {height, width} = Dimensions.get('window');
   return (
-    <CustomSafeAreaView>
-      <ScrollView>
-        <Pressable onPress={() => navigation.goBack()}>
-          <Text>Back</Text>
-        </Pressable>
-        <Text>{receipt?._id}</Text>
-        <Text>{receipt?.image.path}</Text>
-        <View style={{ height: 200 }}>
-          <FlexImage path={path} width="100%" height={50} />
-          <Text>{receipt?.comp_name}</Text>
-          <Text>{receipt?.address}</Text>
-          <Text>{receipt?.date_payed}</Text>
-        </View>
-        {receipt?.items?.map((i, key) => {
-          return (
-            <ReceiptItemEntry
-              count={key}
-              key={key}
-              itemName={i.itemName}
-              quantity={i.quantity}
-              unitPrice={i.unitPrice}
-            />
-          );
-        })}
-        <Text>{`${receipt?.total} €`}</Text>
-        <TouchableOpacity onPress={deleteReceipt} style={styles.button}>
-          <Text style={styles.buttonText}>Delete</Text>
-        </TouchableOpacity>
+    <SafeAreaView >
+      <ScrollView >
+      <BottomSheetModalProvider 
+      >
+        <View style={{flex: 1, minHeight: height}}>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate(editReceiptName, { receipt });
-          }}
+          onPress={() => navigation.goBack()}
+          style={{ marginTop: 60, marginLeft: 10 }}
         >
-          <Text style={styles.buttonText}>Edit</Text>
+          <Image source={require("../assets/arrow-back.png")}></Image>
         </TouchableOpacity>
+
+        <Text style={[styles.h1, { textAlign: "center" }]}>
+          Receipt Overview
+        </Text>
+        <View style={{ marginHorizontal: 25, alignItems: "center" }}>
+          <View style={{ flexDirection: "row", paddingVertical: 25 }}>
+            <View
+              style={{
+                backgroundColor: "#eee",
+                height: 100,
+                width: 100,
+                borderRadius: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text>Shop</Text>
+            </View>
+            <View style={{ paddingLeft: 20, paddingTop: 10 }}>
+              <Text>{receipt?.comp_name}</Text>
+              <Text style={{color: "#858585"}}>{receipt?.address}</Text>
+              <Text style={{color: "#858585"}}>{receipt?.date_payed}</Text>
+              <Pressable onPress={handlePresentModalPress}>
+              <Text style={{ textDecorationLine: "underline"}}>Show Receipt Image</Text>
+            </Pressable>
+            </View>
+            
+          </View>
+          <View style={styles.horizontalDivider}></View>
+          {receipt?.items?.map((i, key) => {
+            return (
+              <ReceiptItemEntry
+                count={key}
+                key={key}
+                itemName={i.itemName}
+                quantity={i.quantity}
+                unitPrice={i.unitPrice}
+                subtotal={i.subtotal}
+              />
+            );
+          })}
+          <View style={styles.horizontalDivider}></View>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              width: "100%",
+              paddingVertical: 20,
+            }}
+          >
+            <Text>Total:</Text>
+            <Text>{`${receipt?.total} €`}</Text>
+          </View>
+          <View style={styles.horizontalDivider}></View>
+          <View style={{ flexDirection: "row" }}>
+            <CustomButton
+              title="Edit"
+              width="70%"
+              onPress={() => {
+                navigation.navigate(editReceiptName, { receipt });
+              }}
+            />
+            <CustomButton
+              title="Delete"
+              width="30%"
+              onPress={deleteReceipt}
+              color="#aaa"
+            />
+          </View>
+        </View>
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
+          index={1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          backgroundStyle={{backgroundColor: '#E0E0E0'}}
+        >
+        <View style={{flex: 1, justifyContent: "center", alignItems:"center"}}>
+            <FlexImage path={path} width="80%" height="100%"></FlexImage>
+            </View>
+        </BottomSheetModal>
+        </View>
+      </BottomSheetModalProvider>
       </ScrollView>
-    </CustomSafeAreaView>
+    </SafeAreaView>
   );
 }
 

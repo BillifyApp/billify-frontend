@@ -50,40 +50,22 @@ function LoginScreen({ navigation }: any) {
       >
         <Text style={[styles.h1, {marginBottom: 20}]}>{t("common.login")}</Text>
         <TextInput
-          style={loginStyles.input}
+          style={styles.input}
           value={username}
           onChangeText={setUsername}
           placeholder={t("common.username") + "/" + t("common.email")}
         />
         <TextInput
-          style={loginStyles.input}
+          style={[styles.input, {marginBottom: 20}] }
           value={password}
           onChangeText={setPassword}
           placeholder={t("common.password")}
           secureTextEntry={true}
         />
-        <TouchableOpacity style={[styles.button, {width: "60%", marginTop: 20}]} onPress={login}>
-          <Text>{t("common.login")}</Text>
-        </TouchableOpacity>
+        <CustomButton title={t("common.login")} onPress={login} width="50%"/>
       </SafeAreaView>
     </>
   );
 }
-
-const loginStyles = StyleSheet.create({
-  input: {
-    width: "80%",
-    borderRadius: 25,
-    padding: 10,
-    paddingLeft: 20,
-    margin: 5,
-    backgroundColor: "#eee",
-
-  },
-  link: {
-    color: "blue",
-    textDecorationLine: "underline",
-  },
-});
 
 export default LoginScreen;

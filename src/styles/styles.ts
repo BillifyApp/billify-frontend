@@ -9,10 +9,21 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
+  h3: {
+    fontSize: 17,
+  },
   container: {
     //flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  input: {
+    width: "80%",
+    borderRadius: 25,
+    padding: 10,
+    paddingLeft: 20,
+    margin: 5,
+    backgroundColor: "#E0E0E0",
   },
   image: {
     //flex: 1,
@@ -20,7 +31,7 @@ export const styles = StyleSheet.create({
     height: "100%",
   },
   button: {
-    backgroundColor: "#eee",
+    backgroundColor: "#E9E9E9",
     padding: 15,
     borderRadius: 25,
     alignItems: "center",
@@ -39,7 +50,7 @@ export const styles = StyleSheet.create({
     alignItems: "baseline",
   },
   categoryItem:{
-    backgroundColor: '#eee',
+    backgroundColor: '#F6F6F6',
     paddingHorizontal: 25,
     height: 50,
     borderRadius: 30,
@@ -53,14 +64,20 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   groupOverviewItem:{
-    backgroundColor: '#eee',
+    backgroundColor: '#F6F6F6',
     width: "100%",
     height: 60,
-    borderRadius: 15,
+    borderRadius: 50,
     marginVertical: 5,
     paddingHorizontal: 15,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
+  horizontalDivider:{
+    width: "100%",
+    height: 1,
+    backgroundColor: '#ddd',
+    marginVertical: 5,
+  }
 });

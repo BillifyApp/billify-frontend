@@ -1,6 +1,6 @@
 import { ScrollView, Text, TextInput, View, StyleSheet } from "react-native";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import CustomButton from "../components/CustomButton";
 import { useAuth } from "../context/AuthContext";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
@@ -14,6 +14,11 @@ import { url } from "../stores/constants";
 import LastBillsOverview from "../components/template/LastBillsOverview";
 import { useIsFocused } from "@react-navigation/native";
 import AddReceiptButton from "../components/atom/AddReceiptButton";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
+import UploadModal from "./UploadModal";
 
 // @ts-ignore
 export default function HomeScreen({ navigation }) {
@@ -42,10 +47,19 @@ export default function HomeScreen({ navigation }) {
     isFocused && getReceipts();
     return () => {};
   }, [latestReceipts, isFocused]);
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+  const snapPoints = useMemo(() => ['25%', "66%"], []);
 
   /*TODO fill with real data*/
   return (
     <CustomSafeAreaView>
+      <BottomSheetModalProvider>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ backgroundColor: "white" }}>
           <Text style={[styles.h1, homeStyles.header]}>
@@ -82,12 +96,26 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
       </ScrollView>
-      <AddReceiptButton
+    {/*   <AddReceiptButton
         title="+"
         onPress={() => {
           navigation.navigate(uploadName);
         }}
+      /> */}
+      <AddReceiptButton
+        title="+"
+        onPress={handlePresentModalPress}
       />
+      <BottomSheetModal
+          ref={bottomSheetModalRef}
+          index={1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+          backgroundStyle={{backgroundColor: '#E0E0E0'}}
+        >
+          <UploadModal navigation={navigation}/>
+        </BottomSheetModal>
+      </BottomSheetModalProvider>
     </CustomSafeAreaView>
   );
 }

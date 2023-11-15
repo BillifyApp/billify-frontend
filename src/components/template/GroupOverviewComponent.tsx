@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Image } from "react-native";
 import FlexImage from "../atom/FlexImage";
 import { styles } from "../../styles/styles";
 import UserIconImage from "../atom/UserIconImage";
@@ -27,7 +27,8 @@ function GroupOverviewComponent({
             ></UserIconImage>
           ))}
         </View>
-        <Text>{group_name}</Text>
+        <Text style={{flex: 2}}>{group_name}</Text>
+        <Image source={require("../../assets/arrow-forward.png")}/>
       </View>
     </TouchableOpacity>
   );
