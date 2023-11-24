@@ -1,17 +1,48 @@
-import {Button, SafeAreaView, Text, View} from "react-native";
+import {
+  Button,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import * as React from "react";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
-import {settingsName} from "../stores/route_names";
+import { settingsName } from "../stores/route_names";
+import CustomButton from "../components/CustomButton";
+import { useAuth } from "../context/AuthContext";
+import { styles } from "../styles/styles";
 
 // @ts-ignore
-export default function ProfileScreen({navigation}) {
-    return (
-        <CustomSafeAreaView>
-            <Text>Profile Screen</Text>
-            <Button
-                title="Go to Settings"
-                onPress={() => navigation.navigate(settingsName)}
-            />
-        </CustomSafeAreaView>
-    )
+export default function ProfileScreen({ navigation }) {
+  const { onLogout } = useAuth();
+
+  const logout = async () => {
+    const result = await onLogout!();
+    if (result && result.error) {
+      alert(result.msg);
+    }
+  };
+  return (
+    <CustomSafeAreaView>
+      <View style={{ backgroundColor: "#fff", height: "100%" }}>
+        <Text
+          style={[
+            styles.h1,
+            { marginHorizontal: 15, marginTop: 20, marginBottom: 10 },
+          ]}
+        >
+          My Profile
+        </Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate(settingsName)}
+        >
+          <Text>Go to Settings</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={logout}>
+            <Text>Logout</Text>
+        </TouchableOpacity>
+      </View>
+    </CustomSafeAreaView>
+  );
 }

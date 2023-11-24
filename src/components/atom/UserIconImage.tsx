@@ -6,9 +6,10 @@ interface FlexImageProps {
     path: string;
     width: any;
     height: any;
+    offset: any;
 }
 
-function FlexImage({path, width, height}: FlexImageProps) {
+function FlexImage({path, width, height, offset}: FlexImageProps) {
 
     // const [image, setImage] = useState<any>('')
 
@@ -24,13 +25,12 @@ function FlexImage({path, width, height}: FlexImageProps) {
     return (
         <View style={{
             width: width, height: height,
-            flex: 1,
             justifyContent: "center",
             alignItems: "center",
         }}>
             {path != undefined ?
                 <Image
-                    style={styles.image}
+                    style={[styles.image, {left: -offset}]}
                     source={{uri: `${url}/${processPath(path)}`}}
                 /> :
                 <Text>Image should be here, rep</Text>
@@ -40,17 +40,11 @@ function FlexImage({path, width, height}: FlexImageProps) {
 }
 
 const styles = StyleSheet.create({
-    /* container: {
-         flex: 1,
-         justifyContent: "center",
-         alignItems: "center",
-     },*/
     image: {
-        //flex: 1,
+        position: "absolute",
         width: "100%",
         height: "100%",
-        borderRadius: 10,
-        //resizeMode: "contain",
+        borderRadius: 20,
     },
 });
 

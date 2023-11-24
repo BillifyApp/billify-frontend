@@ -17,13 +17,16 @@ function GroupOverview({groups}: GroupOverviewProps) {
 
     return (
         <View>
-            <Text style={styles.h1}>{t('common.groups.many')}</Text>
+            <View style={styles.headingMargin}>
+            <Text style={styles.h2}>{t('common.groups.many')}</Text>
             <ShowAllAtom routeName={groupName}></ShowAllAtom>
-
+            </View>
+            <View style={styles.groupOverview}>
             {groups.map((g, key) => <GroupOverviewComponent
                 key={key}
                 group_name={g.name}
-                images={[`uploads/bills/smus_1698884992322.png`, `uploads/bills/smus_1698884992322.png`, `uploads/bills/smus_1698884992322.png`]}/>)}
+                images={[`uploads/users/user.jpg`, `uploads/users/user.jpg`, `uploads/users/user.jpg`]}/>)}
+       </View>
         </View>
     );
 }
