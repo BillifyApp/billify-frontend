@@ -19,6 +19,7 @@ function ReceiptListEntry({
   total,
 }: ReceiptListEntry) {
   const navigation = useNavigation();
+
   return (
     <Pressable
       onPress={() =>

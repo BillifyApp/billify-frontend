@@ -1,6 +1,6 @@
 //region ----------------------------- BOTTOM BAR NAVIGATION -----------------------------
 export const searchName = "Search"
-export const groupName = "Group"
+export const groupNavName = "GroupNav"
 export const homeName = "Home";
 export const homeNavName = "HomeNav";
 export const notificationName = "Notification"
@@ -17,3 +17,9 @@ export const oneReceiptName = "oneReceipt"
 export const editReceiptName = "editReceipt"
 export const settingsName = "Settings"
 export const allReceiptsName = "allReceipts"
+
+//region ------------------------------ Groups -------------------------
+export const groupName = "Group"
+export const oneGroupName = 'oneGroup';
+export const createGroupName = 'CreateGroup';
+//endregion

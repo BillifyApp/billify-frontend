@@ -6,16 +6,17 @@ import {
   addReceiptAutoName,
   allReceiptsName,
   editReceiptName,
-  homeName,
+  homeName, oneGroupName,
   oneReceiptName,
   successfullyAddedName,
   uploadName,
 } from "../stores/route_names";
-import AddReceiptAutoScreen from "../screens/AddReceiptAutoScreen";
-import oneReceiptScreen from "../screens/OneReceiptScreen";
-import SuccessfullyAddedScreen from "../screens/SuccessfullyAddedScreen";
-import AllReceiptsScreen from "../screens/AllReceiptsScreen";
-import EditReceiptScreen from "../screens/EditReceiptScreen";
+import AddReceiptAutoScreen from "../screens/Receipts/AddReceiptAutoScreen";
+import oneReceiptScreen from "../screens/Receipts/OneReceiptScreen";
+import SuccessfullyAddedScreen from "../screens/Receipts/SuccessfullyAddedScreen";
+import AllReceiptsScreen from "../screens/Receipts/AllReceiptsScreen";
+import EditReceiptScreen from "../screens/Receipts/EditReceiptScreen";
+import OneGroupScreen from "../screens/Group/OneGroupScreen";
 
 //https://reactnavigation.org/docs/modal/
 
@@ -52,6 +53,8 @@ function HomeNavigation() {
             name={successfullyAddedName}
             component={SuccessfullyAddedScreen}
           />
+          <HomeRootStack.Screen name={oneGroupName} component={OneGroupScreen} />
+
         </HomeRootStack.Group>
       </HomeRootStack.Navigator>
     </>

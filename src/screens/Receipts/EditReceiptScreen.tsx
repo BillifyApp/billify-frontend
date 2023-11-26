@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CustomSafeAreaView from "../components/CustomSafeAreaView";
+import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import {
   Pressable,
   ScrollView,
@@ -10,12 +10,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import axios from "axios";
-import { url } from "../stores/constants";
-import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
-import { homeName, oneReceiptName } from "../stores/route_names";
-import FlexImage from "../components/atom/FlexImage";
-import ReceiptItemEntryEdit from "../components/atom/ReceiptItemEntryEdit";
-import { styles } from "../styles/styles";
+import { url } from "../../stores/constants";
+import ReceiptItemEntry from "../../components/atom/ReceiptItemEntry";
+import { homeName, oneReceiptName } from "../../stores/route_names";
+import FlexImage from "../../components/atom/FlexImage";
+import ReceiptItemEntryEdit from "../../components/atom/ReceiptItemEntryEdit";
+import { styles } from "../../styles/styles";
 
 interface Image {
   path: string;

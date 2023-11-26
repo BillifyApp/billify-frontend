@@ -13,7 +13,7 @@ function FlexImage({path, width, height}: FlexImageProps) {
     // const [image, setImage] = useState<any>('')
 
     useEffect(() => {
-        console.log(`${url}/${processPath(path)}`)
+        //console.log(`${url}/${processPath(path)}`)
         //setImage(`${url}/${processPath(path)}`)
     }, []);
 

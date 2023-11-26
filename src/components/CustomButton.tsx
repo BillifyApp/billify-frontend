@@ -10,9 +10,9 @@ interface Props {
 export default function CustomButton(props: any) {
     const {onPress, title = 'Save', width, color="#ddd"} = props;
     return (
-        <TouchableOpacity style={[styles.button, {width: width, backgroundColor:color}]} onPress={onPress}>
+        <Pressable style={[styles.button, {width: width, backgroundColor:color}]} onPress={onPress}>
             <Text style={styles.buttonText}>{title}</Text>
-        </TouchableOpacity>
+        </Pressable>
     );
 }
 

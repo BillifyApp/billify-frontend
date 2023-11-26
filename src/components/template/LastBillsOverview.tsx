@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { styles } from "../../styles/styles";
 import LastBillHomeComponent from "../LastBillHomeComponent";
 import { allReceiptsName } from "../../stores/route_names";
+import {useNavigation} from "@react-navigation/native";
 
 interface bills {
   _id: string;
@@ -31,8 +32,8 @@ function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
   const { t } = useTranslation();
 
   useEffect(() => {
-    bills.map((b) => console.log(b));
-    console.log(bills);
+    //bills.map((b) => console.log(b));
+    //console.log(bills);
   }, []);
 
   return (
@@ -64,7 +65,6 @@ function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
             <LastBillHomeComponent
               key={key}
               receipt={b}
-
             />
           ))}
         </View>
