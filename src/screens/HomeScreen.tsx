@@ -7,7 +7,6 @@ import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import { useTranslation } from "react-i18next";
 import CategoryOverview from "../components/template/CategoryOverview";
 import GroupOverview from "../components/template/GroupOverview";
-import { uploadName } from "../stores/route_names";
 import { styles } from "../styles/styles";
 import axios from "axios";
 import { url } from "../stores/constants";
@@ -33,6 +32,9 @@ export default function HomeScreen({ navigation }) {
   // listen for isFocused, if useFocused changes
   // call the function that you use to mount the component.
 
+  //a variable to check if all the data is loaded
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function getReceipts() {
       return await axios
@@ -41,6 +43,7 @@ export default function HomeScreen({ navigation }) {
         })
         .then((res) => {
           setLatestReceipts(res.data);
+          setLoading(false);
         });
     }
 
@@ -56,10 +59,9 @@ export default function HomeScreen({ navigation }) {
   }, []);
   const snapPoints = useMemo(() => ['25%', "66%"], []);
 
-  /*TODO fill with real data*/
   return (
     <CustomSafeAreaView>
-      <BottomSheetModalProvider>
+      <BottomSheetModalProvider  >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ backgroundColor: "white" }}>
           <Text style={[styles.h1, homeStyles.header]}>
@@ -71,17 +73,9 @@ export default function HomeScreen({ navigation }) {
               <Text>Search</Text>
             </TextInput>
           </View>
-          {/* <Text style={styles.h2}>TODO Search</Text> */}
-
-          {latestReceipts != null ? (
-            <LastBillsOverview bills={latestReceipts} navigation={navigation} />
-          ) : (
-            <View>
-              <Text>
-                LOL todo here maybe vorschlag zum hinzufügen von einer rechnung?
-              </Text>
-            </View>
-          )}
+            <LastBillsOverview bills={latestReceipts} navigation={navigation} isLoading={loading} />
+          
+          
 
           <CategoryOverview
             categories={["Groceries", "Clothing", "Entertainment"]}
@@ -96,12 +90,6 @@ export default function HomeScreen({ navigation }) {
           />
         </View>
       </ScrollView>
-    {/*   <AddReceiptButton
-        title="+"
-        onPress={() => {
-          navigation.navigate(uploadName);
-        }}
-      /> */}
       <AddReceiptButton
         title="+"
         onPress={handlePresentModalPress}
