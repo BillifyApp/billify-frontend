@@ -6,10 +6,8 @@ import {
   homeName,
   successfullyAddedName,
 } from "../stores/route_names";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/atom/CustomButton";
 import { styles } from "../styles/styles";
-
-const image = require("./../assets/favicon.png");
 
 // @ts-ignore
 function SuccessfullyAddedScreen({ navigation }) {

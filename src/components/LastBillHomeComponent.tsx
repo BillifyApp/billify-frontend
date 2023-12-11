@@ -13,7 +13,7 @@ function LastBillHomeComponent({ receipt }: LastBillHomeComponentProps) {
   const navigation = useNavigation();
 
   useEffect(() => {
-    console.log(receipt);
+    //console.log(receipt);
   }, []);
 
   const processPath = (path: string) => {

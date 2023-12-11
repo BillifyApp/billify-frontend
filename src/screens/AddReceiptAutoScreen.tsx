@@ -21,7 +21,7 @@ import { url } from "../stores/constants";
 import { useAuth } from "../context/AuthContext";
 import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { styles } from "../styles/styles";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/atom/CustomButton";
 import FlexImage from "../components/atom/FlexImage";
 
 interface Item {

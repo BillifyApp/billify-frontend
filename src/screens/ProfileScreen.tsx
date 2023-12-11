@@ -8,7 +8,7 @@ import {
 import * as React from "react";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import { settingsName } from "../stores/route_names";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/atom/CustomButton";
 import { useAuth } from "../context/AuthContext";
 import { styles } from "../styles/styles";
 
@@ -33,15 +33,8 @@ export default function ProfileScreen({ navigation }) {
         >
           My Profile
         </Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate(settingsName)}
-        >
-          <Text>Go to Settings</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={logout}>
-            <Text>Logout</Text>
-        </TouchableOpacity>
+        <CustomButton title="Go to Settings" onPress={() => navigation.navigate(settingsName)}/>
+        <CustomButton title="Logout" onPress={logout}/>
       </View>
     </CustomSafeAreaView>
   );

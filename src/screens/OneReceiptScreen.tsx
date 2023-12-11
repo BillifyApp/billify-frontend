@@ -22,7 +22,7 @@ import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
 import { editReceiptName, homeName } from "../stores/route_names";
 import FlexImage from "../components/atom/FlexImage";
 import { styles } from "../styles/styles";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/atom/CustomButton";
 import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 interface Item {

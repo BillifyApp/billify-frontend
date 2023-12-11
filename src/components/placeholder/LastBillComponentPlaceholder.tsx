@@ -23,7 +23,7 @@ export default function Placeholder() {
   };
   const cards = [];
   for (let i = 0; i < 5; i++) {
-    cards.push(<Animated.View style={[styles.skeleton, { opacity: pulseValue }]} />)
+    cards.push(<Animated.View key={i} style={[styles.skeleton, { opacity: pulseValue }]} />)
   }
   useEffect(() => {
     pulseAnimation();

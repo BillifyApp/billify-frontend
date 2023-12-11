@@ -24,6 +24,7 @@ import {
   homeNavName,
 } from "../stores/route_names";
 import { styles } from "../styles/styles";
+import { COLORS } from "../styles/colors";
 
 //TUT https://blog.logrocket.com/how-to-upload-images-react-native-laravel-api/#setting-up-the-laravel-image-upload-api
 
@@ -180,22 +181,8 @@ function UploadModal({ navigation }) {
         >
           {t("common.add_bill")}
         </Text>
-        <View
-          style={{
-            backgroundColor: "#bbb",
-            height: 3,
-            marginHorizontal: 90,
-            marginBottom: 5,
-          }}
-        ></View>
-        <View
-          style={{
-            backgroundColor: "#ccc",
-            height: 3,
-            marginHorizontal: 110,
-            marginBottom: 20,
-          }}
-        ></View>
+        <Text style={[styles.h3, { textAlign: "center", marginBottom: 30, width: "60%", alignSelf:"center" }]}>
+          {t("common.add_bill_desc")}</Text>
         {selectedImage && isProcessing ? (
           <Text>Processing...</Text>
         ) : (
@@ -232,8 +219,10 @@ function UploadModal({ navigation }) {
               style={{
                 width: "94%",
                 height: 150,
-                backgroundColor: "#F6F6F6",
+                backgroundColor: COLORS.white,
                 borderRadius: 10,
+                borderColor: COLORS.gray_mid,
+                borderWidth: 1,
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -260,12 +249,14 @@ function UploadModal({ navigation }) {
 }
 const modalStyles = StyleSheet.create({
   optionContainer: {
-    backgroundColor: "#F6F6F6",
+    backgroundColor: COLORS.white,
+    borderColor: COLORS.gray_mid,
+    borderWidth: 1,
+    borderRadius: 10,
     height: 150,
     flex: 1,
     marginHorizontal: 10,
     marginVertical: 10,
-    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
   },
