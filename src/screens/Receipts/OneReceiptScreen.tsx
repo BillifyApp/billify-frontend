@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import CustomSafeAreaView from "../../components/CustomSafeAreaView";
+import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import {
   Pressable,
   ScrollView,
@@ -17,12 +17,12 @@ import {
   Dimensions,
 } from "react-native";
 import axios from "axios";
-import { url } from "../../stores/constants";
-import ReceiptItemEntry from "../../components/atom/ReceiptItemEntry";
-import { editReceiptName, homeName } from "../../stores/route_names";
-import FlexImage from "../../components/atom/FlexImage";
-import { styles } from "../../styles/styles";
-import CustomButton from "../../components/CustomButton";
+import { url } from "../stores/constants";
+import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
+import { editReceiptName, homeName } from "../stores/route_names";
+import FlexImage from "../components/atom/FlexImage";
+import { styles } from "../styles/styles";
+import CustomButton from "../components/atom/CustomButton";
 import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 interface Item {
@@ -92,7 +92,7 @@ function AddReceiptAutoScreen({ route, navigation }) {
           onPress={() => navigation.goBack()}
           style={{ marginTop: 60, marginLeft: 10 }}
         >
-          <Image source={require("../../assets/arrow-back.png")}></Image>
+          <Image source={require("../assets/arrow-back.png")}></Image>
         </TouchableOpacity>
 
         <Text style={[styles.h1, { textAlign: "center" }]}>
@@ -182,4 +182,4 @@ function AddReceiptAutoScreen({ route, navigation }) {
   );
 }
 
-export default AddReceiptAutoScreen; //TODO
+export default AddReceiptAutoScreen;

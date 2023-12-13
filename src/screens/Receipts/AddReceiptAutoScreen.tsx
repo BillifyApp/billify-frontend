@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import CustomSafeAreaView from "../../components/CustomSafeAreaView";
+import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import {
   Dimensions,
   Pressable,
@@ -14,15 +14,15 @@ import {
   Text,
   View,
 } from "react-native";
-import ReceiptItemEntry from "../../components/atom/ReceiptItemEntry";
-import { homeName, successfullyAddedName } from "../../stores/route_names";
+import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
+import { homeName, successfullyAddedName } from "../stores/route_names";
 import axios from "axios";
-import { url } from "../../stores/constants";
-import { useAuth } from "../../context/AuthContext";
+import { url } from "../stores/constants";
+import { useAuth } from "../context/AuthContext";
 import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { styles } from "../../styles/styles";
-import CustomButton from "../../components/CustomButton";
-import FlexImage from "../../components/atom/FlexImage";
+import { styles } from "../styles/styles";
+import CustomButton from "../components/atom/CustomButton";
+import FlexImage from "../components/atom/FlexImage";
 
 interface Item {
   quantity: number;

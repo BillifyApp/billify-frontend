@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import { styles } from "../../styles/styles";
 import LastBillHomeComponent from "../LastBillHomeComponent";
 import { allReceiptsName } from "../../stores/route_names";
-import {useNavigation} from "@react-navigation/native";
+import LastBillComponentPlaceholder from "../placeholder/LastBillComponentPlaceholder"
 
 interface bills {
   _id: string;
@@ -24,17 +24,13 @@ interface bills {
 interface LastBillsOverviewProps {
   bills: bills[];
   navigation: any;
+  isLoading: boolean;
 }
 
 const windowWidth = Dimensions.get("window").width;
 
-function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
+function LastBillsOverview({ bills, navigation, isLoading }: LastBillsOverviewProps) {
   const { t } = useTranslation();
-
-  useEffect(() => {
-    //bills.map((b) => console.log(b));
-    //console.log(bills);
-  }, []);
 
   return (
     <View style={{ height: 240 }}>
@@ -61,12 +57,18 @@ function LastBillsOverview({ bills, navigation }: LastBillsOverviewProps) {
             flexDirection: "row",
           }}
         >
-          {bills.map((b, key) => (
-            <LastBillHomeComponent
-              key={key}
-              receipt={b}
-            />
-          ))}
+          {isLoading ?  
+            (<LastBillComponentPlaceholder/>)
+          : 
+            bills.map((b, key) => (
+              <LastBillHomeComponent
+                key={key}
+                receipt={b}
+  
+              />
+            ))
+          }
+          
         </View>
       </ScrollView>
     </View>

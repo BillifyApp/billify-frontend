@@ -1,13 +1,17 @@
 import { Ref, useEffect, useRef, useState } from "react";
 import React, { Text } from "react-native";
 import { SafeAreaView, StyleSheet, TextInput } from "react-native";
-import CustomButton from "../../components/CustomButton";
+import CustomButton from "../../components/atom/CustomButton";
 import { useAuth } from "../../context/AuthContext";
 import isExisting from "../../stores/actions/db.users";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { styles } from "../../styles/styles";
+import { useTranslation } from "react-i18next";
+import CustomInput from "../../components/atom/CustomInput";
 
 function SignInScreen({ navigation }: any) {
+  const { t } = useTranslation();
+
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [firstname, setFirstname] = useState<string>("");
@@ -139,57 +143,57 @@ function SignInScreen({ navigation }: any) {
     <>
       <SafeAreaView
         style={{
-          justifyContent: "center",
+          marginTop: 60,
           alignItems: "center",
           height: "100%",
           backgroundColor: "white",
         }}
       >
-        <Text style={[styles.h1, { marginBottom: 20 }]}>Create Account</Text>
-        <TextInput
-          ref={u}
-          style={styles.input}
+        <Text style={[styles.h1, { marginBottom: 20 }]}>
+          {t("common.create_account")}
+        </Text>
+        <CustomInput
+          innerRef={u}
           value={username}
           onChangeText={setUsername}
-          placeholder="Username"
+          placeholder={t("common.username")}
         />
-        <TextInput
-          ref={e}
-          style={styles.input}
+        <CustomInput
+          innerRef={e}
           value={email}
           onChangeText={setEmail}
-          placeholder="E-Mail"
+          placeholder={t("common.email")}
         />
-        <TextInput
-          ref={f}
-          style={styles.input}
+        <CustomInput
+          innerRef={f}
           value={firstname}
           onChangeText={setFirstname}
-          placeholder="Firstname"
+          placeholder={t("common.firstname")}
         />
-        <TextInput
-          ref={l}
-          style={styles.input}
+        <CustomInput
+          innerRef={l}
           value={lastname}
           onChangeText={setLastname}
-          placeholder="Lastname"
+          placeholder={t("common.lastname")}
         />
-        <TextInput
-          ref={p0}
-          style={styles.input}
+        <CustomInput
+          innerRef={p0}
           value={password}
           onChangeText={setPassword}
-          placeholder="Password"
+          placeholder={t("common.password")}
         />
-        <TextInput
-          ref={p1}
-          style={[styles.input, { marginBottom: 20 }]}
+        <CustomInput
+          innerRef={p1}
           value={passwordRepeat}
           onChangeText={setPasswordRepeat}
-          placeholder="Repeat Password"
+          placeholder={t("common.repeat_password")}
         />
 
-        <CustomButton title="Sign in" width="50%" onPress={validate} />
+        <CustomButton
+          title={t("common.create_account_short")}
+          width="50%"
+          onPress={validate}
+        />
       </SafeAreaView>
     </>
   );
