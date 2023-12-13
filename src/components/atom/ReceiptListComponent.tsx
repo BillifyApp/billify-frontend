@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { oneReceiptName } from "../../stores/route_names";
+import CustomText from "./CustomText";
 
 interface ReceiptListEntry {
   index: number;
@@ -30,9 +31,9 @@ function ReceiptListEntry({
       }
     >
       <View style={styles.container}>
-        <Text>{`${index}.`}</Text>
-        <Text>{name}</Text>
-        <Text>{`${total} €`}</Text>
+        <CustomText>{`${index}.`}</CustomText>
+        <CustomText>{name}</CustomText>
+        <CustomText>{`${total} €`}</CustomText>
       </View>
     </Pressable>
   );

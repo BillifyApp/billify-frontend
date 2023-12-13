@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Text, StyleSheet, Pressable, TouchableOpacity} from 'react-native';
 import { COLORS } from "../../styles/colors";
 
@@ -8,10 +8,33 @@ interface Props {
 }
 
 export default function CustomButton(props: any) {
-    const {onPress, title = 'Save', width, type="primary"} = props;
+    const {onPress, title = 'Save', width, type="primary", style} = props;
+    
+    const customButtonStyle = ()=>{
+      if(type==="primary"){
+        return([styles.primary, {width: width}, style])
+      }else if(type==="secondary"){
+        return([styles.secondary, {width: width}, style])
+      }else if(type==="outline"){
+        return([styles.outline, {width: width}, style])
+      }
+      else return([styles.primary, {width: width}, style])
+    }
+    const customButtonText = ()=>{
+      if(type==="primary"){
+        return(styles.primary_text)
+      }else if(type==="secondary"){
+        return(styles.secondary_text)
+      }else if(type==="outline"){
+        return(styles.outline_text)
+      }
+      else return(styles.primary_text)
+    }
+    let computedButtonStyle = customButtonStyle();
+    let computedButtonText = customButtonText();
     return (
-        <TouchableOpacity style={type==="primary" ? [styles.primary, {width: width}] : [styles.secondary, {width: width}]} onPress={onPress}>
-            <Text style={type==="primary" ? styles.primary_text : styles.secondary_text}>{title}</Text>
+        <TouchableOpacity style={computedButtonStyle} onPress={onPress}>
+            <Text style={computedButtonText}>{title}</Text>
         </TouchableOpacity>
     );
 }
@@ -20,15 +43,16 @@ export const styles = StyleSheet.create({
   
   primary: {
     backgroundColor: COLORS.primary,
-    padding: 15,
-    borderRadius: 25,
+    padding: 17,
+    borderRadius: 30,
     alignItems: "center",
     margin: 5,
   },
+  
   primary_text: {
     color: "#fff",
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold"
   },
   secondary:{
     backgroundColor: "transparent",
@@ -39,8 +63,22 @@ export const styles = StyleSheet.create({
   secondary_text:{
     color: COLORS.black,
     fontSize: 16,
-    fontWeight: "bold",
+    fontFamily: "Poppins-Bold"
+  },
+  outline:{
+    backgroundColor: "transparent",
+    alignItems: "center",
+    padding: 15,
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: COLORS.gray_dark,
+  },
+  outline_text:{
+    color: COLORS.gray_dark,
+    fontSize: 16,
+    fontFamily: "Poppins-Medium"
   }
+
 });
 
 

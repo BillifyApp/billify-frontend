@@ -6,6 +6,8 @@ export default {
   welcome: "Willkommen",
   change_language: "Sprache ändern",
   search: "Suche",
+  next: "Weiter",
+  
 
   // Welcome Screen
   create_account: "Account erstellen",

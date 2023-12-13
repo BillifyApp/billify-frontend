@@ -4,6 +4,7 @@ import FlexImage from "./atom/FlexImage";
 import { useNavigation } from "@react-navigation/native";
 import { addReceiptAutoName, oneReceiptName } from "../stores/route_names";
 import { styles } from "../styles/styles";
+import CustomText from "./atom/CustomText";
 
 interface LastBillHomeComponentProps {
   receipt: any;
@@ -31,9 +32,9 @@ function LastBillHomeComponent({ receipt }: LastBillHomeComponentProps) {
       }}
     >
       <View style={localStyles.container}>
-        <Text style={styles.h2}>€ {receipt.total}</Text>
-        <Text>{receipt.comp_name}</Text>
-        {receipt.items && <Text>{receipt.items.length} items</Text>}
+        <CustomText style={styles.h2}>€ {receipt.total}</CustomText>
+        <CustomText>{receipt.comp_name}</CustomText>
+        {receipt.items && <CustomText>{receipt.items.length} items</CustomText>}
       </View>
     </Pressable>
   );

@@ -5,7 +5,9 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  Image,
   View,
+  Pressable,
 } from "react-native";
 import * as React from "react";
 import { useState } from "react";
@@ -17,6 +19,7 @@ import i18next from "i18next";
 import { styles } from "../../styles/styles";
 import { COLORS } from "../../styles/colors";
 import CustomInput from "../../components/atom/CustomInput";
+import PasswordInput from "../../components/atom/PasswordInput";
 
 function LoginScreen({ navigation }: any) {
   const { t } = useTranslation();
@@ -58,12 +61,19 @@ function LoginScreen({ navigation }: any) {
           onChangeText={setUsername}
           placeholder={t("common.username") + "/" + t("common.email")}
         />
-        <CustomInput
+        <PasswordInput
           value={password}
           onChangeText={setPassword}
           placeholder={t("common.password")}
-          secureTextEntry={true}/>
-        <Text style={{ textAlign: "right", width: "75%", marginBottom: 40 }}>
+        />
+        <Text
+          style={{
+            textAlign: "right",
+            width: "75%",
+            marginBottom: 40,
+            fontFamily: "Poppins-Regular",
+          }}
+        >
           {t("common.forgot_password")}
         </Text>
         <CustomButton

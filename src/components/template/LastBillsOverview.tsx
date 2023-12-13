@@ -33,8 +33,8 @@ function LastBillsOverview({ bills, navigation, isLoading }: LastBillsOverviewPr
   const { t } = useTranslation();
 
   return (
-    <View style={{ height: 240 }}>
-      <View style={styles.headingMargin}>
+    <View style={{ height: 250 }}>
+      <View style={styles.subHeadingMargin}>
         <Text style={[styles.h2 ]}>
           {t("common.last_purchases")}
         </Text>
@@ -43,7 +43,7 @@ function LastBillsOverview({ bills, navigation, isLoading }: LastBillsOverviewPr
             navigation.navigate(allReceiptsName);
           }}
         >
-          <Text>{t("common.show_all")}</Text>
+          <Text style={styles.p}>{t("common.show_all")}</Text>
         </Pressable>
       </View>
 

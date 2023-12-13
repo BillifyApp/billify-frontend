@@ -18,6 +18,7 @@ import SignInScreen from "./SignInScreen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { COLORS } from "../../styles/colors";
 import CustomButton from "../../components/atom/CustomButton";
+import CustomText from "../../components/atom/CustomText";
 
 function WelcomeScreen({ navigation }: any) {
   const { t } = useTranslation();
@@ -44,9 +45,9 @@ function WelcomeScreen({ navigation }: any) {
               }}
             >
               <Image source={require("../../assets/logoSmall.png")} />
-              <Text style={[styles.h1, { marginVertical: 180, paddingBottom: 50, width: "50%", textAlign: "center" }]}>
+              <CustomText style={[styles.h1, { marginVertical: 180, paddingBottom: 50, width: "50%", textAlign: "center" }]}>
                 {t("common.welcome_screen_title")}
-              </Text>
+              </CustomText>
               <View style={{ width: "80%" }}>
                 <CustomButton
                   title={t("common.create_account")}

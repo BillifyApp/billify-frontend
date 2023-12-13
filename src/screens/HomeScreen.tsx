@@ -29,6 +29,7 @@ import CustomInput from "../components/atom/CustomInput";
 import { COLORS } from "../styles/colors";
 import { BlurView } from "expo-blur";
 import FadeView from "../components/atom/FadeView";
+import CustomText from "../components/atom/CustomText";
 
 // @ts-ignore
 export default function HomeScreen({ navigation }) {
@@ -84,10 +85,10 @@ export default function HomeScreen({ navigation }) {
       <BottomSheetModalProvider>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ backgroundColor: "white" }}>
-            <Text style={[styles.h1, homeStyles.header]}>
+            <CustomText style={[styles.h1, homeStyles.header]}>
               {t("common.welcome")},{" "}
               {authState?.firstname ? authState.firstname : authState?.username}
-            </Text>
+            </CustomText>
             <View style={homeStyles.searchContainer}>
               <CustomInput
                 placeholder={t("common.search")}
@@ -141,7 +142,7 @@ export default function HomeScreen({ navigation }) {
   );
 }
 const homeStyles = StyleSheet.create({
-  header: { marginHorizontal: 15, marginTop: 20, marginBottom: 10 },
+  header: { marginHorizontal: 15, marginTop: 40, marginBottom: 10 },
   searchContainer: { justifyContent: "center", alignItems: "center" },
   absolute: {
     transition: "opacity 5s ease",

@@ -19,6 +19,8 @@ function CustomSafeAreaView({children}) {
                     paddingBottom: insets.bottom,
                     paddingLeft: insets.left,
                     paddingRight: insets.right,
+
+                    backgroundColor: "#fff",
                 }}>
                 {children}
             </View>

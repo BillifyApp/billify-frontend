@@ -6,6 +6,7 @@ export default {
     welcome: "Welcome",
     change_language: "Change Language",
     search: "Search",
+    next: "Next",
   
     // Welcome Screen
     create_account: "Create Account",

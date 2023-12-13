@@ -6,6 +6,7 @@ import {url} from "../../stores/constants";
 import ShowAllAtom from "../atom/ShowAllAtom";
 import {groupName} from "../../stores/route_names";
 import {styles} from "../../styles/styles";
+import CustomText from '../atom/CustomText';
 
 interface GroupOverviewProps {
     groups: any[];
@@ -17,8 +18,8 @@ function GroupOverview({groups}: GroupOverviewProps) {
 
     return (
         <View>
-            <View style={styles.headingMargin}>
-            <Text style={styles.h2}>{t('common.groups.many')}</Text>
+            <View style={styles.subHeadingMargin}>
+            <CustomText style={styles.h2}>{t('common.groups.many')}</CustomText>
             <ShowAllAtom routeName={groupName}></ShowAllAtom>
             </View>
             <View style={styles.groupOverview}>

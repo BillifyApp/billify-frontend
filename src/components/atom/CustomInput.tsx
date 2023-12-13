@@ -33,5 +33,6 @@ export const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
     margin: 5,
+    fontFamily: "Poppins-Medium"
   },
 });
