@@ -1,5 +1,4 @@
 import {
-  SafeAreaView,
   Text,
   TouchableOpacity,
   View,
@@ -19,6 +18,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { COLORS } from "../../styles/colors";
 import CustomButton from "../../components/atom/CustomButton";
 import CustomText from "../../components/atom/CustomText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 function WelcomeScreen({ navigation }: any) {
   const { t } = useTranslation();
