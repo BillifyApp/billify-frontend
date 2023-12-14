@@ -7,6 +7,8 @@ export default {
   change_language: "Sprache ändern",
   search: "Suche",
   next: "Weiter",
+  create: "Erstellen",
+  back: "Zurück",
   
 
   // Welcome Screen

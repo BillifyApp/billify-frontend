@@ -7,6 +7,8 @@ export default {
     change_language: "Change Language",
     search: "Search",
     next: "Next",
+    create: "Create",
+    back: "Back",
   
     // Welcome Screen
     create_account: "Create Account",

@@ -6,4 +6,6 @@ export default {
     create_group_heading: "Neue Gruppe erstellen",
     choose_name: "Wähle einen Namen aus...",
     group_name: "Gruppenname",
+
+    select_group_icon: "Wähle ein passendes Bild aus..."
 }

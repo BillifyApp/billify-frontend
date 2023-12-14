@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   },
   
   primary_text: {
-    color: "#fff",
+    color: COLORS.white,
     fontSize: 16,
     fontFamily: "Poppins-Bold"
   },
@@ -68,13 +68,14 @@ export const styles = StyleSheet.create({
   outline:{
     backgroundColor: "transparent",
     alignItems: "center",
-    padding: 15,
+    padding: 17,
+    margin: 5,
     borderWidth: 1,
     borderRadius: 30,
-    borderColor: COLORS.gray_dark,
+    borderColor: COLORS.gray_darker,
   },
   outline_text:{
-    color: COLORS.gray_dark,
+    color: COLORS.gray_darker,
     fontSize: 16,
     fontFamily: "Poppins-Medium"
   }
