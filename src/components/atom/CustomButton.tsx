@@ -1,11 +1,5 @@
-import React, { useEffect } from 'react';
-import {Text, StyleSheet, Pressable, TouchableOpacity} from 'react-native';
+import {Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { COLORS } from "../../styles/colors";
-
-interface Props {
-    onPress: any,
-    title: string
-}
 
 export default function CustomButton(props: any) {
     const {onPress, title = 'Save', width, type="primary", style} = props;

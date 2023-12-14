@@ -10,15 +10,11 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 //Screens
 import SettingsScreen from "../screens/SettingsScreen";
-import LoginScreen from "../screens/Login&SignIn/LoginScreen";
-import SignInScreen from "../screens/Login&SignIn/SignInScreen";
 import LoginContainer from "../navigation/LoginContainer";
-import UploadNavigator from "../navigation/UploadNavigator";
 import UploadScreen from "../screens/UploadScreen";
 import CreateGroupNavigation from "../navigation/CreateGroupNavigation";
-import { PortalProvider } from "@gorhom/portal";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const Stack = createNativeStackNavigator();
 

@@ -1,16 +1,7 @@
-import {
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-  StyleSheet,
-  Animated,
-} from "react-native";
+import { ScrollView, View, StyleSheet } from "react-native";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import CustomButton from "../components/atom/CustomButton";
 import { useAuth } from "../context/AuthContext";
-import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import { useTranslation } from "react-i18next";
 import CategoryOverview from "../components/template/CategoryOverview";
 import GroupOverview from "../components/template/GroupOverview";
@@ -20,10 +11,7 @@ import { url } from "../stores/constants";
 import LastBillsOverview from "../components/template/LastBillsOverview";
 import { useIsFocused } from "@react-navigation/native";
 import AddReceiptButton from "../components/atom/AddReceiptButton";
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import UploadModal from "./UploadModal";
 import CustomInput from "../components/atom/CustomInput";
 import { COLORS } from "../styles/colors";
@@ -83,60 +71,59 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ backgroundColor: "white" }}>
-            <CustomText style={[styles.h1, homeStyles.header]}>
-              {t("common.welcome")},{" "}
-              {authState?.firstname ? authState.firstname : authState?.username}
-            </CustomText>
-            <View style={homeStyles.searchContainer}>
-              <CustomInput
-                placeholder={t("common.search")}
-                style={{ width: "90%" }}
-              />
-            </View>
-            <LastBillsOverview
-              bills={latestReceipts}
-              navigation={navigation}
-              isLoading={loading}
-            />
-
-            <CategoryOverview
-              categories={["Groceries", "Clothing", "Entertainment"]}
-            />
-            <GroupOverview
-              groups={[
-                { name: "Eine Testgruppe" },
-                { name: "Zweite Testgruppe" },
-                { name: "Dritte Testgruppe" },
-                { name: "Vierte Testgruppe" },
-              ]}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ backgroundColor: "white" }}>
+          <CustomText style={[styles.h1, homeStyles.header]}>
+            {t("common.welcome")},{" "}
+            {authState?.firstname ? authState.firstname : authState?.username}
+          </CustomText>
+          <View style={homeStyles.searchContainer}>
+            <CustomInput
+              placeholder={t("common.search")}
+              style={{ width: "90%" }}
             />
           </View>
-        </ScrollView>
-        <AddReceiptButton title="+" onPress={handlePresentModalPress} />
-          <BottomSheetModal
-            ref={bottomSheetModalRef}
-            index={1}
-            snapPoints={snapPoints}
-            onChange={handleSheetChanges}
-            backgroundStyle={{ backgroundColor: COLORS.gray_light }}
-          >
-            <UploadModal navigation={navigation} />
-          </BottomSheetModal>
-        {modalActive && (
-          <FadeView style={homeStyles.absolute} duration={500}>
-            <BlurView
-              style={[
-                modalActive ? homeStyles.visible : homeStyles.hidden,
-                homeStyles.absolute,
-              ]}
-              intensity={10}
-              tint="light"
-            />
-          </FadeView>
-        )}
+          <LastBillsOverview
+            bills={latestReceipts}
+            navigation={navigation}
+            isLoading={loading}
+          />
 
+          <CategoryOverview
+            categories={["Groceries", "Clothing", "Entertainment"]}
+          />
+          <GroupOverview
+            groups={[
+              { name: "Eine Testgruppe" },
+              { name: "Zweite Testgruppe" },
+              { name: "Dritte Testgruppe" },
+              { name: "Vierte Testgruppe" },
+            ]}
+          />
+        </View>
+      </ScrollView>
+      <AddReceiptButton title="+" onPress={handlePresentModalPress} />
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={1}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        backgroundStyle={{ backgroundColor: COLORS.gray_light }}
+      >
+        <UploadModal navigation={navigation} />
+      </BottomSheetModal>
+      {modalActive && (
+        <FadeView style={homeStyles.absolute} duration={500}>
+          <BlurView
+            style={[
+              modalActive ? homeStyles.visible : homeStyles.hidden,
+              homeStyles.absolute,
+            ]}
+            intensity={10}
+            tint="light"
+          />
+        </FadeView>
+      )}
     </SafeAreaView>
   );
 }

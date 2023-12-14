@@ -1,16 +1,11 @@
-import {
-  Button,
-  SafeAreaView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { View } from "react-native";
 import * as React from "react";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import { settingsName } from "../stores/route_names";
 import CustomButton from "../components/atom/CustomButton";
 import { useAuth } from "../context/AuthContext";
 import { styles } from "../styles/styles";
+import CustomText from "../components/atom/CustomText";
 
 // @ts-ignore
 export default function ProfileScreen({ navigation }) {
@@ -25,16 +20,19 @@ export default function ProfileScreen({ navigation }) {
   return (
     <CustomSafeAreaView>
       <View style={{ backgroundColor: "#fff", height: "100%" }}>
-        <Text
+        <CustomText
           style={[
             styles.h1,
             { marginHorizontal: 15, marginTop: 20, marginBottom: 10 },
           ]}
         >
           My Profile
-        </Text>
-        <CustomButton title="Go to Settings" onPress={() => navigation.navigate(settingsName)}/>
-        <CustomButton title="Logout" onPress={logout}/>
+        </CustomText>
+        <CustomButton
+          title="Go to Settings"
+          onPress={() => navigation.navigate(settingsName)}
+        />
+        <CustomButton title="Logout" onPress={logout} />
       </View>
     </CustomSafeAreaView>
   );

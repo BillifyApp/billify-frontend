@@ -1,12 +1,11 @@
-import { Button, StyleSheet, Text, View } from "react-native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StyleSheet } from "react-native";
 import * as React from "react";
 import MainContainer from "./src/containers/MainContainer";
 import { AuthProvider } from "./src/context/AuthContext";
 
 // import i18n (needs to be bundled ;))
 import "./i18n";
-import * as Font from 'expo-font';
+import * as Font from "expo-font";
 import { customFonts } from "./src/styles/fonts";
 
 export default class App extends React.Component {

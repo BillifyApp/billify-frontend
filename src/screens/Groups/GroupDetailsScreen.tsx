@@ -1,4 +1,4 @@
-import { View, Image } from "react-native";
+import { Image } from "react-native";
 import { styles } from "../../styles/styles";
 import CustomText from "../../components/atom/CustomText";
 import { useTranslation } from "react-i18next";

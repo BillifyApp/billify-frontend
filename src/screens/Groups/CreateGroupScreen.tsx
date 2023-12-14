@@ -1,5 +1,4 @@
 import {
-  Text,
   View,
   Image,
   TouchableOpacity,
@@ -7,11 +6,9 @@ import {
   DimensionValue,
 } from "react-native";
 import * as React from "react";
-import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { useTranslation } from "react-i18next";
 import { styles } from "../../styles/styles";
 import CustomButton from "../../components/atom/CustomButton";
-import CustomInput from "../../components/atom/CustomInput";
 import CustomText from "../../components/atom/CustomText";
 import { COLORS } from "../../styles/colors";
 import SelectGroupName from "../../components/template/groups/SelectGroupName";

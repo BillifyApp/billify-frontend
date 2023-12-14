@@ -1,6 +1,5 @@
 import React from 'react';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import GroupScreen from '../screens/Groups/GroupScreen';
 import CreateGroupScreen from '../screens/Groups/CreateGroupScreen';
 import GroupDetailsScreen from '../screens/Groups/GroupDetailsScreen';
 
