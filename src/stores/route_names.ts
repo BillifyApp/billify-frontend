@@ -1,6 +1,6 @@
 //region ----------------------------- BOTTOM BAR NAVIGATION -----------------------------
 export const searchName = "Search"
-export const groupName = "Group"
+export const groupName = "GroupScreen"
 export const homeName = "Home";
 export const homeNavName = "HomeNav";
 export const notificationName = "Notification"

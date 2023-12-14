@@ -10,7 +10,7 @@ function CreateGroupNavigation() {
     return (
         <>
             <CreateGroupStack.Navigator screenOptions={{headerShown: false,  contentStyle: { backgroundColor: '#fff' }}}>
-                <CreateGroupStack.Screen name="CreateGroupScreen" component={CreateGroupScreen}/>
+                <CreateGroupStack.Screen name="CreateGroup" component={CreateGroupScreen}/>
                 <CreateGroupStack.Screen name="GroupDetails" component={GroupDetailsScreen}/>
             </CreateGroupStack.Navigator>
         </>

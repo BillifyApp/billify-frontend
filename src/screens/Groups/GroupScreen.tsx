@@ -1,24 +1,42 @@
-import { Text, View, Image } from "react-native";
+import { Text, View, Image, ScrollView } from "react-native";
 import * as React from "react";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { useTranslation } from "react-i18next";
 import { styles } from "../../styles/styles";
 import CustomButton from "../../components/atom/CustomButton";
+import axios from "axios";
+import { url } from "../../stores/constants";
+import { useAuth } from "../../context/AuthContext";
+import CustomInput from "../../components/atom/CustomInput";
+import GroupScreenItem from "../../components/template/groups/GroupScreenItem";
+import { Group } from "../../stores/types";
 
 export default function GroupScreen({ navigation }: any) {
   const { t } = useTranslation();
-
-  //TODO: get groups from backend
-  /* const groups = [
-    { name: "Eine Testgruppe" },
-    { name: "Zweite Testgruppe" },
-    { name: "Dritte Testgruppe" },
-    { name: "Vierte Testgruppe" },
-  ]; */
-  const groups = null;
+  const auth = useAuth().authState;
+  const [groups, setGroups] = React.useState<Group[] | null>(null);
+  async function getGroups() {
+    try {
+      const id = auth?.id;
+      const result = await axios.get(`${url}/groups/find/${id}`);
+      console.log(result.data);
+      setGroups(result.data);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  React.useEffect(() => {
+    getGroups();
+  }, []);
   const createGroup = () => {
-    navigation.navigate("CreateGroup");
+    navigation.navigate("Group");
   };
+  function openGroup(group: Group) {
+    navigation.navigate("Group", {
+      screen: "GroupDetails",
+      params: { group: group },
+    });
+  }
   return (
     <CustomSafeAreaView>
       <View style={styles.headingMargin}>
@@ -51,9 +69,39 @@ export default function GroupScreen({ navigation }: any) {
           </View>
         </View>
       ) : (
-        <>
-          <Text>Test</Text>
-        </>
+        <View>
+          <CustomInput
+            style={{ marginBottom: 20 }}
+            placeholder={t("groups.searchbar")}
+          />
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+          >
+            <View
+              style={{
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              {groups.map((group, index) => {
+                return (
+                  <GroupScreenItem
+                    key={index}
+                    group={group}
+                    onPress={() => {
+                      openGroup(group);
+                    }}
+                  />
+                );
+              })}
+              <CustomButton
+                title={t("groups.create_group")}
+                width="50%"
+                onPress={createGroup}
+              />
+            </View>
+          </ScrollView>
+        </View>
       )}
     </CustomSafeAreaView>
   );

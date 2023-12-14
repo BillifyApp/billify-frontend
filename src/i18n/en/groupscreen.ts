@@ -9,4 +9,11 @@ export default {
     select_group_icon: "Select a group image...",
 
     group_overview: "Group overview",
+
+    searchbar: "Search for e.g. Summer Holiday",
+
+    members: "Members",
+
+    copy_code: "Copy code",
+    share_link: "Share link",
 }
