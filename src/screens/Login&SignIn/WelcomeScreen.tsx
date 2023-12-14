@@ -34,8 +34,6 @@ function WelcomeScreen({ navigation }: any) {
   return (
     <>
       <SafeAreaView>
-        <GestureHandlerRootView>
-          <BottomSheetModalProvider>
             <View
               style={{
                 backgroundColor: COLORS.primary_light,
@@ -76,8 +74,6 @@ function WelcomeScreen({ navigation }: any) {
               {activeModal === "login" && <LoginScreen />}
               {activeModal === "signin" && <SignInScreen />}
             </BottomSheetModal>
-          </BottomSheetModalProvider>
-        </GestureHandlerRootView>
       </SafeAreaView>
     </>
   );

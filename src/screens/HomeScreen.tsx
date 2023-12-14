@@ -30,6 +30,7 @@ import { COLORS } from "../styles/colors";
 import { BlurView } from "expo-blur";
 import FadeView from "../components/atom/FadeView";
 import CustomText from "../components/atom/CustomText";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 // @ts-ignore
 export default function HomeScreen({ navigation }) {
@@ -69,20 +70,19 @@ export default function HomeScreen({ navigation }) {
   }, []);
   const [modalActive, setModalActive] = useState(false);
   const handleSheetChanges = useCallback((index: number) => {
-/*     if (index === 1) {
+    /*     if (index === 1) {
       setModalActive(true);
     } else {
       setModalActive(false);
     } */
-    if(index===-1){
+    if (index === -1) {
       setModalActive(false);
     }
   }, []);
   const snapPoints = useMemo(() => ["25%", "66%"], []);
 
   return (
-    <CustomSafeAreaView>
-      <BottomSheetModalProvider>
+    <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{ backgroundColor: "white" }}>
             <CustomText style={[styles.h1, homeStyles.header]}>
@@ -115,18 +115,17 @@ export default function HomeScreen({ navigation }) {
           </View>
         </ScrollView>
         <AddReceiptButton title="+" onPress={handlePresentModalPress} />
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-          backgroundStyle={{ backgroundColor: COLORS.gray_light }}
-        >
-          <UploadModal navigation={navigation} />
-        </BottomSheetModal>
-
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            index={1}
+            snapPoints={snapPoints}
+            onChange={handleSheetChanges}
+            backgroundStyle={{ backgroundColor: COLORS.gray_light }}
+          >
+            <UploadModal navigation={navigation} />
+          </BottomSheetModal>
         {modalActive && (
-          <FadeView style={homeStyles.absolute} duration={1000}>
+          <FadeView style={homeStyles.absolute} duration={500}>
             <BlurView
               style={[
                 modalActive ? homeStyles.visible : homeStyles.hidden,
@@ -137,8 +136,8 @@ export default function HomeScreen({ navigation }) {
             />
           </FadeView>
         )}
-      </BottomSheetModalProvider>
-    </CustomSafeAreaView>
+
+    </SafeAreaView>
   );
 }
 const homeStyles = StyleSheet.create({
