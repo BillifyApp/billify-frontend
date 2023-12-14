@@ -15,6 +15,7 @@ import SignInScreen from "../screens/Login&SignIn/SignInScreen";
 import LoginContainer from "../navigation/LoginContainer";
 import UploadNavigator from "../navigation/UploadNavigator";
 import UploadScreen from "../screens/UploadScreen";
+import CreateGroupNavigation from '../navigation/CreateGroupNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +28,7 @@ export default function MainContainer() {
                     <>
                         <Stack.Navigator screenOptions={{headerShown: false}}>
                             <Stack.Screen name="BottomBar" component={BottomBarNavigation}/>
+                            <Stack.Screen name="CreateGroup" component={CreateGroupNavigation}/>
                             <Stack.Screen name="Settings" component={SettingsScreen}/>
                             <Stack.Screen name="Upload" component={UploadScreen}/>
                         </Stack.Navigator>
