@@ -111,8 +111,13 @@ export default function CreateGroupScreen({ navigation }: any) {
               type={groupName.length > 0 ? "primary" : "outline"}
               style={{ width: "40%", marginTop: 20, marginRight: 15 }}
               onPress={() => {
-                handleProgressBar(groupName, "75%");
-                setActiveStep("icon");
+                if(groupName.length > 0){
+                  handleProgressBar(groupName, "75%");
+                  setActiveStep("icon");
+                }
+                else{
+                  alert("todo: show error message");
+                }
               }}
             />
           )}
@@ -132,7 +137,12 @@ export default function CreateGroupScreen({ navigation }: any) {
                 type={groupIcon.length > 0 ? "primary" : "outline"}
                 style={{ width: "40%", marginTop: 20, marginRight: 20 }}
                 onPress={() => {
-                  createGroup();
+                  if(groupIcon.length > 0){
+                    createGroup();
+                  }
+                 else{
+                    alert("todo: show error message");
+                 }
                 }}
               />
             </View>

@@ -7,28 +7,20 @@ import CustomText from "../atom/CustomText";
 
 interface GroupOverviewComponentProps {
   group_name: string;
-  images: string[];
+  image: string;
 }
 
 function GroupOverviewComponent({
   group_name,
-  images,
+  image,
 }: GroupOverviewComponentProps) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={()=>{
+      console.log("todo redirect to group details")
+    }}>
       <View style={styles.groupOverviewItem}>
-        <View style={{flexDirection: "row"}}>
-          {images.map((path, key) => (
-            <UserIconImage
-              key={key}
-              path={path}
-              width={30}
-              height={30}
-              offset={key * 10}
-            ></UserIconImage>
-          ))}
-        </View>
-        <CustomText style={{flex: 2}}>{group_name}</CustomText>
+          <Image source={{uri: image}} style={{width:50, height:50, borderRadius: 25}}/>
+        <CustomText style={{flex: 2, marginLeft: 20}}>{group_name}</CustomText>
         <Image source={require("../../assets/arrow-forward.png")}/>
       </View>
     </TouchableOpacity>

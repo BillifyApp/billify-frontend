@@ -22,4 +22,14 @@ export const popup = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  bottomView:{
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: "flex-end",
+    position: 'absolute',
+    bottom: 100,
+    right: 50,
+  
+  }
 });

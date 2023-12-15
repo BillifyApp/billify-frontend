@@ -7,9 +7,10 @@ import ShowAllAtom from "../atom/ShowAllAtom";
 import {groupName} from "../../stores/route_names";
 import {styles} from "../../styles/styles";
 import CustomText from '../atom/CustomText';
+import { Group } from '../../stores/types';
 
 interface GroupOverviewProps {
-    groups: any[];
+    groups: Group[] | any;
 }
 
 function GroupOverview({groups}: GroupOverviewProps) {
@@ -23,10 +24,10 @@ function GroupOverview({groups}: GroupOverviewProps) {
             <ShowAllAtom routeName={groupName}></ShowAllAtom>
             </View>
             <View style={styles.groupOverview}>
-            {groups.map((g, key) => <GroupOverviewComponent
+            {groups.map((g: Group, key: number) => <GroupOverviewComponent
                 key={key}
                 group_name={g.name}
-                images={[`uploads/users/user.jpg`, `uploads/users/user.jpg`, `uploads/users/user.jpg`]}/>)}
+                image={g.icon}/>)}
        </View>
         </View>
     );
