@@ -2,19 +2,20 @@ import React from 'react';
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import CreateGroupScreen from '../screens/Groups/CreateGroupScreen';
 import GroupDetailsScreen from '../screens/Groups/GroupDetailsScreen';
+import GroupScreen from '../screens/Groups/GroupScreen';
 
 
-const CreateGroupStack = createNativeStackNavigator();
+const GroupStack = createNativeStackNavigator();
 
-function CreateGroupNavigation() {
+function GroupNavigation() {
     return (
         <>
-            <CreateGroupStack.Navigator screenOptions={{headerShown: false,  contentStyle: { backgroundColor: '#fff' }}}>
-                <CreateGroupStack.Screen name="CreateGroup" component={CreateGroupScreen}/>
-                <CreateGroupStack.Screen name="GroupDetails" component={GroupDetailsScreen}/>
-            </CreateGroupStack.Navigator>
+            <GroupStack.Navigator screenOptions={{headerShown: false,  contentStyle: { backgroundColor: '#fff' }}}>
+                <GroupStack.Screen name="GroupScreen" component={GroupScreen}/>
+                <GroupStack.Screen name="GroupDetails" component={GroupDetailsScreen}/>
+            </GroupStack.Navigator>
         </>
     );
 }
 
-export default CreateGroupNavigation;
+export default GroupNavigation;

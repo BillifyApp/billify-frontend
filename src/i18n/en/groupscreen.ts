@@ -16,4 +16,7 @@ export default {
 
     copy_code: "Copy code",
     share_link: "Share link",
+    invite_users: "Invite users",
+
+    delete: "Delete group"
 }

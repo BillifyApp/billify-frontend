@@ -15,6 +15,7 @@ import {
   searchName,
 } from "../stores/route_names";
 import HomeNavigation from "./HomeNavigation";
+import GroupNavigation from "./GroupNavigation";
 
 //Icons
 const iconHome_outline = require("../assets/bottom-bar-nav/home.png");
@@ -81,7 +82,7 @@ export default function BottomBarNavigation() {
           );
         },
       }}></Tab.Screen>
-      <Tab.Screen name={groupName} component={GroupScreen}
+      <Tab.Screen name={groupName} component={GroupNavigation}
        options={{
         unmountOnBlur: true,
         tabBarIcon: ({ size, focused, color }) => {

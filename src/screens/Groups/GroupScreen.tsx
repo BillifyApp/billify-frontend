@@ -1,6 +1,5 @@
 import { Text, View, Image, ScrollView } from "react-native";
 import * as React from "react";
-import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { useTranslation } from "react-i18next";
 import { styles } from "../../styles/styles";
 import CustomButton from "../../components/atom/CustomButton";
@@ -10,6 +9,8 @@ import { useAuth } from "../../context/AuthContext";
 import CustomInput from "../../components/atom/CustomInput";
 import GroupScreenItem from "../../components/template/groups/GroupScreenItem";
 import { Group } from "../../stores/types";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function GroupScreen({ navigation }: any) {
   const { t } = useTranslation();
@@ -25,25 +26,25 @@ export default function GroupScreen({ navigation }: any) {
       console.log(e);
     }
   }
-  React.useEffect(() => {
-    getGroups();
-  }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getGroups();
+    }, [])
+  );
   const createGroup = () => {
-    navigation.navigate("Group");
+    navigation.navigate("CreateGroup");
   };
   function openGroup(group: Group) {
-    navigation.navigate("Group", {
-      screen: "GroupDetails",
-      params: { group: group },
-    });
+    navigation.navigate("GroupDetails", { group: group });
   }
   return (
-    <CustomSafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor:"white"}}>
       <View style={styles.headingMargin}>
         <Text style={styles.h1}>{t("common.groups.many")}</Text>
       </View>
       {!groups ? (
-        <View style={{ justifyContent: "center", height: "90%" }}>
+        <View style={{ justifyContent: "center", height: "90%", flex: 1 }}>
           <View
             style={[
               styles.container,
@@ -69,13 +70,16 @@ export default function GroupScreen({ navigation }: any) {
           </View>
         </View>
       ) : (
-        <View>
+        <View style={{flex: 1}}>
+          <View style={{justifyContent:"center", alignItems:"center"}}>
           <CustomInput
-            style={{ marginBottom: 20 }}
+            style={{ marginBottom: 20, width:"90%" }}
             placeholder={t("groups.searchbar")}
           />
+          </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
+            style={{width:"100%", height:"100%"}}
           >
             <View
               style={{
@@ -103,6 +107,6 @@ export default function GroupScreen({ navigation }: any) {
           </ScrollView>
         </View>
       )}
-    </CustomSafeAreaView>
+    </SafeAreaView>
   );
 }

@@ -1,5 +1,5 @@
 export type Group = {
-    id: string;
+    _id: string;
     name: string;
     owner: string;
     users: string[];

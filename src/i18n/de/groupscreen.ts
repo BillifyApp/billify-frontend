@@ -15,4 +15,7 @@ export default {
 
     copy_code: "Code kopieren",
     share_link: "Link teilen",
+    invite_users: "Benutzer:innen einladen",
+
+    delete: "Gruppe löschen"
 }
