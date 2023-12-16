@@ -5,11 +5,11 @@ import { blur } from "../../styles/blur";
 import CustomText from "../../components/atom/CustomText";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity } from "react-native";
-import { Group } from "../../stores/types";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { Group, Receipt } from "../../stores/types";
+import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { COLORS } from "../../styles/colors";
 import CustomButton from "../../components/atom/CustomButton";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 import { url } from "../../stores/constants";
 import AddReceiptButton from "../../components/atom/AddReceiptButton";
@@ -29,6 +29,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
   //typescript is eh cool owa monchmoi bin i froh das mei laptop nu ned ausm fenster gflogn is
   const route = useRoute<RouteProp<ParamList, "Group">>();
   const { group } = route.params;
+  const [receipts, setReceipts] = useState<Receipt[] | null>(null);
 
   async function deleteGroup() {
     try {
@@ -41,6 +42,21 @@ export default function GroupDetailsScreen({ navigation }: any) {
       console.log(e);
     }
   }
+  async function getReceipts(){
+    try{
+      const result = await axios.post(`${url}/receipts/findManyById`,{
+        receipt_id: group.receipts
+      })
+      setReceipts(result.data)
+    }catch(e){
+      console.log(e)
+    }
+  }
+  useFocusEffect(
+    useCallback(() => {
+      getReceipts()
+    }, [])
+  )
   return (
     <>
       <TouchableOpacity
@@ -130,7 +146,13 @@ export default function GroupDetailsScreen({ navigation }: any) {
             </Modal>
           </View>
           {group.receipts.length > 0 ? (
-            <></>
+            <View>
+              {receipts && receipts.map((receipt: Receipt, key: number) => {
+                return(
+                  <CustomText key={key} style={styles.pMedium}>{receipt.comp_name + ' ' + receipt.total + ' €'}</CustomText>
+                )
+              })}
+            </View>
           ) : (
             <View style={{ alignItems: "center", marginTop: 150 }}>
               <CustomText style={[styles.pMedium, { marginBottom: 20 }]}>
