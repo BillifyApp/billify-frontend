@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 50,
-        lineHeight: 58,
-        fontWeight: "200",
+        lineHeight: 69,
+        fontFamily: 'Poppins-Light',
         color: 'white',
     },
 });

@@ -12,11 +12,14 @@ import GroupOverviewComponentPlaceholder from "../placeholder/GroupOverviewCompo
 interface GroupOverviewProps {
   groups: Group[] | any;
   isLoading: boolean;
+  navigation: any;
 }
 
-function GroupOverview({ groups, isLoading }: GroupOverviewProps) {
+function GroupOverview({ groups, isLoading, navigation }: GroupOverviewProps) {
   const { t } = useTranslation();
-
+  function openGroup(group: Group) {
+    navigation.navigate('Groups', { screen: 'GroupDetails', params: { group: group } });
+  }
   return (
     <View>
       <View style={styles.subHeadingMargin}>
@@ -35,6 +38,7 @@ function GroupOverview({ groups, isLoading }: GroupOverviewProps) {
                 index={key}
                   group_name={g.name}
                   image={g.icon}
+                  onPress={() => openGroup(g)}
                 />);
               }
             })}

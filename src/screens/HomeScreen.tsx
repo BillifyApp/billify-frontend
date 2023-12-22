@@ -1,4 +1,4 @@
-import { ScrollView, View, StyleSheet, Touchable } from "react-native";
+import { ScrollView, View, StyleSheet, Touchable, Dimensions } from "react-native";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -31,6 +31,8 @@ export default function HomeScreen({ navigation }) {
   const [latestReceipts, setLatestReceipts] = useState<any | null>(null);
   const [latestGroups, setLatestGroups] = useState<Group[] | null>(null);
 
+
+  let ScreenHeight = Dimensions.get("window").height;
   // check if screen is focused
   const isFocused = useIsFocused();
 
@@ -45,12 +47,12 @@ export default function HomeScreen({ navigation }) {
       const result = await axios.get(
         `${url}/groups/find/lastFive/${authState?.id}`
       );
-      console.log(result.data);
       setLatestGroups(result.data);
     } catch (e) {
       console.log(e);
     }
   }
+
 
   useEffect(() => {
     async function getReceipts() {
@@ -94,7 +96,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ backgroundColor: "white" }}>
+        <View style={{ backgroundColor: "white", minHeight: ScreenHeight }}>
           <CustomText style={[styles.h1, homeStyles.header]}>
             {t("common.welcome")},{" "}
             {authState?.firstname ? authState.firstname : authState?.username}
@@ -114,7 +116,7 @@ export default function HomeScreen({ navigation }) {
           <CategoryOverview
             categories={["Groceries", "Clothing", "Entertainment"]}
           />
-          {<GroupOverview groups={latestGroups} isLoading={loading} />}
+          {<GroupOverview groups={latestGroups} isLoading={loading} navigation={navigation} />}
         </View>
       </ScrollView>
       <AddReceiptButton title="+" onPress={handlePresentModalPress} />

@@ -209,8 +209,8 @@ function UploadModal({ navigation }) {
               >
                 <Text style={styles.h3}>Enter manually</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={modalStyles.optionContainer}>
-                <Text style={styles.h3} onPress={openImagePickerAsync}>
+              <TouchableOpacity style={modalStyles.optionContainer} onPress={openImagePickerAsync}>
+                <Text style={styles.h3} >
                   Upload File
                 </Text>
               </TouchableOpacity>
