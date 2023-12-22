@@ -1,4 +1,4 @@
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Touchable } from "react-native";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -21,6 +21,7 @@ import FadeView from "../components/atom/FadeView";
 import CustomText from "../components/atom/CustomText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Group } from "../stores/types";
+import CustomButton from "../components/atom/CustomButton";
 
 // @ts-ignore
 export default function HomeScreen({ navigation }) {
@@ -113,7 +114,7 @@ export default function HomeScreen({ navigation }) {
           <CategoryOverview
             categories={["Groceries", "Clothing", "Entertainment"]}
           />
-          {latestGroups && <GroupOverview groups={latestGroups} />}
+          {<GroupOverview groups={latestGroups} isLoading={loading} />}
         </View>
       </ScrollView>
       <AddReceiptButton title="+" onPress={handlePresentModalPress} />
@@ -142,3 +143,4 @@ const homeStyles = StyleSheet.create({
   header: { marginHorizontal: 15, marginTop: 40, marginBottom: 10 },
   searchContainer: { justifyContent: "center", alignItems: "center" },
 });
+

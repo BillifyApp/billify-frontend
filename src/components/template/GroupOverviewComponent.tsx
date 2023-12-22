@@ -8,14 +8,16 @@ import CustomText from "../atom/CustomText";
 interface GroupOverviewComponentProps {
   group_name: string;
   image: string;
+  index: number;
 }
 
 function GroupOverviewComponent({
   group_name,
   image,
+  index,
 }: GroupOverviewComponentProps) {
   return (
-    <TouchableOpacity onPress={()=>{
+    <TouchableOpacity key={index} onPress={()=>{
       console.log("todo redirect to group details")
     }}>
       <View style={styles.groupOverviewItem}>
