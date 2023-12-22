@@ -1,23 +1,13 @@
 import {
-  Button,
   SafeAreaView,
-  StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  View,
-  Pressable,
 } from "react-native";
 import * as React from "react";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import CustomButton from "../../components/atom/CustomButton";
-import { Trans, useTranslation } from "react-i18next";
-import i18n from "i18next";
-import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import { styles } from "../../styles/styles";
-import { COLORS } from "../../styles/colors";
 import CustomInput from "../../components/atom/CustomInput";
 import PasswordInput from "../../components/atom/PasswordInput";
 
@@ -44,7 +34,6 @@ function LoginScreen({ navigation }: any) {
   };
 
   return (
-    <>
       <SafeAreaView
         style={{
           marginTop: 60,
@@ -82,7 +71,6 @@ function LoginScreen({ navigation }: any) {
           width="50%"
         />
       </SafeAreaView>
-    </>
   );
 }
 
