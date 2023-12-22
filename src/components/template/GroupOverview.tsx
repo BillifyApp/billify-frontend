@@ -24,7 +24,7 @@ function GroupOverview({ groups, isLoading, navigation }: GroupOverviewProps) {
     <View>
       <View style={styles.subHeadingMargin}>
         <CustomText style={styles.h2}>{t("common.groups.many")}</CustomText>
-        <ShowAllAtom routeName={groupName}></ShowAllAtom>
+        <ShowAllAtom onPress={()=>{navigation.navigate("Groups", {screen: "GroupOverview"})}}></ShowAllAtom>
       </View>
       <View style={styles.groupOverview}>
         {isLoading || !groups
