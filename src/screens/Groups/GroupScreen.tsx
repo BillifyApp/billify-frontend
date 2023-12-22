@@ -11,17 +11,24 @@ import GroupScreenItem from "../../components/template/groups/GroupScreenItem";
 import { Group } from "../../stores/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
+import { useState } from "react";
+import GroupScreenPlaceholder from "../../components/placeholder/GroupScreenPlaceholder";
 
 export default function GroupScreen({ navigation }: any) {
   const { t } = useTranslation();
   const auth = useAuth().authState;
   const [groups, setGroups] = React.useState<Group[] | null>(null);
+
+    //a variable to check if all the data is loaded
+    const [loading, setLoading] = useState(true);
+
   async function getGroups() {
     try {
       const id = auth?.id;
       const result = await axios.get(`${url}/groups/find/${id}`);
       console.log(result.data);
       setGroups(result.data);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -43,7 +50,7 @@ export default function GroupScreen({ navigation }: any) {
       <View style={styles.headingMargin}>
         <Text style={styles.h1}>{t("common.groups.many")}</Text>
       </View>
-      {!groups ? (
+      {!groups || groups.length === 0 && !loading && (
         <View style={{ justifyContent: "center", height: "90%", flex: 1 }}>
           <View
             style={[
@@ -69,7 +76,8 @@ export default function GroupScreen({ navigation }: any) {
             />
           </View>
         </View>
-      ) : (
+      )}
+      {groups && groups.length > 0 && !loading && (
         <View style={{flex: 1}}>
           <View style={{justifyContent:"center", alignItems:"center"}}>
           <CustomInput
@@ -106,6 +114,9 @@ export default function GroupScreen({ navigation }: any) {
             </View>
           </ScrollView>
         </View>
+      )}
+      {loading && (
+        <GroupScreenPlaceholder/>
       )}
     </SafeAreaView>
   );
