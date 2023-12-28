@@ -13,6 +13,7 @@ import {
   Switch,
   Text,
   View,
+  Image
 } from "react-native";
 import ReceiptItemEntry from "../components/atom/ReceiptItemEntry";
 import { homeName, successfullyAddedName } from "../stores/route_names";
@@ -52,7 +53,7 @@ function AddReceiptAutoScreen({ route, navigation }) {
   const [groups, setGroups] = useState<Group[] | null>(null);
   const [groupSelected, setGroupSelected] = useState<null | string>(null);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
-
+  let calculatedTotal = 0;
   async function getGroups() {
     try {
       const result = await axios.get(`${url}/groups/find/${auth?.id}`);
@@ -61,6 +62,10 @@ function AddReceiptAutoScreen({ route, navigation }) {
       console.log(e);
     }
   }
+  const numberFormatter = new Intl.NumberFormat('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+  });
 
   useEffect(() => {
     console.log(route);
@@ -84,8 +89,10 @@ function AddReceiptAutoScreen({ route, navigation }) {
     } catch (e) {
       //todo print fail
     }
-
-    if (result) {
+    if(!groupSelected){
+      navigation.navigate(successfullyAddedName);
+    }
+    if (result && groupSelected) {
       try{
         groupResult = await axios.patch(`${url}/groups/addReceipt/${groupSelected}`,
         {"receipt_id": result.data._id});
@@ -162,6 +169,7 @@ function AddReceiptAutoScreen({ route, navigation }) {
             <View style={styles.horizontalDivider}></View>
             {receipt
               ? receipt.items.map((i: Item, key: number) => {
+                  calculatedTotal += i.subtotal;
                   return (
                     <ReceiptItemEntry
                       count={key}
@@ -179,7 +187,8 @@ function AddReceiptAutoScreen({ route, navigation }) {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text>Total: </Text>
-              <Text>{`${receipt?.total} €`}</Text>
+              {receipt?.total === calculatedTotal ? <Text>{numberFormatter.format(receipt.total)}</Text>
+              : <Text style={{color: "red"}}>{numberFormatter.format(receipt.total)}</Text>}
             </View>
 
             <Switch
