@@ -5,20 +5,20 @@ import {Text} from "react-native";
 import {useTranslation} from "react-i18next";
 import { styles } from '../../styles/styles';
 import CustomText from './CustomText';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface ShowAllAtomProps {
-    routeName: string;
+    onPress: Function;
 }
 
 
-function ShowAllAtom({routeName}: ShowAllAtomProps) {
-    const navigation = useNavigation();
+function ShowAllAtom({onPress}: ShowAllAtomProps) {
     const {t} = useTranslation();
 
     return (
-        <>
-            <CustomText onPress={() => navigation.navigate(routeName)} style={styles.p}>{t('common.show_all')}</CustomText>
-        </>
+        <TouchableOpacity onPress={()=>{onPress()}}>
+            <CustomText style={styles.p}>{t('common.show_all')}</CustomText>
+        </TouchableOpacity>
     );
 }
 
