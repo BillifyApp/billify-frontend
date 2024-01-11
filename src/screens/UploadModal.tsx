@@ -23,10 +23,16 @@ import {
   homeName,
   homeNavName,
 } from "../stores/route_names";
+import ImageResizer from 'react-native-image-resizer';
 import { styles } from "../styles/styles";
 import { COLORS } from "../styles/colors";
-
 //TUT https://blog.logrocket.com/how-to-upload-images-react-native-laravel-api/#setting-up-the-laravel-image-upload-api
+
+interface CustomResizeResult {
+  uri: string;
+  width: number;
+  height: number;
+}
 
 // @ts-ignore
 function UploadModal({ navigation }) {
@@ -34,25 +40,55 @@ function UploadModal({ navigation }) {
     useState<ImagePicker.ImagePickerAsset>();
   const { t } = useTranslation();
   const auth = useAuth();
-
   const cameraRef = useRef<Camera>();
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
-  const [hasPermission, setHasPermission] = useState(null);
+  //const [hasPermission, setHasPermission] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  useEffect(() => {
+  const maxWidth = 800; // Adjust maximum width
+  const maxHeight = 1600; // Adjust maximum height
+  const maxFileSize = 1448 * 1448; // Maximum file size in bytes (1MB)
+
+/*   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === "granted");
     })();
-  }, []);
+  }, []); */
 
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
 
-  const takePicture = async () => {
+// Function to dynamically resize an image
+const resizeImageIfNeeded = async (
+  imageUri: string,
+  maxWidth: number,
+  maxHeight: number,
+  maxFileSize: number
+): Promise<CustomResizeResult  | undefined> => {
+  console.log('Image URI:', imageUri);
+  try {
+    const imageInfo = await ImageResizer.createResizedImage(imageUri, maxWidth, maxHeight, 'JPEG', 100);
+    const fileInfo = await fetch(imageInfo.uri);
+    const fileSize = Number(fileInfo.headers.get('content-length'));
+    // Check if the file size exceeds the maximum allowed size
+    if (fileSize > maxFileSize || imageInfo.width > maxWidth || imageInfo.height > maxHeight ) {
+      // Calculate a new quality value to achieve the desired file size
+      const newQuality = (maxFileSize / fileSize) * 100;
+      // Resize the image with the new quality value
+      return await ImageResizer.createResizedImage(imageUri, maxWidth, maxHeight, 'JPEG', newQuality);
+    }
+    // If the file size is within the limit, return the original image
+    return imageInfo;
+  } catch (error) {
+    console.error('Error resizing image:', error);
+    return undefined;
+  }
+};
+
+/*   const takePicture = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.5, base64: true, skipProcessing: true };
       const data = await cameraRef.current.takePictureAsync(options);
@@ -62,9 +98,9 @@ function UploadModal({ navigation }) {
         console.log("picture source", source);
       }
     }
-  };
+  }; */
 
-  const checkFileSize = async (
+/*   const checkFileSize = async (
     fileURI: string,
     maxSize = 10
   ): Promise<boolean> => {
@@ -72,7 +108,7 @@ function UploadModal({ navigation }) {
     if (!fileInfo.size) return false;
     const sizeInMb = fileInfo.size / 1024 / 1024;
     return sizeInMb < maxSize;
-  };
+  }; */
 
   const openImagePickerAsync = async () => {
     let permissionResult =
@@ -84,91 +120,100 @@ function UploadModal({ navigation }) {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
       quality: 1,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
     });
     if (pickerResult.canceled) return;
     else {
       console.log(pickerResult.assets[0]);
       setSelectedImage(pickerResult.assets[0]);
       console.log(selectedImage);
-      uploadImage();
+      //uploadImage();
     }
   };
 
-  const launchCameraFunc = async () => {
-    let permissionResult = await Camera.requestCameraPermissionsAsync();
-    if (!permissionResult.granted) {
-      alert("No permission for camera");
-    }
-    let imageResult = await ImagePicker.launchCameraAsync({
-      quality: 1,
-      base64: true,
-    });
-    if (imageResult.canceled) return;
-    setSelectedImage(imageResult.assets[0]);
-    uploadImage();
-  };
-
-  const uploadImage = async () => {
-    console.log(selectedImage);
-    if (!selectedImage) return;
-    setIsProcessing(true);
-    const canUpload = await checkFileSize(selectedImage.uri);
-    if (!canUpload) {
-      alert("Cannot upload files larger than 2MB");
-      setSelectedImage(undefined);
-    }
-    const uri =
-      Platform.OS === "android"
-        ? selectedImage.uri
-        : selectedImage.uri.replace("file://", "");
-    const filename = selectedImage.uri.split("/").pop();
-    const match = /\.(\w+)$/.exec(filename as string);
-    const ext = match?.[1];
-    const type = match ? `image/${match[1]}` : `image`;
-
-    /*   const type = Platform.OS === "android"
-               ? (match ? `image/${match[1]}` : '')
-               : `image`;*/
-
-    const id: string | null | undefined = auth.authState?.id;
-
-    const formData = new FormData();
-    formData.append("image", {
-      uri,
-      name: `image.${ext}`,
-      type,
-    } as any);
-    formData.append("id", id as string);
-
-    console.log(`User_Id in Img upload: ${id}`);
-
-    try {
-      //Error nur beim lokalen entwickeln
-      const data = await axios.post(`${url}/images/upload`, formData, {
-        headers: { "content-type": "multipart/form-data" },
-      });
-
-      if (!data) {
-        alert("Image upload failed!");
-        return;
+    const launchCameraFunc = async () => {
+      let permissionResult = await Camera.requestCameraPermissionsAsync();
+      if (!permissionResult.granted) {
+        alert("No permission for camera");
       }
-      console.log("Image Uploaded");
-
-      navigation.navigate({
-        name: addReceiptAutoName,
-        params: {
-          ocr_receipt: data.data.receipt,
-          image_path: data.data.image_path,
-        },
+      let imageResult = await ImagePicker.launchCameraAsync({
+        quality: 0.5,
+        base64: true,
+        allowsEditing: true,
       });
-    } catch (err) {
-      console.log(err);
-      alert(`Something went wrong ${err}`);
-    } finally {
-      setIsProcessing(false);
-      setSelectedImage(undefined);
-    }
-  };
+      if (imageResult.canceled) return;
+
+      await setSelectedImage(imageResult.assets[0])
+      //uploadImage();
+    };
+    const uploadImage = async () => {
+      console.log(selectedImage?.uri);
+      if (!selectedImage) return;
+      setIsProcessing(true);
+      //resizeImageIfNeeded(selectedImage.uri, maxWidth, maxHeight, maxFileSize);
+      //const canUpload = await checkFileSize(selectedImage.uri);
+      /* if (!canUpload) {
+        alert("Cannot upload files larger than 2MB");
+        setSelectedImage(undefined);
+      } */
+      const uri =
+        Platform.OS === "android"
+          ? selectedImage.uri
+          : selectedImage.uri.replace("file://", "");
+      const filename = selectedImage.uri.split("/").pop();
+      const match = /\.(\w+)$/.exec(filename as string);
+      const ext = match?.[1];
+      const type = match ? `image/${match[1]}` : `image`;
+
+      /*   const type = Platform.OS === "android"
+                ? (match ? `image/${match[1]}` : '')
+                : `image`;*/
+
+      const id: string | null | undefined = auth.authState?.id;
+
+      const formData = new FormData();
+      formData.append("image", {
+        uri,
+        name: `image.${ext}`,
+        type,
+      } as any);
+      formData.append("id", id as string);
+
+      console.log(`User_Id in Img upload: ${id}`);
+
+      try {
+        //Error nur beim lokalen entwickeln
+        const data = await axios.post(`${url}/images/upload`, formData, {
+          headers: { "content-type": "multipart/form-data" },
+        });
+
+        if (!data) {
+          alert("Image upload failed!");
+          return;
+        }
+        console.log("Image Uploaded");
+
+        navigation.navigate({
+          name: addReceiptAutoName,
+          params: {
+            ocr_receipt: data.data.receipt,
+            image_path: data.data.image_path,
+          },
+        });
+      } catch (err) {
+        console.log(err);
+        alert(`Something went wrong ${err}`);
+      } finally {
+        setIsProcessing(false);
+        setSelectedImage(undefined);
+      }
+    };
+
+    useEffect(() => {
+      if(selectedImage){
+        uploadImage();
+      }
+  }, [selectedImage]);
 
   return (
     <>
@@ -230,7 +275,7 @@ function UploadModal({ navigation }) {
             >
               <Text style={styles.h3}>Take a Picture</Text>
               <Camera
-                ref={cameraRef}
+                //ref={cameraRef}
                 type={cameraType}
                 //flashMode={Camera.Constants.FlashMode}
                 onCameraReady={onCameraReady}
@@ -239,6 +284,8 @@ function UploadModal({ navigation }) {
                 }}
               />
             </TouchableOpacity>
+            
+            
           </View>
         )}
 

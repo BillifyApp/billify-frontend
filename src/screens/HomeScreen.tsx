@@ -48,6 +48,7 @@ export default function HomeScreen({ navigation }) {
         `${url}/groups/find/lastFive/${authState?.id}`
       );
       setLatestGroups(result.data);
+      console.log(authState);
     } catch (e) {
       console.log(e);
     }

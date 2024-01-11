@@ -7,6 +7,7 @@ import { styles } from "../styles/styles";
 import CustomText from "./atom/CustomText";
 import "intl";
 import "intl/locale-data/jsonp/de";
+import { useTranslation } from "react-i18next";
 
 interface LastBillHomeComponentProps {
   receipt: any;
@@ -14,7 +15,7 @@ interface LastBillHomeComponentProps {
 
 function LastBillHomeComponent({ receipt }: LastBillHomeComponentProps) {
   const navigation = useNavigation();
-
+  const { t } = useTranslation();
   const numberFormatter = new Intl.NumberFormat('de-DE', {
     style: 'currency',
     currency: 'EUR',
@@ -41,7 +42,7 @@ function LastBillHomeComponent({ receipt }: LastBillHomeComponentProps) {
       <View style={localStyles.container}>
         <CustomText style={styles.h2}>{numberFormatter.format(receipt.total)}</CustomText>
         <CustomText>{receipt.comp_name}</CustomText>
-        {receipt.items && <CustomText>{receipt.items.length} items</CustomText>}
+        {receipt.items && <CustomText>{receipt.items.length} {t("common.items.one")}</CustomText>}
       </View>
     </Pressable>
   );

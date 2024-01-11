@@ -15,3 +15,6 @@ export const url = urlRender;
 
 export const TOKEN_KEY = "billify-jwt"
 export const USER_KEY = "billify-user_id"
+
+export const FIRSTNAME_KEY = "billify-firstname"
+export const USERNAME_KEY = "billify-username"

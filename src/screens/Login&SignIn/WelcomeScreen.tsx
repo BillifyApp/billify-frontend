@@ -19,7 +19,6 @@ function WelcomeScreen({ navigation }: any) {
     bottomSheetModalRef.current?.present();
   }, []);
   const handleSheetChanges = useCallback((index: number) => {
-    console.log("handleSheetChanges", index);
   }, []);
   const snapPoints = useMemo(() => ["25%", "75%"], []);
 
@@ -42,7 +41,7 @@ function WelcomeScreen({ navigation }: any) {
               {
                 marginVertical: 180,
                 paddingBottom: 50,
-                width: "50%",
+                width: "70%",
                 textAlign: "center",
               },
             ]}
