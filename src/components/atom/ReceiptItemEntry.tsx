@@ -11,11 +11,15 @@ interface ReceiptItemEntry {
 }
 
 function ReceiptItemEntry({count, quantity, itemName, unitPrice, subtotal}: ReceiptItemEntry) {
+    const numberFormatter = new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+      });
     return (
         <View style={styles.container}>
             <CustomText >{`${count +1}.`}</CustomText>
             <CustomText style={styles.itemName}>{itemName}</CustomText>
-            <CustomText >{`${subtotal} €`}</CustomText>
+            <CustomText >{numberFormatter.format(subtotal)}</CustomText>
         </View>
     );
 }

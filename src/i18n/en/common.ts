@@ -42,6 +42,11 @@ export default {
   
     // Add Bill
     add_bill: "Add Bill",
-    add_bill_desc: "Add your receipt with one of the following options."
+    add_bill_desc: "Add your receipt with one of the following options.",
+
+    items: {
+      one: "Item",
+      many: "Items",
+    }
   };
   

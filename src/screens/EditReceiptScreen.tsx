@@ -16,30 +16,11 @@ import { homeName, oneReceiptName } from "../stores/route_names";
 import FlexImage from "../components/atom/FlexImage";
 import ReceiptItemEntryEdit from "../components/atom/ReceiptItemEntryEdit";
 import { styles } from "../styles/styles";
+import { Receipt } from "../stores/types";
 
-interface Image {
-  path: string;
-  date_uploaded: string;
-}
 
-interface Item {
-  quantity: number;
-  itemName: string;
-  unitPrice: number;
-  subtotal: number;
-}
 
-interface Receipt {
-  _id: string;
-  user_id: string;
-  image: Image;
-  date_created: string;
-  date_payed: string;
-  comp_name: string;
-  address: string;
-  items: Array<Item>;
-  total: string;
-}
+
 
 // @ts-ignore
 function AddReceiptAutoScreen({ route, navigation }) {

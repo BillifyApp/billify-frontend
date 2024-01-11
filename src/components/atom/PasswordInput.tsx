@@ -27,7 +27,7 @@ export default function PasswordInput({value, onChangeText, placeholder}: any) {
         secureTextEntry={!showPassword}
       />
       <TouchableOpacity
-      style={{ position: "absolute", right: 80, top: 22 }}
+      style={{ position: "absolute", width:"20%", right: 0, top: 22}}
       onPress={toggleShowPassword}
     >
       <Image source={require("../../assets/icons/showPassword.png")} />

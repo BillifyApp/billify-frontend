@@ -108,7 +108,7 @@ export const AuthProvider = ({children}: any) => {
             console.log(`Login: with username ${username} and password ${password}`)
 
             const result = await axios.post(`${url}/users/login`, {username, password});
-
+            console.log(result.data);
             setAuthState({
                 access_token: result.data.access_token,
                 authenticated: true,

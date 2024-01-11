@@ -1,4 +1,4 @@
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, Touchable, Dimensions } from "react-native";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -6,10 +6,11 @@ import { useTranslation } from "react-i18next";
 import CategoryOverview from "../components/template/CategoryOverview";
 import GroupOverview from "../components/template/GroupOverview";
 import { styles } from "../styles/styles";
+import { blur } from "../styles/blur";
 import axios from "axios";
 import { url } from "../stores/constants";
 import LastBillsOverview from "../components/template/LastBillsOverview";
-import { useIsFocused } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import AddReceiptButton from "../components/atom/AddReceiptButton";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import UploadModal from "./UploadModal";
@@ -19,6 +20,8 @@ import { BlurView } from "expo-blur";
 import FadeView from "../components/atom/FadeView";
 import CustomText from "../components/atom/CustomText";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Group } from "../stores/types";
+import CustomButton from "../components/atom/CustomButton";
 
 // @ts-ignore
 export default function HomeScreen({ navigation }) {
@@ -26,7 +29,10 @@ export default function HomeScreen({ navigation }) {
 
   const { t } = useTranslation();
   const [latestReceipts, setLatestReceipts] = useState<any | null>(null);
+  const [latestGroups, setLatestGroups] = useState<Group[] | null>(null);
 
+
+  let ScreenHeight = Dimensions.get("window").height;
   // check if screen is focused
   const isFocused = useIsFocused();
 
@@ -35,6 +41,19 @@ export default function HomeScreen({ navigation }) {
 
   //a variable to check if all the data is loaded
   const [loading, setLoading] = useState(true);
+
+  async function getGroups() {
+    try {
+      const result = await axios.get(
+        `${url}/groups/find/lastFive/${authState?.id}`
+      );
+      setLatestGroups(result.data);
+      console.log(authState);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
 
   useEffect(() => {
     async function getReceipts() {
@@ -51,6 +70,12 @@ export default function HomeScreen({ navigation }) {
     isFocused && getReceipts();
     return () => {};
   }, [latestReceipts, isFocused]);
+  
+  useFocusEffect(
+    useCallback(() => {
+      getGroups();
+    }, [])
+  );
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -72,7 +97,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ backgroundColor: "white" }}>
+        <View style={{ backgroundColor: "white", minHeight: ScreenHeight }}>
           <CustomText style={[styles.h1, homeStyles.header]}>
             {t("common.welcome")},{" "}
             {authState?.firstname ? authState.firstname : authState?.username}
@@ -92,14 +117,7 @@ export default function HomeScreen({ navigation }) {
           <CategoryOverview
             categories={["Groceries", "Clothing", "Entertainment"]}
           />
-          <GroupOverview
-            groups={[
-              { name: "Eine Testgruppe" },
-              { name: "Zweite Testgruppe" },
-              { name: "Dritte Testgruppe" },
-              { name: "Vierte Testgruppe" },
-            ]}
-          />
+          {<GroupOverview groups={latestGroups} isLoading={loading} navigation={navigation} />}
         </View>
       </ScrollView>
       <AddReceiptButton title="+" onPress={handlePresentModalPress} />
@@ -113,12 +131,9 @@ export default function HomeScreen({ navigation }) {
         <UploadModal navigation={navigation} />
       </BottomSheetModal>
       {modalActive && (
-        <FadeView style={homeStyles.absolute} duration={500}>
+        <FadeView style={blur.absolute} duration={500}>
           <BlurView
-            style={[
-              modalActive ? homeStyles.visible : homeStyles.hidden,
-              homeStyles.absolute,
-            ]}
+            style={[modalActive ? blur.visible : blur.hidden, blur.absolute]}
             intensity={10}
             tint="light"
           />
@@ -130,19 +145,5 @@ export default function HomeScreen({ navigation }) {
 const homeStyles = StyleSheet.create({
   header: { marginHorizontal: 15, marginTop: 40, marginBottom: 10 },
   searchContainer: { justifyContent: "center", alignItems: "center" },
-  absolute: {
-    transition: "opacity 5s ease",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0,
-  },
-  visible: {
-    transition: "opacity 5s ease",
-    opacity: 1,
-  },
-  hidden: {
-    opacity: 0,
-  },
 });
+

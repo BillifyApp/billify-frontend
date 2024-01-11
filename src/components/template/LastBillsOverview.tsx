@@ -12,6 +12,7 @@ import { styles } from "../../styles/styles";
 import LastBillHomeComponent from "../LastBillHomeComponent";
 import { allReceiptsName } from "../../stores/route_names";
 import LastBillComponentPlaceholder from "../placeholder/LastBillComponentPlaceholder"
+import ShowAllAtom from "../atom/ShowAllAtom";
 
 interface bills {
   _id: string;
@@ -38,13 +39,7 @@ function LastBillsOverview({ bills, navigation, isLoading }: LastBillsOverviewPr
         <Text style={[styles.h2 ]}>
           {t("common.last_purchases")}
         </Text>
-        <Pressable
-          onPress={() => {
-            navigation.navigate(allReceiptsName);
-          }}
-        >
-          <Text style={styles.p}>{t("common.show_all")}</Text>
-        </Pressable>
+        <ShowAllAtom onPress={()=>{navigation.navigate(allReceiptsName)}}></ShowAllAtom>
       </View>
 
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>

@@ -12,9 +12,11 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import SettingsScreen from "../screens/SettingsScreen";
 import LoginContainer from "../navigation/LoginContainer";
 import UploadScreen from "../screens/UploadScreen";
-import CreateGroupNavigation from "../navigation/CreateGroupNavigation";
+import GroupNavigation from "../navigation/GroupNavigation";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import GroupDetailsScreen from "../screens/Groups/GroupDetailsScreen";
+import CreateGroupScreen from "../screens/Groups/CreateGroupScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +36,7 @@ export default function MainContainer() {
                   />
                   <Stack.Screen
                     name="CreateGroup"
-                    component={CreateGroupNavigation}
+                    component={CreateGroupScreen}
                   />
                   <Stack.Screen name="Settings" component={SettingsScreen} />
                   <Stack.Screen name="Upload" component={UploadScreen} />
