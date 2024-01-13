@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {Image, StyleSheet, Text, View} from "react-native";
 import {url} from "../../stores/constants";
+import CustomText from './CustomText';
 
 interface UserIconImageProps {
     path: string;
@@ -33,7 +34,7 @@ function UserIconImage({path, width, height, offset}: UserIconImageProps) {
                     style={[styles.image, {left: -offset}]}
                     source={{uri: `${url}/${processPath(path)}`}}
                 /> :
-                <Text>Image should be here, rep</Text>
+                <CustomText>Image should be here, rep</CustomText>
             }
         </View>
     );

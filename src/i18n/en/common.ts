@@ -6,6 +6,9 @@ export default {
     welcome: "Welcome",
     change_language: "Change Language",
     search: "Search",
+    next: "Next",
+    create: "Create",
+    back: "Back",
   
     // Welcome Screen
     create_account: "Create Account",
@@ -39,6 +42,11 @@ export default {
   
     // Add Bill
     add_bill: "Add Bill",
-    add_bill_desc: "Add your receipt with one of the following options."
+    add_bill_desc: "Add your receipt with one of the following options.",
+
+    items: {
+      one: "Item",
+      many: "Items",
+    }
   };
   

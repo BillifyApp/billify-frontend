@@ -28,7 +28,7 @@ const HomeRootStack = createStackNavigator();
 function HomeNavigation() {
   return (
     <>
-      <HomeRootStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeRootStack.Navigator screenOptions={{ headerShown: false  }}>
         <HomeRootStack.Group>
           <HomeRootStack.Screen name={homeName} component={HomeScreen} />
           <HomeRootStack.Screen

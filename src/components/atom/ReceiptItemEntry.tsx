@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, View, StyleSheet} from "react-native";
+import {View, StyleSheet} from "react-native";
+import CustomText from './CustomText';
 
 interface ReceiptItemEntry {
     count: number;
@@ -10,11 +11,15 @@ interface ReceiptItemEntry {
 }
 
 function ReceiptItemEntry({count, quantity, itemName, unitPrice, subtotal}: ReceiptItemEntry) {
+    const numberFormatter = new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+      });
     return (
         <View style={styles.container}>
-            <Text >{`${count +1}.`}</Text>
-            <Text style={styles.itemName}>{itemName}</Text>
-            <Text >{`${subtotal} €`}</Text>
+            <CustomText >{`${count +1}.`}</CustomText>
+            <CustomText style={styles.itemName}>{itemName}</CustomText>
+            <CustomText >{numberFormatter.format(subtotal)}</CustomText>
         </View>
     );
 }

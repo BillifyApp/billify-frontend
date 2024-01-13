@@ -1,0 +1,138 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?jzz3pm');
+  src:  url('fonts/icomoon.eot?jzz3pm#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?jzz3pm') format('truetype'),
+    url('fonts/icomoon.woff?jzz3pm') format('woff'),
+    url('fonts/icomoon.svg?jzz3pm#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-pfeil_r:before {
+  content: "\e900";
+}
+.icon-pfeil_l:before {
+  content: "\e901";
+}
+.icon-pfeil_down:before {
+  content: "\e902";
+}
+.icon-x:before {
+  content: "\e903";
+}
+.icon-upload:before {
+  content: "\e904";
+}
+.icon-transport:before {
+  content: "\e905";
+}
+.icon-technologie:before {
+  content: "\e906";
+}
+.icon-search:before {
+  content: "\e907";
+}
+.icon-schulden:before {
+  content: "\e908";
+}
+.icon-reisen:before {
+  content: "\e909";
+}
+.icon-profile:before {
+  content: "\e90a";
+}
+.icon-notifications:before {
+  content: "\e90b";
+}
+.icon-manuell:before {
+  content: "\e90c";
+}
+.icon-home:before {
+  content: "\e90d";
+}
+.icon-hobby:before {
+  content: "\e90e";
+}
+.icon-groups:before {
+  content: "\e90f";
+}
+.icon-gesundheit:before {
+  content: "\e910";
+}
+.icon-freizeit:before {
+  content: "\e911";
+}
+.icon-filter:before {
+  content: "\e912";
+}
+.icon-export_ios:before {
+  content: "\e913";
+}
+.icon-export_android:before {
+  content: "\e914";
+}
+.icon-delete:before {
+  content: "\e915";
+}
+.icon-camera:before {
+  content: "\e916";
+}
+.icon-bildung:before {
+  content: "\e917";
+}
+.icon-bearbeiten:before {
+  content: "\e918";
+}
+.icon-begleichen:before {
+  content: "\e919";
+}
+.icon-add:before {
+  content: "\e91a";
+}
+.icon-untitled:before {
+  content: "\e91b";
+}
+.icon-sonstiges:before {
+  content: "\e91c";
+}
+.icon-share_ios:before {
+  content: "\e91d";
+}
+.icon-lebensmittel:before {
+  content: "\e91e";
+}
+.icon-share_android:before {
+  content: "\e91f";
+}
+.icon-kleidung:before {
+  content: "\e920";
+}
+.icon-haustiere:before {
+  content: "\e921";
+}
+.icon-haushalt:before {
+  content: "\e922";
+}
+.icon-geschenke:before {
+  content: "\e923";
+}
+.icon-pfeil_up:before {
+  content: "\e924";
+}

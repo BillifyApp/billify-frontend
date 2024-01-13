@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text, StyleSheet, Pressable, TouchableOpacity} from 'react-native';
+import CustomText from './CustomText';
 
 interface Props {
     onPress: any,
@@ -10,7 +11,7 @@ export default function AddReceiptButton(props: any) {
     const {onPress, title = 'Save'} = props;
     return (
         <TouchableOpacity style={styles.button} onPress={onPress}>
-            <Text style={styles.text}>{title}</Text>
+            <CustomText style={styles.text}>{title}</CustomText>
         </TouchableOpacity>
     );
 }
@@ -29,8 +30,8 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 50,
-        lineHeight: 58,
-        fontWeight: "200",
+        lineHeight: 69,
+        fontFamily: 'Poppins-Light',
         color: 'white',
     },
 });

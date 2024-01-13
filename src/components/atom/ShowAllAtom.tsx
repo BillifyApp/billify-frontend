@@ -3,20 +3,22 @@ import {Link, useNavigation} from "@react-navigation/native";
 import homeNavigation from "../../navigation/HomeNavigation";
 import {Text} from "react-native";
 import {useTranslation} from "react-i18next";
+import { styles } from '../../styles/styles';
+import CustomText from './CustomText';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface ShowAllAtomProps {
-    routeName: string;
+    onPress: Function;
 }
 
 
-function ShowAllAtom({routeName}: ShowAllAtomProps) {
-    const navigation = useNavigation();
+function ShowAllAtom({onPress}: ShowAllAtomProps) {
     const {t} = useTranslation();
 
     return (
-        <>
-            <Text onPress={() => navigation.navigate(routeName)}>{t('common.show_all')}</Text>
-        </>
+        <TouchableOpacity onPress={()=>{onPress()}}>
+            <CustomText style={styles.p}>{t('common.show_all')}</CustomText>
+        </TouchableOpacity>
     );
 }
 

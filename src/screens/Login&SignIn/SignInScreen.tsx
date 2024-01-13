@@ -8,6 +8,7 @@ import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { styles } from "../../styles/styles";
 import { useTranslation } from "react-i18next";
 import CustomInput from "../../components/atom/CustomInput";
+import PasswordInput from "../../components/atom/PasswordInput";
 
 function SignInScreen({ navigation }: any) {
   const { t } = useTranslation();
@@ -176,19 +177,18 @@ function SignInScreen({ navigation }: any) {
           onChangeText={setLastname}
           placeholder={t("common.lastname")}
         />
-        <CustomInput
+        <PasswordInput
           innerRef={p0}
           value={password}
           onChangeText={setPassword}
           placeholder={t("common.password")}
         />
-        <CustomInput
+        <PasswordInput
           innerRef={p1}
           value={passwordRepeat}
           onChangeText={setPasswordRepeat}
           placeholder={t("common.repeat_password")}
         />
-
         <CustomButton
           title={t("common.create_account_short")}
           width="50%"

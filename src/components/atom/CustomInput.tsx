@@ -9,14 +9,14 @@ interface Props {
 }
 
 export default function CustomInput(props: any) {
-  const { placeholder, value, onChangeText, secureTextEntry=false, innerRef, style } = props;
+  const { placeholder, value, onChangeText, secureTextEntry=false, innerRef, placeholderTextColor=COLORS.gray_dark, style } = props;
   return (
     <TextInput
     ref={innerRef}
       value={value}
       placeholder={placeholder}
       onChangeText={onChangeText}
-      placeholderTextColor={COLORS.gray_dark}
+      placeholderTextColor={placeholderTextColor}
       secureTextEntry={secureTextEntry}
         style={[styles.input, style]}
     />
@@ -33,5 +33,6 @@ export const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 20,
     margin: 5,
+    fontFamily: "Poppins-Medium"
   },
 });

@@ -1,22 +1,15 @@
 import {
-  Button,
   SafeAreaView,
-  StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
-  View,
 } from "react-native";
 import * as React from "react";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import CustomButton from "../../components/atom/CustomButton";
-import { Trans, useTranslation } from "react-i18next";
-import i18n from "i18next";
-import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import { styles } from "../../styles/styles";
-import { COLORS } from "../../styles/colors";
 import CustomInput from "../../components/atom/CustomInput";
+import PasswordInput from "../../components/atom/PasswordInput";
 
 function LoginScreen({ navigation }: any) {
   const { t } = useTranslation();
@@ -41,7 +34,6 @@ function LoginScreen({ navigation }: any) {
   };
 
   return (
-    <>
       <SafeAreaView
         style={{
           marginTop: 60,
@@ -58,12 +50,19 @@ function LoginScreen({ navigation }: any) {
           onChangeText={setUsername}
           placeholder={t("common.username") + "/" + t("common.email")}
         />
-        <CustomInput
+        <PasswordInput
           value={password}
           onChangeText={setPassword}
           placeholder={t("common.password")}
-          secureTextEntry={true}/>
-        <Text style={{ textAlign: "right", width: "75%", marginBottom: 40 }}>
+        />
+        <Text
+          style={{
+            textAlign: "right",
+            width: "75%",
+            marginBottom: 40,
+            fontFamily: "Poppins-Regular",
+          }}
+        >
           {t("common.forgot_password")}
         </Text>
         <CustomButton
@@ -72,7 +71,6 @@ function LoginScreen({ navigation }: any) {
           width="50%"
         />
       </SafeAreaView>
-    </>
   );
 }
 
