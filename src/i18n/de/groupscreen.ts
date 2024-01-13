@@ -8,6 +8,8 @@ export default {
     group_name: "Gruppenname",
     select_group_icon: "Wähle ein passendes Bild aus...",
 
+    add_member: "Nutzer*in hinzufügen",
+
     group_overview: "Gruppenübersicht",
     searchbar: "Suche nach z.B. Sommerurlaub",
 

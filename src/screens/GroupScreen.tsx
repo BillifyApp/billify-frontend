@@ -3,7 +3,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import CustomSafeAreaView from "../components/CustomSafeAreaView";
 import {createGroupName} from "../stores/route_names";
-import CustomButton from "../components/CustomButton";
+import CustomButton from "../components/atom/CustomButton";
 import axios from "axios";
 import {url} from "../stores/constants";
 import {useAuth} from "../context/AuthContext";

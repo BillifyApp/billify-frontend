@@ -76,6 +76,7 @@ export default function HomeScreen({ navigation }) {
       getGroups();
     }, [])
   );
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();

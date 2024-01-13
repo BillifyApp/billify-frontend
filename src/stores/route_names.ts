@@ -17,3 +17,8 @@ export const oneReceiptName = "oneReceipt"
 export const editReceiptName = "editReceipt"
 export const settingsName = "Settings"
 export const allReceiptsName = "allReceipts"
+
+export const groupScreen = "GroupScreen"
+export const groupDetails = "GroupDetails"
+export const createGroupName = "createGroupName"
+export const addMember = "addMember"

@@ -36,15 +36,14 @@ export default function CreateGroupScreen({ navigation }: any) {
     }
   }
   async function createGroup() {
-    //TODO create group in backend
     try {
       const result = await axios.post(`${url}/groups/create`, {
         name: groupName,
         owner: auth?.id,
-        users: [auth?.id],
+        //users: [auth?.id], //NOTE maybe brauch mas nicht wegen owner
         icon: groupIcon,
       });
-      console.log(result.data);
+      //console.log(result.data);
       const newGroup: Group = result.data;
       navigation.navigate("GroupDetails",  {group: newGroup});
     } catch (e) {
@@ -116,6 +115,7 @@ export default function CreateGroupScreen({ navigation }: any) {
                   setActiveStep("icon");
                 }
                 else{
+                    //TODO show error message and highlight nameinput
                   alert("todo: show error message");
                 }
               }}

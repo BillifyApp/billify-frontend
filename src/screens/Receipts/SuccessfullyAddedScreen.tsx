@@ -1,13 +1,13 @@
 import React from "react";
-import CustomSafeAreaView from "../components/CustomSafeAreaView";
+import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import { Image, Pressable, Text, View } from "react-native";
 import {
   addReceiptAutoName,
   homeName,
   successfullyAddedName,
-} from "../stores/route_names";
-import CustomButton from "../components/atom/CustomButton";
-import { styles } from "../styles/styles";
+} from "../../stores/route_names";
+import CustomButton from "../../components/atom/CustomButton";
+import { styles } from "../../styles/styles";
 
 // @ts-ignore
 function SuccessfullyAddedScreen({ navigation }) {
@@ -21,7 +21,7 @@ function SuccessfullyAddedScreen({ navigation }) {
         }}
       >
         <View style={{ marginVertical: 250, alignItems: "center" }}>
-          <Image source={require("../assets/bookmark.png")}></Image>
+          <Image source={require("../../assets/bookmark.png")}></Image>
           <Text style={[styles.h1, { textAlign: "center", marginBottom: 10 }]}>
             Your receipt got added successfully!
           </Text>
