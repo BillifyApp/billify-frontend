@@ -33,8 +33,7 @@ export default function SelectGroupIcon({ onPress }: Props) {
       </CustomText>
       <View
         style={{
-          width: "95%",
-          height: 170,
+          width: "90%",
           flexDirection: "row",
           flexWrap: "wrap",
           justifyContent: "center",
@@ -45,7 +44,7 @@ export default function SelectGroupIcon({ onPress }: Props) {
           return (
             <TouchableOpacity
               key={index}
-              style={{ flexBasis: "31%", margin: 10 }}
+              style={{ flexBasis: "43%", margin: 8 }}
               onPress={() => {
                 onPress(source), setActiveIndex(index);
               }}
@@ -57,8 +56,8 @@ export default function SelectGroupIcon({ onPress }: Props) {
                     ? { borderWidth: 3, borderColor: COLORS.primary }
                     : {},
                   {
-                    width: "100%",
-                    height: "100%",
+                    width: 120,
+                    height: 120,
                     borderRadius: 8,
                   },
                 ]}
@@ -67,7 +66,7 @@ export default function SelectGroupIcon({ onPress }: Props) {
                 <Image
                   source={require("../../../assets/icons/checked.png")}
                   style={{ position: "absolute",
-                bottom: -10, right: -10, width: 25, height: 25 }}
+                bottom: -10, right: -5, width: 25, height: 25 }}
                 />
               )}
             </TouchableOpacity>

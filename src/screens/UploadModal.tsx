@@ -27,6 +27,8 @@ import ImageResizer from 'react-native-image-resizer';
 import { styles } from "../styles/styles";
 import { COLORS } from "../styles/colors";
 import AnimatedLottieView from "lottie-react-native";
+import CustomText from "../components/atom/CustomText";
+import { Icon } from "../styles/fonts";
 //TUT https://blog.logrocket.com/how-to-upload-images-react-native-laravel-api/#setting-up-the-laravel-image-upload-api
 
 interface CustomResizeResult {
@@ -258,12 +260,14 @@ const resizeImageIfNeeded = async (
                   navigation.navigate(homeName);
                 }}
               >
-                <Text style={styles.h3}>Enter manually</Text>
+                <Icon name="manuell" size={40}/>
+                <CustomText style={[styles.h3, {paddingHorizontal: 20, paddingTop: 15, textAlign: "center"}]}>Enter manually</CustomText>
               </TouchableOpacity>
               <TouchableOpacity style={modalStyles.optionContainer} onPress={openImagePickerAsync}>
-                <Text style={styles.h3} >
+              <Icon name="upload" size={40}/>
+                <CustomText style={[styles.h3, {paddingHorizontal: 20, paddingTop: 15, textAlign: "center"}]} >
                   Upload File
-                </Text>
+                </CustomText>
               </TouchableOpacity>
             </View>
             <TouchableOpacity
@@ -279,7 +283,10 @@ const resizeImageIfNeeded = async (
               }}
               onPress={launchCameraFunc}
             >
-              <Text style={styles.h3}>Take a Picture</Text>
+              <View style={{flexDirection:"row", alignItems:"center"}}>
+              <Icon name="camera" size={40}/>
+              <CustomText style={[styles.h3, {paddingLeft: 15, paddingTop: 5}]}>Take a Picture</CustomText>
+              </View>
               <Camera
                 //ref={cameraRef}
                 type={cameraType}
