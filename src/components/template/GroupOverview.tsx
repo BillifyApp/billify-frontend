@@ -7,7 +7,7 @@ import {styles} from "../../styles/styles";
 import CustomText from "../atom/CustomText";
 import {Group} from "../../stores/types";
 import GroupOverviewComponentPlaceholder from "../placeholder/GroupOverviewComponentPlaceholder";
-import { groupName } from "../../stores/route_names";
+import { groupDetails, groupName } from "../../stores/route_names";
 
 interface GroupOverviewProps {
     groups: Group[] | any;
@@ -19,7 +19,7 @@ function GroupOverview({groups, isLoading, navigation}: GroupOverviewProps) {
     const {t} = useTranslation();
 
     function openGroup(group: Group) {
-        navigation.navigate(groupName, {screen: 'GroupDetails', params: {group: group}});
+        navigation.navigate(groupName, {screen: groupDetails, params: {group: group}});
     }
 
     return (

@@ -23,7 +23,7 @@ const Tab = createBottomTabNavigator();
 export default function BottomBarNavigation() {
     return (
         <Tab.Navigator
-            initialRouteName={t("common.home")}
+            initialRouteName={homeNavName}
             
             screenOptions={({ route }) => ({
                 headerShown: false,
@@ -55,7 +55,7 @@ export default function BottomBarNavigation() {
                 }}
             ></Tab.Screen>
             <Tab.Screen
-                name={homeName}
+                name={homeNavName}
                 component={HomeNavigation}
                 options={{
                     title: t("common.home"),

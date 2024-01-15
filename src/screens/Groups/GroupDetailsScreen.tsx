@@ -70,7 +70,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                     styles.headingMargin,
                     { justifyContent: "flex-start", alignItems: "baseline" },
                 ]}
-                onPress={() => navigation.pop()}
+                onPress={() => navigation.navigate("GroupScreen")}
             >
                 <Icon name="pfeil_l" size={20} style={{ marginRight: 20 }} />
                 <CustomText style={styles.h1}>

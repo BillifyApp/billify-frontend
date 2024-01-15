@@ -12,7 +12,7 @@ const GroupStack = createNativeStackNavigator();
 function GroupNavigation() {
     return (
         <>
-            <GroupStack.Navigator screenOptions={{headerShown: false,  contentStyle: { backgroundColor: '#fff' }}}>
+            <GroupStack.Navigator initialRouteName={groupScreen} screenOptions={{headerShown: false,  contentStyle: { backgroundColor: '#fff' }}}>
                 <GroupStack.Screen name={groupScreen} component={GroupScreen}/>
                 <GroupStack.Screen name={groupDetails} component={GroupDetailsScreen}/>
                 <GroupStack.Screen name={addMember} component={AddMember}/>
