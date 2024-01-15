@@ -216,7 +216,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                     )}
                     {!addGroupOptionsVisible && (
                         <AddReceiptButton
-                            name="add"
+                            name="begleichen"
                             onPress={() => {
                                 setAddGroupOptionsVisible(true);
                             }}
@@ -229,15 +229,19 @@ export default function GroupDetailsScreen({ navigation }: any) {
                         animationType="fade"
                     >
                         <View style={popup.bottomView}>
-                            <View style={{display:"flex", flexDirection:"column", backgroundColor:"black"}}>
-                                <CustomButton
-                                    title="TODO Schulden begleichen"
-                                    type="secondary"
-                                />
-                                <CustomButton
-                                    title="TODO Rechnung dieser Gruppe hinzufügen"
-                                    type="secondary"
-                                />
+                            <View style={{display:"flex", flexDirection:"column", alignItems: "flex-end", paddingBottom: 100}}>
+                                <TouchableOpacity style={{flexDirection:"row", alignItems:"center", paddingBottom: 10}}>
+                                    <CustomText style={[styles.p, {paddingRight: 15}]}>
+                                        {"TODO Schulden begleichen"}
+                                    </CustomText>
+                                    <Icon name="schulden" size={20}/>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={{flexDirection:"row", alignItems:"center", paddingBottom: 10}}>
+                                    <CustomText style={[styles.p, {paddingRight: 15}]}>
+                                        {"TODO Rechnung dieser Gruppe hinzufügen"}
+                                    </CustomText>
+                                    <Icon name="add" size={20}/>
+                                </TouchableOpacity>
                                 <AddReceiptButton
                                     name="x"
                                     onPress={() => {

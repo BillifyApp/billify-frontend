@@ -24,12 +24,12 @@ export const popup = StyleSheet.create({
   },
   bottomView:{
     width: '100%',
-    height: 50,
+    height: 150,
     justifyContent: 'center',
     alignItems: "flex-end",
     position: 'absolute',
-    bottom: 100,
-    right: 50,
+    bottom: 75,
+    right: 20,
   
   }
 });
