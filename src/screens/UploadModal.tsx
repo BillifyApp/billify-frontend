@@ -26,6 +26,7 @@ import {
 import ImageResizer from 'react-native-image-resizer';
 import { styles } from "../styles/styles";
 import { COLORS } from "../styles/colors";
+import AnimatedLottieView from "lottie-react-native";
 //TUT https://blog.logrocket.com/how-to-upload-images-react-native-laravel-api/#setting-up-the-laravel-image-upload-api
 
 interface CustomResizeResult {
@@ -229,7 +230,12 @@ const resizeImageIfNeeded = async (
         <Text style={[styles.h3, { textAlign: "center", marginBottom: 30, width: "60%", alignSelf:"center" }]}>
           {t("common.add_bill_desc")}</Text>
         {selectedImage && isProcessing ? (
-          <Text>Processing...</Text>
+          <View style={{paddingTop: 250}}>
+          <AnimatedLottieView
+          source={require("../assets/animations/loading.json")}
+          autoPlay
+          loop
+          /></View>
         ) : (
           <View
             style={{
