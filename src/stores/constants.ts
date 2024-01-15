@@ -11,7 +11,7 @@ export const urlEliHttp = 'http://10.0.0.198:3000'
 export const urlEliHttps = 'https://10.0.0.198:443'
 export const urlTobiHttp = "http://192.168.178.99:3000" 
 export const urlRender = 'https://billify-backend-api-srti.onrender.com'
-export const url = urlEliHttp;
+export const url = urlRender;
 
 export const TOKEN_KEY = "billify-jwt"
 export const USER_KEY = "billify-user_id"

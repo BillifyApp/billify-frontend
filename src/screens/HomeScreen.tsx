@@ -106,7 +106,7 @@ export default function HomeScreen({ navigation }) {
           <View style={homeStyles.searchContainer}>
             <CustomInput
               placeholder={t("common.search")}
-              style={{ width: "90%" }}
+              style={{ width: "90%"}}
             />
           </View>
           <LastBillsOverview
@@ -121,7 +121,7 @@ export default function HomeScreen({ navigation }) {
           {<GroupOverview groups={latestGroups} isLoading={loading} navigation={navigation} />}
         </View>
       </ScrollView>
-      <AddReceiptButton title="+" onPress={handlePresentModalPress} />
+      <AddReceiptButton name="add" onPress={handlePresentModalPress} style={{right: 20}} />
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}

@@ -17,6 +17,7 @@ import axios from "axios";
 import { url } from "../../stores/constants";
 import { useAuth } from "../../context/AuthContext";
 import { Group } from "../../stores/types";
+import { Icon } from "../../styles/fonts";
 
 export default function CreateGroupScreen({ navigation }: any) {
   const { t } = useTranslation();
@@ -51,23 +52,23 @@ export default function CreateGroupScreen({ navigation }: any) {
     }
   }
   return (
-    <SafeAreaView style={{ height: "100%" }}>
-      <View style={styles.headingMargin}>
-        <View>
+    <SafeAreaView>
+      <View style={[styles.headingMargin, { height: "95%", marginTop: 60 }]}>
+        <View style={{justifyContent:"center", alignItems:"center", width: "100%", paddingHorizontal: 10}}>
           <View
             style={{
               flexDirection: "row",
-              alignItems: "baseline",
+              alignItems: "center",
               justifyContent: "space-between",
-              width: "90%",
               marginBottom: 30,
+              width: "100%",
             }}
           >
             <CustomText style={styles.h1}>
               {t("groups.create_group_heading")}
             </CustomText>
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Image source={require("../../assets/icons/cancel.png")} />
+              <Icon name="x" size={20}/>
             </TouchableOpacity>
           </View>
           {activeStep === "name" && (

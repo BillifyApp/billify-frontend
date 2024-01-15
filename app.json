@@ -28,10 +28,16 @@
       },
       "config": {
         "networkSecurityConfig": "network_security_config.xml"
-      }
+      },
+      "package": "billify.app"
     },
     "web": {
       "favicon": "./assets/logo.jpg"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2e71780c-cb82-49c9-af20-b4cfc9ded806"
+      }
     }
   }
 }

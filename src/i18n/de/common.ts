@@ -10,6 +10,9 @@ export default {
   create: "Erstellen",
   back: "Zurück",
   
+  home: "Home",
+  notifications: "Mitteilungen",
+  profile: "Profil",
 
   // Welcome Screen
   create_account: "Account erstellen",

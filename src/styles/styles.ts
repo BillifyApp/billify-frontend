@@ -3,12 +3,12 @@ import { COLORS } from "./colors";
 
 export const styles = StyleSheet.create({
   h1: {
-    fontSize: 30,
+    fontSize: 25,
     color: COLORS.black,
     fontFamily: "Poppins-SemiBold",
   },
   h2: {
-    fontSize: 23,
+    fontSize: 22,
     color: COLORS.black,
     fontFamily: "Poppins-Medium",
   },

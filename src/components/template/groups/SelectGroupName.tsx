@@ -13,7 +13,7 @@ type Props = {
 export default function SelectGroupName({value, onChangeText }: Props) {
   const { t } = useTranslation();
   return (
-    <View>
+    <View style={{width: "100%"}}>
       <CustomText style={[styles.pMedium, { marginBottom: 10 }]}>
         {t("groups.choose_name")}
       </CustomText>
@@ -21,7 +21,7 @@ export default function SelectGroupName({value, onChangeText }: Props) {
         placeholder={t("groups.group_name")}
         placeholderTextColor={COLORS.gray_darker}
         value={value}
-        style={{ borderRadius: 8, backgroundColor: COLORS.white }}
+        style={{ borderRadius: 8, backgroundColor: COLORS.white, width: "100%" }}
         onChangeText={(text: string) => {
           onChangeText(text);
         }}

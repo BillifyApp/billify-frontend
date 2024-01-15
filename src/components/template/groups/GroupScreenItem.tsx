@@ -4,6 +4,7 @@ import { COLORS } from "../../../styles/colors";
 import { styles } from "../../../styles/styles";
 import CustomText from "../../atom/CustomText";
 import { Group } from "../../../stores/types";
+import { Icon } from "../../../styles/fonts";
 
 
 type Props={
@@ -56,7 +57,7 @@ export default function GroupScreenItem({group, onPress}: Props) {
             </View>
           </View>
         </View>
-        <Image source={require("../../../assets/arrow-forward.png")} />
+        <Icon name="pfeil_r" size={20}/>
       </View>
     </TouchableOpacity>
   );
