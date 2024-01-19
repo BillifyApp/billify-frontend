@@ -8,7 +8,7 @@ import { Group, Receipt } from "../../stores/types";
 import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
 import { COLORS } from "../../styles/colors";
 import CustomButton from "../../components/atom/CustomButton";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import axios from "axios";
 import { url } from "../../stores/constants";
 import AddReceiptButton from "../../components/atom/AddReceiptButton";
@@ -18,6 +18,8 @@ import SearchBar from "../../components/SearchBar";
 import { addMember } from "../../stores/route_names";
 import { Icon } from "../../styles/fonts";
 import { SafeAreaView } from "react-native-safe-area-context";
+import UploadModal from "../UploadModal";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 type ParamList = {
     Group: {
@@ -34,6 +36,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
     const { group } = route.params;
     const [receipts, setReceipts] = useState<Receipt[] | null>(null);
     let ScreenHeight = Dimensions.get("window").height;
+
     async function deleteGroup() {
         try {
             console.log(group._id);
@@ -56,13 +59,29 @@ export default function GroupDetailsScreen({ navigation }: any) {
             console.log(e);
         }
     }
-
+    const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+    const handlePresentModalPress = useCallback(() => {
+        bottomSheetModalRef.current?.present();
+        setModalActive(true);
+    }, []);
+    const [modalActive, setModalActive] = useState(false);
+    const handleSheetChanges = useCallback((index: number) => {
+        if (index === -1) {
+            setModalActive(false);
+        }
+    }, []);
+    const snapPoints = useMemo(() => ["25%", "66%"], []);
     useFocusEffect(
         useCallback(() => {
             getReceipts();
             console.log(group);
         }, [])
     );
+    useFocusEffect(
+        useCallback(() => {
+          return () => bottomSheetModalRef.current?.close()
+        }, [])
+      );
     return (
         <SafeAreaView>
             <TouchableOpacity
@@ -229,18 +248,42 @@ export default function GroupDetailsScreen({ navigation }: any) {
                         animationType="fade"
                     >
                         <View style={popup.bottomView}>
-                            <View style={{display:"flex", flexDirection:"column", alignItems: "flex-end", paddingBottom: 100}}>
-                                <TouchableOpacity style={{flexDirection:"row", alignItems:"center", paddingBottom: 10}}>
-                                    <CustomText style={[styles.p, {paddingRight: 15}]}>
+                            <View
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "flex-end",
+                                    paddingBottom: 100,
+                                }}
+                            >
+                                <TouchableOpacity
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        paddingBottom: 10,
+                                    }}
+                                >
+                                    <CustomText
+                                        style={[styles.p, { paddingRight: 15 }]}
+                                    >
                                         {"TODO Schulden begleichen"}
                                     </CustomText>
-                                    <Icon name="schulden" size={20}/>
+                                    <Icon name="schulden" size={20} />
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{flexDirection:"row", alignItems:"center", paddingBottom: 10}}>
-                                    <CustomText style={[styles.p, {paddingRight: 15}]}>
-                                        {"TODO Rechnung dieser Gruppe hinzufügen"}
+                                <TouchableOpacity
+                                    style={{
+                                        flexDirection: "row",
+                                        alignItems: "center",
+                                        paddingBottom: 10,
+                                    }}
+                                    onPress={()=>{handlePresentModalPress(), setAddGroupOptionsVisible(false)}}
+                                >
+                                    <CustomText
+                                        style={[styles.p, { paddingRight: 15 }]}
+                                    >
+                                        {"Rechnung dieser Gruppe hinzufügen"}
                                     </CustomText>
-                                    <Icon name="add" size={20}/>
+                                    <Icon name="add" size={20} />
                                 </TouchableOpacity>
                                 <AddReceiptButton
                                     name="x"
@@ -251,13 +294,22 @@ export default function GroupDetailsScreen({ navigation }: any) {
                             </View>
                         </View>
                     </Modal>
+                    <BottomSheetModal
+                        ref={bottomSheetModalRef}
+                        index={1}
+                        snapPoints={snapPoints}
+                        onChange={handleSheetChanges}
+                        backgroundStyle={{ backgroundColor: COLORS.gray_light }}
+                    >
+                        <UploadModal navigation={navigation} group_id={group._id}/>
+                    </BottomSheetModal>
                 </View>
             </View>
-            {addGroupOptionsVisible && (
+            {modalActive || addGroupOptionsVisible && (
                 <FadeView style={blur.absolute} duration={500}>
                     <BlurView
                         style={[
-                            addGroupOptionsVisible ? blur.visible : blur.hidden,
+                            (addGroupOptionsVisible || modalActive) ? blur.visible : blur.hidden,
                             blur.absolute,
                         ]}
                         intensity={10}

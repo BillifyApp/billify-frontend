@@ -26,7 +26,7 @@ function GroupOverviewComponent({
       <View style={styles.groupOverviewItem}>
           <Image source={{uri: image}} style={{width:50, height:50, borderRadius: 25}}/>
         <CustomText style={{flex: 2, marginLeft: 20}}>{group_name}</CustomText>
-        <Icon name="pfeil_r" size={20} style={{marginRight: 5}}/>
+        <Icon name="pfeil_r" size={20} style={{marginRight: 5}} color="#25282B"/>
       </View>
     </TouchableOpacity>
   );

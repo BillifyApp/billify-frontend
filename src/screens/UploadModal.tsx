@@ -37,8 +37,13 @@ interface CustomResizeResult {
   height: number;
 }
 
-// @ts-ignore
-function UploadModal({ navigation }) {
+interface UploadModalProps {
+  navigation: any;
+  group_id?: string;
+}
+
+
+function UploadModal({navigation, group_id}: UploadModalProps) {
   const [selectedImage, setSelectedImage] =
     useState<ImagePicker.ImagePickerAsset>();
   const { t } = useTranslation();
@@ -70,6 +75,7 @@ const resizeImageIfNeeded = async (
   maxWidth: number,
   maxHeight: number,
   maxFileSize: number
+
 ): Promise<CustomResizeResult  | undefined> => {
   console.log('Image URI:', imageUri);
   try {
@@ -195,14 +201,28 @@ const resizeImageIfNeeded = async (
           return;
         }
         console.log("Image Uploaded");
-
-        navigation.navigate({
-          name: addReceiptAutoName,
-          params: {
-            ocr_receipt: data.data.receipt,
-            image_path: data.data.image_path,
-          },
-        });
+        console.log(group_id)
+        if(group_id){
+          navigation.navigate({
+            name: addReceiptAutoName,
+            params: {
+              ocr_receipt: data.data.receipt,
+              image_path: data.data.image_path,
+              group_id: group_id
+            },
+            
+          });
+        }
+        else{
+          navigation.navigate({
+            name: addReceiptAutoName,
+            params: {
+              ocr_receipt: data.data.receipt,
+              image_path: data.data.image_path,
+            },
+          });
+        }
+        
       } catch (err) {
         console.log(err);
         alert(`Something went wrong ${err}`);
@@ -257,7 +277,7 @@ const resizeImageIfNeeded = async (
               <TouchableOpacity
                 style={modalStyles.optionContainer}
                 onPress={() => {
-                  navigation.navigate(homeName);
+                  navigation.navigate("AddReceiptManually");
                 }}
               >
                 <Icon name="manuell" size={40}/>

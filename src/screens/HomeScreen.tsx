@@ -94,6 +94,11 @@ export default function HomeScreen({ navigation }) {
     }
   }, []);
   const snapPoints = useMemo(() => ["25%", "66%"], []);
+  useFocusEffect(
+    useCallback(() => {
+      return () => bottomSheetModalRef.current?.close()
+    }, [])
+  );
 
   return (
     <SafeAreaView>
