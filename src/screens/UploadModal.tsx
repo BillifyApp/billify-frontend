@@ -23,7 +23,6 @@ import {
   homeName,
   homeNavName,
 } from "../stores/route_names";
-import ImageResizer from 'react-native-image-resizer';
 import { styles } from "../styles/styles";
 import { COLORS } from "../styles/colors";
 import AnimatedLottieView from "lottie-react-native";
@@ -69,33 +68,7 @@ function UploadModal({navigation, group_id}: UploadModalProps) {
     setIsCameraReady(true);
   };
 
-// Function to dynamically resize an image
-const resizeImageIfNeeded = async (
-  imageUri: string,
-  maxWidth: number,
-  maxHeight: number,
-  maxFileSize: number
 
-): Promise<CustomResizeResult  | undefined> => {
-  console.log('Image URI:', imageUri);
-  try {
-    const imageInfo = await ImageResizer.createResizedImage(imageUri, maxWidth, maxHeight, 'JPEG', 100);
-    const fileInfo = await fetch(imageInfo.uri);
-    const fileSize = Number(fileInfo.headers.get('content-length'));
-    // Check if the file size exceeds the maximum allowed size
-    if (fileSize > maxFileSize || imageInfo.width > maxWidth || imageInfo.height > maxHeight ) {
-      // Calculate a new quality value to achieve the desired file size
-      const newQuality = (maxFileSize / fileSize) * 100;
-      // Resize the image with the new quality value
-      return await ImageResizer.createResizedImage(imageUri, maxWidth, maxHeight, 'JPEG', newQuality);
-    }
-    // If the file size is within the limit, return the original image
-    return imageInfo;
-  } catch (error) {
-    console.error('Error resizing image:', error);
-    return undefined;
-  }
-};
 
 /*   const takePicture = async () => {
     if (cameraRef.current) {
