@@ -29,6 +29,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { Group } from "../../stores/types";
 import { CheckBox } from "@rneui/base";
 import CustomText from "../../components/atom/CustomText";
+import Toast from "react-native-toast-message";
+import { t } from "i18next";
 
 interface Item {
     quantity: number;
@@ -67,7 +69,13 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
             console.log(e);
         }
     }
-
+    function showToast(){
+        Toast.show({
+            type: 'receiptAdded',
+            text1: t("common.success"),
+            text2: t("common.added_receipt")
+          });
+    }
     const numberFormatter = new Intl.NumberFormat("de-DE", {
         style: "currency",
         currency: "EUR",
@@ -99,6 +107,7 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
             //todo print fail
         }
         if (!groupSelected) {
+            showToast();
             if (group_id) {
                 navigation.navigate("GroupScreen");
             } else {
@@ -115,6 +124,7 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                 console.log(e);
             }
             if (groupResult) {
+                showToast();
                 if (group_id) {
                     navigation.navigate("GroupScreen");
                 } else {
