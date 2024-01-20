@@ -82,6 +82,7 @@ export default function CreateGroupScreen({ navigation }: any) {
           {activeStep === "icon" && (
             <SelectGroupIcon
               onPress={(icon: string) => {
+                console.log(icon);
                 setGroupIcon(icon), handleProgressBar(groupName, "110%");
               }}
             />

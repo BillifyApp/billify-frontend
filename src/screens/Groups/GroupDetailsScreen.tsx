@@ -1,4 +1,4 @@
-import { Dimensions, Image, Modal, TouchableOpacity, View } from "react-native";
+import { Dimensions, Image, ImageSourcePropType, Modal, TouchableOpacity, View } from "react-native";
 import { styles } from "../../styles/styles";
 import { popup } from "../../styles/popup";
 import { blur } from "../../styles/blur";
@@ -20,6 +20,7 @@ import { Icon } from "../../styles/fonts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UploadModal from "../UploadModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { GroupIcons } from "../../utils/groupIcons";
 
 type ParamList = {
     Group: {
@@ -35,6 +36,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
     const route = useRoute<RouteProp<ParamList, "Group">>();
     const { group } = route.params;
     const [receipts, setReceipts] = useState<Receipt[] | null>(null);
+    const [groupIcon, setGroupIcon] = useState<ImageSourcePropType | null>(null);
     let ScreenHeight = Dimensions.get("window").height;
 
     async function deleteGroup() {
@@ -59,6 +61,15 @@ export default function GroupDetailsScreen({ navigation }: any) {
             console.log(e);
         }
     }
+
+    function getGroupIcon(){
+        GroupIcons.forEach((icon, index) => {
+            if (icon.name === group.icon) {
+                setGroupIcon(icon.source);
+            }
+        });
+    }
+
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const handlePresentModalPress = useCallback(() => {
         bottomSheetModalRef.current?.present();
@@ -74,6 +85,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
     useFocusEffect(
         useCallback(() => {
             getReceipts();
+            getGroupIcon();
             console.log(group);
         }, [])
     );
@@ -105,14 +117,14 @@ export default function GroupDetailsScreen({ navigation }: any) {
                         }}
                     >
                         <View style={{ flexDirection: "row" }}>
-                            <Image
-                                source={{ uri: group.icon }}
+                            { groupIcon && <Image
+                                source={groupIcon}
                                 style={{
                                     width: 100,
                                     height: 100,
                                     borderRadius: 10,
                                 }}
-                            />
+                            />}
                             <View style={{ marginLeft: 20 }}>
                                 <CustomText style={styles.pMedium}>
                                     {group.name}

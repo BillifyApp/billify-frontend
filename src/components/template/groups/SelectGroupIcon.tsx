@@ -6,7 +6,7 @@ import { COLORS } from "../../../styles/colors";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
-
+import { GroupIcons } from "../../../utils/groupIcons";
 type Props = {
   onPress: Function;
 };
@@ -14,15 +14,15 @@ type Props = {
 export default function SelectGroupIcon({ onPress }: Props) {
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState<number|null>(null);
-  //TODO get group icons from backend
-  const groupIconSources = [
-    require("../../../assets/group-pictures/einkaufen.png"),
-    require("../../../assets/group-pictures/partner.png"),
-    require("../../../assets/group-pictures/party.png"),
-    require("../../../assets/group-pictures/reisen.png"),
-    require("../../../assets/group-pictures/freunde.png"),
-    require("../../../assets/group-pictures/wg.png")
-  ];
+
+  const groupIconStrings = [
+    "../../../assets/group-pictures/einkaufen.png",
+    "../../../assets/group-pictures/partner.png",
+    "../../../assets/group-pictures/party.png",
+    "../../../assets/group-pictures/reisen.png",
+    "../../../assets/group-pictures/freunde.png",
+    "../../../assets/group-pictures/wg.png"
+  ]
 
   //TODO get group icons from backend
 
@@ -40,17 +40,17 @@ export default function SelectGroupIcon({ onPress }: Props) {
           alignItems: "center",
         }}
       >
-        {groupIconSources.map((source, index) => {
+        {GroupIcons.map((icon, index) => {
           return (
             <TouchableOpacity
               key={index}
-              style={{ flexBasis: "43%", margin: 8 }}
+              style={{ flexBasis: "27%", margin: 8 }}
               onPress={() => {
-                onPress(source), setActiveIndex(index);
+                onPress(icon.name), setActiveIndex(index);
               }}
             >
               <Image
-                source={source}
+                source={icon.source}
                 style={[
                   activeIndex === index
                     ? { borderWidth: 3, borderColor: COLORS.primary }
@@ -66,7 +66,7 @@ export default function SelectGroupIcon({ onPress }: Props) {
                 <Image
                   source={require("../../../assets/icons/checked.png")}
                   style={{ position: "absolute",
-                bottom: -10, right: -5, width: 25, height: 25 }}
+                bottom: -10, right: -15, width: 25, height: 25 }}
                 />
               )}
             </TouchableOpacity>
