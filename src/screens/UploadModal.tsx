@@ -20,8 +20,6 @@ import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "react-i18next";
 import {
   addReceiptAutoName,
-  homeName,
-  homeNavName,
 } from "../stores/route_names";
 import { styles } from "../styles/styles";
 import { COLORS } from "../styles/colors";
@@ -223,7 +221,7 @@ function UploadModal({navigation, group_id}: UploadModalProps) {
           {t("common.add_bill")}
         </Text>
         <Text style={[styles.h3, { textAlign: "center", marginBottom: 30, width: "60%", alignSelf:"center" }]}>
-          {t("common.add_bill_desc")}</Text>
+          {isProcessing ? t("common.bill_processing") : t("common.add_bill_desc") }</Text>
         {selectedImage && isProcessing ? (
           <View style={{paddingTop: 250}}>
           <AnimatedLottieView

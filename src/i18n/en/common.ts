@@ -46,6 +46,7 @@ export default {
     // Add Bill
     add_bill: "Add Bill",
     add_bill_desc: "Add your receipt with one of the following options.",
+    bill_processing: "Your bill is being processed - this may take up to a minute.",
 
     items: {
         one: "Item",

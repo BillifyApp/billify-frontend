@@ -99,7 +99,11 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
             //todo print fail
         }
         if (!groupSelected) {
-            navigation.navigate(successfullyAddedName);
+            if (group_id) {
+                navigation.navigate("GroupScreen");
+            } else {
+                navigation.navigate(homeName);
+            }
         }
         if (result && groupSelected) {
             try {
@@ -111,7 +115,11 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                 console.log(e);
             }
             if (groupResult) {
-                navigation.navigate(successfullyAddedName);
+                if (group_id) {
+                    navigation.navigate("GroupScreen");
+                } else {
+                    navigation.navigate(homeName);
+                }
             }
         }
 

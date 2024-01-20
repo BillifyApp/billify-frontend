@@ -46,6 +46,7 @@ export default {
   //Add Bill
   add_bill: "Rechnung hinzufügen",
   add_bill_desc: "Füge deine Rechnung mit einer der Methoden hinzu.",
+  bill_processing: "Deine Rechnung wird verarbeitet - dies kann bis zu einer Minute dauern.",
 
   items: {
     one: "Artikel",
