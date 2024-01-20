@@ -126,7 +126,7 @@ export default function HomeScreen({ navigation }) {
           {<GroupOverview groups={latestGroups} isLoading={loading} navigation={navigation} />}
         </View>
       </ScrollView>
-      <AddReceiptButton name="add" onPress={handlePresentModalPress} style={{right: 20}} />
+      <AddReceiptButton name="plus" onPress={handlePresentModalPress} style={{right: 20}} />
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}
