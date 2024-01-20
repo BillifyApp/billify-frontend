@@ -16,12 +16,12 @@ export default function SelectGroupIcon({ onPress }: Props) {
   const [activeIndex, setActiveIndex] = useState<number|null>(null);
   //TODO get group icons from backend
   const groupIconSources = [
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
-    "https://picsum.photos/200",
+    require("../../../assets/group-pictures/einkaufen.png"),
+    require("../../../assets/group-pictures/partner.png"),
+    require("../../../assets/group-pictures/party.png"),
+    require("../../../assets/group-pictures/reisen.png"),
+    require("../../../assets/group-pictures/freunde.png"),
+    require("../../../assets/group-pictures/wg.png")
   ];
 
   //TODO get group icons from backend
@@ -35,7 +35,7 @@ export default function SelectGroupIcon({ onPress }: Props) {
         style={{
           width: "90%",
           flexDirection: "row",
-          flexWrap: "wrap",
+          flexWrap: "wrap", 
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -50,7 +50,7 @@ export default function SelectGroupIcon({ onPress }: Props) {
               }}
             >
               <Image
-                source={{ uri: source }}
+                source={source}
                 style={[
                   activeIndex === index
                     ? { borderWidth: 3, borderColor: COLORS.primary }
