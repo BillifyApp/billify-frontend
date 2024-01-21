@@ -8,6 +8,9 @@ export const customFonts = {
     "Poppins-Light": require("../assets/fonts/Poppins-Light.ttf"),
 
     "Icon-Font": require('../assets/icomoon/fonts/icomoon.ttf'),
+
+    "Inter-SemiBold": require("../assets/fonts/Inter-SemiBold.ttf"),
+    "Inter-Regular": require("../assets/fonts/Inter-Regular.ttf"),
 }
 
 export const Icon = createIconSetFromIcoMoon(

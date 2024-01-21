@@ -1,4 +1,11 @@
-import { Dimensions, Image, ImageSourcePropType, Modal, TouchableOpacity, View } from "react-native";
+import {
+    Dimensions,
+    Image,
+    ImageSourcePropType,
+    Modal,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import { styles } from "../../styles/styles";
 import { popup } from "../../styles/popup";
 import { blur } from "../../styles/blur";
@@ -14,13 +21,13 @@ import { url } from "../../stores/constants";
 import AddReceiptButton from "../../components/atom/AddReceiptButton";
 import FadeView from "../../components/atom/FadeView";
 import { BlurView } from "expo-blur";
-import SearchBar from "../../components/SearchBar";
 import { addMember } from "../../stores/route_names";
 import { Icon } from "../../styles/fonts";
 import { SafeAreaView } from "react-native-safe-area-context";
 import UploadModal from "../UploadModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { GroupIcons } from "../../utils/groupIcons";
+import GroupReceipts from "../../components/atom/ReceiptsOverview/GroupReceipts";
 
 type ParamList = {
     Group: {
@@ -36,7 +43,9 @@ export default function GroupDetailsScreen({ navigation }: any) {
     const route = useRoute<RouteProp<ParamList, "Group">>();
     const { group } = route.params;
     const [receipts, setReceipts] = useState<Receipt[] | null>(null);
-    const [groupIcon, setGroupIcon] = useState<ImageSourcePropType | null>(null);
+    const [groupIcon, setGroupIcon] = useState<ImageSourcePropType | null>(
+        null
+    );
     let ScreenHeight = Dimensions.get("window").height;
 
     async function deleteGroup() {
@@ -62,7 +71,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
         }
     }
 
-    function getGroupIcon(){
+    function getGroupIcon() {
         GroupIcons.forEach((icon, index) => {
             if (icon.name === group.icon) {
                 setGroupIcon(icon.source);
@@ -91,9 +100,9 @@ export default function GroupDetailsScreen({ navigation }: any) {
     );
     useFocusEffect(
         useCallback(() => {
-          return () => bottomSheetModalRef.current?.close()
+            return () => bottomSheetModalRef.current?.close();
         }, [])
-      );
+    );
     return (
         <SafeAreaView>
             <TouchableOpacity
@@ -109,22 +118,25 @@ export default function GroupDetailsScreen({ navigation }: any) {
                 </CustomText>
             </TouchableOpacity>
             <View style={{ alignItems: "center", marginTop: 30 }}>
-                <View style={{ width: "90%", minHeight: "86%" }}>
+                <View style={{ width: "100%", minHeight: "86%", alignItems:"center" }}>
                     <View
                         style={{
+                            width: "90%",
                             flexDirection: "row",
                             justifyContent: "space-between",
                         }}
                     >
                         <View style={{ flexDirection: "row" }}>
-                            { groupIcon && <Image
-                                source={groupIcon}
-                                style={{
-                                    width: 100,
-                                    height: 100,
-                                    borderRadius: 10,
-                                }}
-                            />}
+                            {groupIcon && (
+                                <Image
+                                    source={groupIcon}
+                                    style={{
+                                        width: 100,
+                                        height: 100,
+                                        borderRadius: 10,
+                                    }}
+                                />
+                            )}
                             <View style={{ marginLeft: 20 }}>
                                 <CustomText style={styles.pMedium}>
                                     {group.name}
@@ -212,38 +224,8 @@ export default function GroupDetailsScreen({ navigation }: any) {
                             </View>
                         </Modal>
                     </View>
-                    {group.receipts.length > 0 ? (
-                        <View>
-                            {receipts &&
-                                receipts.map(
-                                    (receipt: Receipt, key: number) => {
-                                        return (
-                                            <CustomText
-                                                key={key}
-                                                style={styles.pMedium}
-                                            >
-                                                {receipt.comp_name +
-                                                    " " +
-                                                    receipt.total +
-                                                    " €"}
-                                            </CustomText>
-                                        );
-                                    }
-                                )}
-                        </View>
-                    ) : (
-                        <>
-                            {/* <View style={{alignItems: "center", marginTop: 150}}>
-                    <CustomText style={[styles.pMedium, {marginBottom: 20}]}>
-                        {t("groups.invite_users")}
-                    </CustomText>
-                    <CustomButton
-                        title={t("groups.copy_code")}
-                        style={{width: "60%", marginBottom: 30}}
-                    />
-                    <CustomButton title={t("groups.share_link")} width="60%"/>
-                </View> */}
-                        </>
+                    {group.receipts.length > 0 && receipts && (
+                        <GroupReceipts receipts={receipts} navigation={navigation} />
                     )}
                     {!addGroupOptionsVisible && (
                         <AddReceiptButton
@@ -288,7 +270,10 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                         alignItems: "center",
                                         paddingBottom: 10,
                                     }}
-                                    onPress={()=>{handlePresentModalPress(), setAddGroupOptionsVisible(false)}}
+                                    onPress={() => {
+                                        handlePresentModalPress(),
+                                            setAddGroupOptionsVisible(false);
+                                    }}
                                 >
                                     <CustomText
                                         style={[styles.p, { paddingRight: 15 }]}
@@ -313,22 +298,28 @@ export default function GroupDetailsScreen({ navigation }: any) {
                         onChange={handleSheetChanges}
                         backgroundStyle={{ backgroundColor: COLORS.gray_light }}
                     >
-                        <UploadModal navigation={navigation} group_id={group._id}/>
+                        <UploadModal
+                            navigation={navigation}
+                            group_id={group._id}
+                        />
                     </BottomSheetModal>
                 </View>
             </View>
-            {modalActive || addGroupOptionsVisible && (
-                <FadeView style={blur.absolute} duration={500}>
-                    <BlurView
-                        style={[
-                            (addGroupOptionsVisible || modalActive) ? blur.visible : blur.hidden,
-                            blur.absolute,
-                        ]}
-                        intensity={10}
-                        tint="light"
-                    />
-                </FadeView>
-            )}
+            {modalActive ||
+                (addGroupOptionsVisible && (
+                    <FadeView style={blur.absolute} duration={500}>
+                        <BlurView
+                            style={[
+                                addGroupOptionsVisible || modalActive
+                                    ? blur.visible
+                                    : blur.hidden,
+                                blur.absolute,
+                            ]}
+                            intensity={10}
+                            tint="light"
+                        />
+                    </FadeView>
+                ))}
         </SafeAreaView>
     );
 }

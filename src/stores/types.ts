@@ -30,4 +30,5 @@ export interface Image {
     address: string;
     items: Array<Item>;
     total: string;
+    category_id?: string;
   }

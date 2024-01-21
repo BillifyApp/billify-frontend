@@ -11,37 +11,7 @@ interface CustomToastProps extends ToastProps {
 }
 
 export const toastConfig = {
-    /*
-      Overwrite 'success' type,
-      by modifying the existing `BaseToast` component
-    */
-    success: (props: ToastProps) => (
-        <BaseToast
-            {...props}
-            style={{ borderLeftColor: "pink" }}
-            contentContainerStyle={{ paddingHorizontal: 15 }}
-            text1Style={{
-                fontSize: 15,
-                fontWeight: "400",
-            }}
-        />
-    ),
-    /*
-      Overwrite 'error' type,
-      by modifying the existing `ErrorToast` component
-    */
-    error: ( props: ToastProps) => (
-        <ErrorToast
-            {...props}
-            text1Style={{
-                fontSize: 17,
-            }}
-            text2Style={{
-                fontSize: 15,
-            }}
-        />
-    ),
-    receiptAdded: ({ icon = "plus", ...props}: CustomToastProps) => (
+    receiptAdded: ({ icon = "Vector", ...props}: CustomToastProps) => (
         <View
             style={{
                 height: 60,

@@ -8,11 +8,11 @@ import {
     addReceiptAutoName,
     groupDetails,
     groupScreen,
-    successfullyAddedName,
+    oneReceiptName,
 } from "../stores/route_names";
 import AddMember from "../screens/Groups/AddMember";
 import AddReceiptAutoScreen from "../screens/Receipts/AddReceiptAutoScreen";
-import SuccessfullyAddedScreen from "../screens/Receipts/SuccessfullyAddedScreen";
+import oneReceiptScreen from "../screens/Receipts/OneReceiptScreen";
 
 const GroupStack = createNativeStackNavigator();
 
@@ -37,8 +37,8 @@ function GroupNavigation() {
                     initialParams={{ receipts_id: null }}
                 />
                 <GroupStack.Screen
-                        name={successfullyAddedName}
-                        component={SuccessfullyAddedScreen}
+                        name={oneReceiptName}
+                        component={oneReceiptScreen}
                     />
                 <GroupStack.Screen name={addMember} component={AddMember} />
             </GroupStack.Navigator>

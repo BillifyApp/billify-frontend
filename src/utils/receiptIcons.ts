@@ -1,0 +1,15 @@
+export const receiptIcons = {
+    groceries: "lebensmittel",
+    education: "bildung",
+    electronics: "technologie",
+    recreation: "freizeit",
+    gifts: "geschenke",
+    health: "gesundheit",
+    household: "haushalt",
+    pets: "haustiere",
+    hobbies: "hobby",
+    clothing: "kleidung",
+    travel: "reisen",
+    transport: "transport",
+    other: "sonstiges",
+};

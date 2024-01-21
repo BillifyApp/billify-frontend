@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import {
   Pressable,
   ScrollView,
@@ -24,24 +23,16 @@ import FlexImage from "../../components/atom/FlexImage";
 import { styles } from "../../styles/styles";
 import CustomButton from "../../components/atom/CustomButton";
 import { BottomSheetModal, BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { Icon } from "../../styles/fonts";
+import { COLORS } from "../../styles/colors";
+import { receiptIcons } from "../../utils/receiptIcons";
+import { Receipt } from "../../stores/types";
 
 interface Item {
   quantity: number;
   itemName: string;
   unitPrice: number;
   subtotal: number;
-}
-
-interface Receipt {
-  _id: string;
-  user_id: string;
-  image: any;
-  date_created: string;
-  date_payed: string;
-  comp_name: string;
-  address: string;
-  items: Array<Item>;
-  total: number;
 }
 
 // @ts-ignore
@@ -92,7 +83,7 @@ function AddReceiptAutoScreen({ route, navigation }) {
           onPress={() => navigation.goBack()}
           style={{ marginTop: 60, marginLeft: 10 }}
         >
-          <Image source={require("../../assets/arrow-back.png")}></Image>
+          <Icon name="pfeil_l" size={20}/>
         </TouchableOpacity>
 
         <Text style={[styles.h1, { textAlign: "center" }]}>
@@ -102,15 +93,17 @@ function AddReceiptAutoScreen({ route, navigation }) {
           <View style={{ flexDirection: "row", paddingVertical: 25 }}>
             <View
               style={{
-                backgroundColor: "#eee",
+                backgroundColor: COLORS.primary_light,
                 height: 100,
                 width: 100,
-                borderRadius: 10,
+                borderRadius: 50,
+                borderColor: COLORS.primary,
+                borderWidth: 1,
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <Text>Shop</Text>
+              <Icon name={receiptIcons[receipt?.category_id as keyof typeof receiptIcons]} size={40} color={COLORS.black}/>
             </View>
             <View style={{ paddingLeft: 20, paddingTop: 10 }}>
               <Text>{receipt?.comp_name}</Text>

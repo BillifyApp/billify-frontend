@@ -21,8 +21,6 @@ import FadeView from "../components/atom/FadeView";
 import CustomText from "../components/atom/CustomText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Group } from "../stores/types";
-import CustomButton from "../components/atom/CustomButton";
-import Toast from "react-native-toast-message";
 
 // @ts-ignore
 export default function HomeScreen({ navigation }) {
