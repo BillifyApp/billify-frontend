@@ -11,11 +11,8 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 //Screens
 import SettingsScreen from "../screens/SettingsScreen";
 import LoginContainer from "../navigation/LoginContainer";
-import UploadScreen from "../screens/UploadScreen";
-import GroupNavigation from "../navigation/GroupNavigation";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import GroupDetailsScreen from "../screens/Groups/GroupDetailsScreen";
 import CreateGroupScreen from "../screens/Groups/CreateGroupScreen";
 import AddReceiptManually from "../screens/Receipts/AddReceiptManually";
 import Toast from "react-native-toast-message";

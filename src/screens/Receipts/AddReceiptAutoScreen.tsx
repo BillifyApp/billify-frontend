@@ -15,7 +15,7 @@ import {
     View,
 } from "react-native";
 import ReceiptItemEntry from "../../components/atom/ReceiptItemEntry";
-import { homeName, successfullyAddedName } from "../../stores/route_names";
+import { homeName } from "../../stores/route_names";
 import axios from "axios";
 import { url } from "../../stores/constants";
 import { useAuth } from "../../context/AuthContext";
@@ -37,13 +37,6 @@ interface Item {
     itemName: string;
     unitPrice: number;
     subtotal: number;
-}
-
-interface Receipt {
-    comp_name: string;
-    address: string;
-    items: Array<Item>;
-    total: number;
 }
 interface ScreenProps {
     route: any;
@@ -69,12 +62,12 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
             console.log(e);
         }
     }
-    function showToast(){
+    function showToast() {
         Toast.show({
-            type: 'receiptAdded',
+            type: "receiptAdded",
             text1: t("common.success"),
-            text2: t("common.added_receipt")
-          });
+            text2: t("common.added_receipt"),
+        });
     }
     const numberFormatter = new Intl.NumberFormat("de-DE", {
         style: "currency",
@@ -126,7 +119,13 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
             if (groupResult) {
                 showToast();
                 if (group_id) {
-                    navigation.navigate("GroupScreen");
+                    navigation.navigate({
+                        name: "splitAmountScreen",
+                        params: {
+                            receipt: receipt,
+                            group_id: group_id,
+                        },
+                    });
                 } else {
                     navigation.navigate(homeName);
                 }
