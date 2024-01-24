@@ -28,7 +28,7 @@ import UploadModal from "../UploadModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { GroupIcons } from "../../utils/groupIcons";
 import GroupReceipts from "../../components/atom/ReceiptsOverview/GroupReceipts";
-import { rw } from "../../utils/responsiveDimenstions";
+import { rh, rw } from "../../utils/responsiveDimenstions";
 
 type ParamList = {
     Group: {
@@ -119,7 +119,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                 </CustomText>
             </TouchableOpacity>
             <View style={{ alignItems: "center", marginTop: 30 }}>
-                <View style={{ width: rw(100), minHeight: "86%", alignItems:"center" }}>
+                <View style={{ width: rw(100), minHeight: rh(80.5), alignItems:"center" }}>
                     <View
                         style={{
                             width: "90%",
@@ -241,6 +241,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                         transparent={true}
                         visible={addGroupOptionsVisible}
                         animationType="fade"
+                        style={{width: rw(100), height: rh(100)}}
                     >
                         <View style={popup.bottomView}>
                             <View
@@ -248,14 +249,16 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                     display: "flex",
                                     flexDirection: "column",
                                     alignItems: "flex-end",
-                                    paddingBottom: 100,
+                                    justifyContent: "flex-end",
+                                    height: rh(20)
                                 }}
                             >
                                 <TouchableOpacity
                                     style={{
                                         flexDirection: "row",
                                         alignItems: "center",
-                                        paddingBottom: 10,
+                                        paddingBottom: 15,
+                                        paddingRight: 20
                                     }}
                                 >
                                     <CustomText
@@ -269,7 +272,8 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                     style={{
                                         flexDirection: "row",
                                         alignItems: "center",
-                                        paddingBottom: 10,
+                                        paddingBottom: 105,
+                                        paddingRight: 20
                                     }}
                                     onPress={() => {
                                         handlePresentModalPress(),

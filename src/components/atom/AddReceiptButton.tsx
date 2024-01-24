@@ -3,6 +3,7 @@ import { Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import CustomText from "./CustomText";
 import { COLORS } from "../../styles/colors";
 import { Icon } from "../../styles/fonts";
+import { rh } from "../../utils/responsiveDimenstions";
 
 interface Props {
     onPress: Function;
@@ -27,14 +28,14 @@ export default function AddReceiptButton(props: Props) {
 const styles = StyleSheet.create({
     button: {
         backgroundColor: COLORS.primary,
-        width: 70,
-        height: 70,
-        borderRadius: 35,
+        width: rh(8),
+        height: rh(8),
+        borderRadius: rh(4),
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
-        bottom: 30,
-        right: 15,
+        bottom: rh(2),
+        right: rh(2),
     },
 });

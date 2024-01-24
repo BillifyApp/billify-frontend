@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { COLORS } from "./colors";
+import { rh } from "../utils/responsiveDimenstions";
 export const popup = StyleSheet.create({
   centeredView: {
     flex: 1,
@@ -24,12 +25,10 @@ export const popup = StyleSheet.create({
   },
   bottomView:{
     width: '100%',
-    height: 150,
-    justifyContent: 'center',
+    height: rh(100),
+    paddingBottom: 50,
+    justifyContent: 'flex-end',
     alignItems: "flex-end",
     position: 'absolute',
-    bottom: 75,
-    right: 20,
-  
   }
 });
