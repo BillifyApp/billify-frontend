@@ -3,19 +3,19 @@ import {Image, StyleSheet, Text, View} from "react-native";
 import {url} from "../../stores/constants";
 import CustomText from './CustomText';
 
-interface FlexImageProps {
+interface UserIconImageProps {
     path: string;
     width: any;
     height: any;
     offset: any;
 }
 
-function FlexImage({path, width, height, offset}: FlexImageProps) {
+function UserIconImage({path, width, height, offset}: UserIconImageProps) {
 
     // const [image, setImage] = useState<any>('')
 
     useEffect(() => {
-        console.log(`${url}/${processPath(path)}`)
+        //console.log(`${url}/${processPath(path)}`)
         //setImage(`${url}/${processPath(path)}`)
     }, []);
 
@@ -49,4 +49,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default FlexImage;
+export default UserIconImage;

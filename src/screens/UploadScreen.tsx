@@ -155,7 +155,7 @@ function UploadScreen({navigation}) {
         <>
             <CustomSafeAreaView>
                 <Button title="<" onPress={() => {
-                    navigation.navigate(homeNavName)
+                    navigation.navigate(homeName)
                 }}></Button>
                 <Text>{t('common.add_bill')}</Text>
                 <Button title="manuell" onPress={() => {

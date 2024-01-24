@@ -4,10 +4,10 @@
     "slug": "billify-frontend",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/logo.jpg",
+    "icon": "./src/assets/logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./src/assets/logo.jpg",
+      "image": "./src/assets/logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -23,15 +23,16 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/logo.jpg",
+        "foregroundImage": "./src/assets/logo.png",
         "backgroundColor": "#ffffff"
       },
       "config": {
         "networkSecurityConfig": "network_security_config.xml"
-      }
+      },
+      "package": "billify.app"
     },
     "web": {
-      "favicon": "./assets/logo.jpg"
+      "favicon": "./assets/logo.png"
     }
   }
 }

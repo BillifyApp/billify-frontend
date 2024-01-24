@@ -10,6 +10,9 @@ export default {
   create: "Erstellen",
   back: "Zurück",
   
+  home: "Home",
+  notifications: "Mitteilungen",
+  profile: "Profil",
 
   // Welcome Screen
   create_account: "Account erstellen",
@@ -42,5 +45,13 @@ export default {
 
   //Add Bill
   add_bill: "Rechnung hinzufügen",
-  add_bill_desc: "Füge deine Rechnung mit einer der Methoden hinzu."
+  add_bill_desc: "Füge deine Rechnung mit einer der Methoden hinzu.",
+  bill_processing: "Deine Rechnung wird verarbeitet - dies kann bis zu einer Minute dauern.",
+  success: "Erfolg!",
+  added_receipt: "Rechnung wurde hinzugefügt.",
+
+  items: {
+    one: "Artikel",
+    many: "Artikel",
+  }
 };

@@ -1,37 +1,41 @@
-import React from 'react';
-import {Text, StyleSheet, Pressable, TouchableOpacity} from 'react-native';
-import CustomText from './CustomText';
+import React from "react";
+import { Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
+import CustomText from "./CustomText";
+import { COLORS } from "../../styles/colors";
+import { Icon } from "../../styles/fonts";
+import { rh } from "../../utils/responsiveDimenstions";
 
 interface Props {
-    onPress: any,
-    title: string
+    onPress: Function;
+    name: string;
+    style?: any;
 }
 
-export default function AddReceiptButton(props: any) {
-    const {onPress, title = 'Save'} = props;
+export default function AddReceiptButton(props: Props) {
+    const { onPress, name = "Save" } = props;
     return (
-        <TouchableOpacity style={styles.button} onPress={onPress}>
-            <CustomText style={styles.text}>{title}</CustomText>
+        <TouchableOpacity
+            onPress={() => {
+                onPress();
+            }}
+            style={[styles.button, props.style]}
+        >
+            <Icon name={name} color="white" size={25} />
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     button: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'absolute',
-        width: 70,
-        height: 70,
-        bottom: 15,
-        right: 15,
-        borderRadius: 50,
-        backgroundColor: "#24AFFE"
-    },
-    text: {
-        fontSize: 50,
-        lineHeight: 58,
-        fontWeight: "200",
-        color: 'white',
+        backgroundColor: COLORS.primary,
+        width: rh(8),
+        height: rh(8),
+        borderRadius: rh(4),
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        bottom: rh(2),
+        right: rh(2),
     },
 });

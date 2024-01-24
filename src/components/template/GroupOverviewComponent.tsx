@@ -1,38 +1,64 @@
 import React from "react";
-import { Text, TouchableOpacity, View, Image } from "react-native";
-import FlexImage from "../atom/FlexImage";
+import {
+    TouchableOpacity,
+    View,
+    Image,
+    ImageSourcePropType,
+} from "react-native";
 import { styles } from "../../styles/styles";
-import UserIconImage from "../atom/UserIconImage";
 import CustomText from "../atom/CustomText";
+import { Icon } from "../../styles/fonts";
+import { GroupIcons } from "../../utils/groupIcons";
 
 interface GroupOverviewComponentProps {
-  group_name: string;
-  images: string[];
+    group_name: string;
+    image: string;
+    index: number;
+    onPress: Function;
 }
 
 function GroupOverviewComponent({
-  group_name,
-  images,
+    group_name,
+    image,
+    index,
+    onPress,
 }: GroupOverviewComponentProps) {
-  return (
-    <TouchableOpacity>
-      <View style={styles.groupOverviewItem}>
-        <View style={{flexDirection: "row"}}>
-          {images.map((path, key) => (
-            <UserIconImage
-              key={key}
-              path={path}
-              width={30}
-              height={30}
-              offset={key * 10}
-            ></UserIconImage>
-          ))}
-        </View>
-        <CustomText style={{flex: 2}}>{group_name}</CustomText>
-        <Image source={require("../../assets/arrow-forward.png")}/>
-      </View>
-    </TouchableOpacity>
-  );
+    const [groupIcon, setGroupIcon] =
+        React.useState<ImageSourcePropType | null>(null);
+    function getGroupIcon() {
+        GroupIcons.forEach((icon) => {
+            if (icon.name === image) {
+                setGroupIcon(icon.source);
+            }
+        });
+    }
+    React.useEffect(() => {
+        getGroupIcon();
+    }, []);
+    return (
+        <TouchableOpacity
+            key={index}
+            onPress={() => {
+                onPress();
+            }}
+        >
+            <View style={styles.groupOverviewItem}>
+                <Image
+                    source={groupIcon ? groupIcon : GroupIcons[0].source}
+                    style={{ width: 50, height: 50, borderRadius: 25 }}
+                />
+                <CustomText style={{ flex: 2, marginLeft: 20 }}>
+                    {group_name}
+                </CustomText>
+                <Icon
+                    name="pfeil_r"
+                    size={20}
+                    style={{ marginRight: 5 }}
+                    color="#25282B"
+                />
+            </View>
+        </TouchableOpacity>
+    );
 }
 
 export default GroupOverviewComponent;

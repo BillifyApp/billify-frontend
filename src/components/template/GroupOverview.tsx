@@ -1,33 +1,53 @@
-import React from 'react';
-import {Text, View} from "react-native";
+import React from "react";
+import {View} from "react-native";
 import {useTranslation} from "react-i18next";
 import GroupOverviewComponent from "./GroupOverviewComponent";
-import {url} from "../../stores/constants";
 import ShowAllAtom from "../atom/ShowAllAtom";
-import {groupName} from "../../stores/route_names";
 import {styles} from "../../styles/styles";
-import CustomText from '../atom/CustomText';
+import CustomText from "../atom/CustomText";
+import {Group} from "../../stores/types";
+import GroupOverviewComponentPlaceholder from "../placeholder/GroupOverviewComponentPlaceholder";
+import { groupDetails, groupName } from "../../stores/route_names";
 
 interface GroupOverviewProps {
-    groups: any[];
+    groups: Group[] | any;
+    isLoading: boolean;
+    navigation: any;
 }
 
-function GroupOverview({groups}: GroupOverviewProps) {
+function GroupOverview({groups, isLoading, navigation}: GroupOverviewProps) {
     const {t} = useTranslation();
 
+    function openGroup(group: Group) {
+        navigation.navigate(groupName, {screen: groupDetails, params: {group: group}});
+    }
 
     return (
         <View>
             <View style={styles.subHeadingMargin}>
-            <CustomText style={styles.h2}>{t('common.groups.many')}</CustomText>
-            <ShowAllAtom routeName={groupName}></ShowAllAtom>
+                <CustomText style={styles.h2}>{t("common.groups.many")}</CustomText>
+                <ShowAllAtom onPress={() => {
+                    navigation.navigate("Groups", {screen: "GroupOverview"})
+                }}></ShowAllAtom>
             </View>
             <View style={styles.groupOverview}>
-            {groups.map((g, key) => <GroupOverviewComponent
-                key={key}
-                group_name={g.name}
-                images={[`uploads/users/user.jpg`, `uploads/users/user.jpg`, `uploads/users/user.jpg`]}/>)}
-       </View>
+                {isLoading || !groups
+                    ? [1, 2, 3, 4, 5].map((key: number) => {
+                        return <GroupOverviewComponentPlaceholder key={key} index={key}/>;
+                    })
+                    : groups.map((g: Group, key: number) => {
+                        {
+                            return (
+                                <GroupOverviewComponent
+                                    key={key}
+                                    index={key}
+                                    group_name={g.name}
+                                    image={g.icon}
+                                    onPress={() => openGroup(g)}
+                                />);
+                        }
+                    })}
+            </View>
         </View>
     );
 }
