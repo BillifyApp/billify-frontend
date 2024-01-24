@@ -50,7 +50,7 @@ export default function ReceiptItem({ receipt, onPress }: ReceiptItemProps) {
                         alignItems: "center",
                     }}
                 >
-                    <Icon
+                   <Icon
                         name={
                             receiptIcons[
                                 receipt.category_id as keyof typeof receiptIcons
