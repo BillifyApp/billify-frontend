@@ -38,6 +38,12 @@ function AddReceiptAutoScreen({ route, navigation }) {
     const { receipt_id, path } = route.params;
     const [receipt, setReceipt] = useState<Receipt | null>(null);
 
+    const dateFormatter = new Intl.DateTimeFormat("de-DE", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+    });
+
     useEffect(() => {
         async function getReceipt() {
             return await axios
@@ -158,7 +164,7 @@ function AddReceiptAutoScreen({ route, navigation }) {
                                         {receipt?.address}
                                     </Text>
                                     <Text style={{ color: "#858585" }}>
-                                        {receipt?.date_payed}
+                                        {receipt && dateFormatter.format(new Date(receipt.date_payed))}
                                     </Text>
                                     <Pressable
                                         onPress={handlePresentModalPress}
