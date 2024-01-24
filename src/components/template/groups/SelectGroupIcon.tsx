@@ -1,4 +1,4 @@
-import { View, Image } from "react-native";
+import { View, Image, Dimensions } from "react-native";
 import { styles } from "../../../styles/styles";
 import CustomText from "../../atom/CustomText";
 import CustomInput from "../../atom/CustomInput";
@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { GroupIcons } from "../../../utils/groupIcons";
+import { rh, rw } from "../../../utils/responsiveDimenstions";
+import { Icon } from "../../../styles/fonts";
 type Props = {
   onPress: Function;
 };
@@ -15,17 +17,6 @@ export default function SelectGroupIcon({ onPress }: Props) {
   const { t } = useTranslation();
   const [activeIndex, setActiveIndex] = useState<number|null>(null);
 
-  const groupIconStrings = [
-    "../../../assets/group-pictures/einkaufen.png",
-    "../../../assets/group-pictures/partner.png",
-    "../../../assets/group-pictures/party.png",
-    "../../../assets/group-pictures/reisen.png",
-    "../../../assets/group-pictures/freunde.png",
-    "../../../assets/group-pictures/wg.png"
-  ]
-
-  //TODO get group icons from backend
-
   return (
     <View>
       <CustomText style={[styles.pMedium, { marginBottom: 10 }]}>
@@ -33,10 +24,10 @@ export default function SelectGroupIcon({ onPress }: Props) {
       </CustomText>
       <View
         style={{
-          width: "90%",
+          width: rw(95),
           flexDirection: "row",
           flexWrap: "wrap", 
-          justifyContent: "center",
+          justifyContent: "space-around",
           alignItems: "center",
         }}
       >
@@ -44,7 +35,7 @@ export default function SelectGroupIcon({ onPress }: Props) {
           return (
             <TouchableOpacity
               key={index}
-              style={{ flexBasis: "27%", margin: 8 }}
+              style={{ margin: rw(2) }}
               onPress={() => {
                 onPress(icon.name), setActiveIndex(index);
               }}
@@ -56,18 +47,21 @@ export default function SelectGroupIcon({ onPress }: Props) {
                     ? { borderWidth: 3, borderColor: COLORS.primary }
                     : {},
                   {
-                    width: 120,
-                    height: 120,
+                    width: rw(27),
+                    height: rh(15),
                     borderRadius: 8,
                   },
                 ]}
               />
               {activeIndex === index && (
-                <Image
-                  source={require("../../../assets/icons/checked.png")}
-                  style={{ position: "absolute",
-                bottom: -10, right: -15, width: 25, height: 25 }}
+                <View style={{ position: "absolute",
+                bottom: -10, right: -12, width: 25, height: 25, backgroundColor: COLORS.primary_light, borderColor: COLORS.primary, borderWidth: 1, borderRadius: 13, justifyContent: "center", alignItems: "center" }}>
+                <Icon
+                  name="Vector"
+                  color={COLORS.primary}
+                  
                 />
+                </View>
               )}
             </TouchableOpacity>
             
