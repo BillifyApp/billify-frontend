@@ -1,6 +1,7 @@
 import React from 'react';
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {SafeAreaView, View} from "react-native";
+import { COLORS } from '../styles/colors';
 
 // @ts-ignore
 function CustomSafeAreaView({children}) {
@@ -20,7 +21,7 @@ function CustomSafeAreaView({children}) {
                     paddingLeft: insets.left,
                     paddingRight: insets.right,
 
-                    backgroundColor: "#fff",
+                    backgroundColor: COLORS.white,
                 }}>
                 {children}
             </View>

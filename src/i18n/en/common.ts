@@ -47,6 +47,23 @@ export default {
     items: {
       one: "Item",
       many: "Items",
+    },
+
+    "Categories": {
+      "education": "Education",
+      "electronics": "Electronics",
+      "recreation": "Recreation",
+      "gifts": "Gifts",
+      "health": "Health",
+      "household": "Household",
+      "pets": "Pets",
+      "hobbies": "Hobbies",
+      "clothing": "Clothing",
+      "groceries": "Groceries",
+      "travel": "Travel",
+      "transport": "Transport",
+      "other": "Other"
     }
+    
   };
   

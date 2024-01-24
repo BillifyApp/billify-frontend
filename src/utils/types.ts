@@ -1,0 +1,15 @@
+export enum Categories{
+        'education',
+        'electronics',
+        'recreation',
+        'gifts',
+        'health',
+        'household',
+        'pets',
+        'hobbies',
+        'clothing',
+        'groceries',
+        'travel',
+        'transport',
+        'other',
+} 

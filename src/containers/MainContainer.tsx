@@ -17,6 +17,7 @@ import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import GroupDetailsScreen from "../screens/Groups/GroupDetailsScreen";
 import CreateGroupScreen from "../screens/Groups/CreateGroupScreen";
+import CategoriesNavigation from "../navigation/CategoriesNavigation";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,10 @@ export default function MainContainer() {
                   <Stack.Screen
                     name="CreateGroup"
                     component={CreateGroupScreen}
+                  />
+                  <Stack.Screen
+                    name="CategoriesNavigation"
+                    component={CategoriesNavigation}
                   />
                   <Stack.Screen name="Settings" component={SettingsScreen} />
                   <Stack.Screen name="Upload" component={UploadScreen} />

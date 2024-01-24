@@ -95,7 +95,7 @@ export default function HomeScreen({ navigation }) {
   const snapPoints = useMemo(() => ["25%", "66%"], []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: COLORS.white}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ backgroundColor: "white", minHeight: ScreenHeight }}>
           <CustomText style={[styles.h1, homeStyles.header]}>
@@ -115,7 +115,7 @@ export default function HomeScreen({ navigation }) {
           />
 
           <CategoryOverview
-            categories={["Groceries", "Clothing", "Entertainment"]}
+            categories={["Groceries", "Clothing", "Entertainment"]} navigation = {navigation}
           />
           {<GroupOverview groups={latestGroups} isLoading={loading} navigation={navigation} />}
         </View>
