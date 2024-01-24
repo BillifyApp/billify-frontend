@@ -28,6 +28,7 @@ import UploadModal from "../UploadModal";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { GroupIcons } from "../../utils/groupIcons";
 import GroupReceipts from "../../components/atom/ReceiptsOverview/GroupReceipts";
+import { rw } from "../../utils/responsiveDimenstions";
 
 type ParamList = {
     Group: {
@@ -118,7 +119,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                 </CustomText>
             </TouchableOpacity>
             <View style={{ alignItems: "center", marginTop: 30 }}>
-                <View style={{ width: "100%", minHeight: "86%", alignItems:"center" }}>
+                <View style={{ width: rw(100), minHeight: "86%", alignItems:"center" }}>
                     <View
                         style={{
                             width: "90%",

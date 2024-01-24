@@ -6,6 +6,7 @@ import GroupScreen from "../screens/Groups/GroupScreen";
 import {
     addMember,
     addReceiptAutoName,
+    editReceiptName,
     groupDetails,
     groupScreen,
     oneReceiptName,
@@ -14,6 +15,7 @@ import AddMember from "../screens/Groups/AddMember";
 import AddReceiptAutoScreen from "../screens/Receipts/AddReceiptAutoScreen";
 import oneReceiptScreen from "../screens/Receipts/OneReceiptScreen";
 import SplitAmountScreen from "../screens/Groups/SplitAmountScreen";
+import EditReceiptScreen from "../screens/Receipts/EditReceiptScreen";
 
 const GroupStack = createNativeStackNavigator();
 
@@ -43,6 +45,10 @@ function GroupNavigation() {
                 <GroupStack.Screen
                         name={oneReceiptName}
                         component={oneReceiptScreen}
+                    />
+                    <GroupStack.Screen
+                        name={editReceiptName}
+                        component={EditReceiptScreen}
                     />
                 <GroupStack.Screen name={addMember} component={AddMember} />
             </GroupStack.Navigator>

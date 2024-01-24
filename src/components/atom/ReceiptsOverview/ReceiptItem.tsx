@@ -8,6 +8,7 @@ import { COLORS } from "../../../styles/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useEffect } from "react";
 import { receiptIcons } from "../../../utils/receiptIcons";
+import { rh, rw } from "../../../utils/responsiveDimenstions";
 
 interface ReceiptItemProps {
     receipt: Receipt;
@@ -31,10 +32,10 @@ export default function ReceiptItem({ receipt, onPress }: ReceiptItemProps) {
             <View
                 style={{
                     flexDirection: "row",
-                    width: "90%",
+                    width: rw(90),
                     justifyContent: "space-between",
                     alignItems: "center",
-                    paddingVertical: 17,
+                    paddingVertical: rh(1.5),
                 }}
             >
                 <View
@@ -43,8 +44,8 @@ export default function ReceiptItem({ receipt, onPress }: ReceiptItemProps) {
                         borderColor: COLORS.primary,
                         borderWidth: 1,
                         borderRadius: 35,
-                        width: 70,
-                        height: 70,
+                        width: rh(8),
+                        height: rh(8),
                         justifyContent: "center",
                         alignItems: "center",
                     }}
@@ -59,7 +60,7 @@ export default function ReceiptItem({ receipt, onPress }: ReceiptItemProps) {
                         color={COLORS.gray_darker}
                     />
                 </View>
-                <View>
+                <View style={{ width: rw(50)}}>
                     <CustomNumberText>
                         {numberFormatter.format(Number(receipt.total))}
                     </CustomNumberText>
@@ -78,7 +79,7 @@ export default function ReceiptItem({ receipt, onPress }: ReceiptItemProps) {
                         <CustomText> Artikel</CustomText>
                     </View>
                 </View>
-                <Icon name="pfeil_r" size={20} />
+                <Icon name="pfeil_r" size={20} style={{paddingLeft: rw(12)}} />
             </View>
         </TouchableOpacity>
     );

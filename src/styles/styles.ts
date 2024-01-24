@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { COLORS } from "./colors";
+import { rh, rw } from "../utils/responsiveDimenstions";
 
 export const styles = StyleSheet.create({
   h1: {
@@ -79,9 +80,9 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
   },
   horizontalDivider: {
-    width: "100%",
-    height: 1,
-    backgroundColor: "#ddd",
+    width: rw(90),
+    height: rh(0.2),
+    backgroundColor: COLORS.gray_light,
     marginVertical: 5,
   },
 });
