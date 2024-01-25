@@ -15,7 +15,7 @@ import {
     View,
 } from "react-native";
 import ReceiptItemEntry from "../../components/atom/ReceiptItemEntry";
-import { homeName } from "../../stores/route_names";
+import {homeName, splitAmountScreen} from "../../stores/route_names";
 import axios from "axios";
 import { url } from "../../stores/constants";
 import { useAuth } from "../../context/AuthContext";
@@ -120,7 +120,7 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                 showToast();
                 if (group_id) {
                     navigation.navigate({
-                        name: "splitAmountScreen",
+                        name: splitAmountScreen,
                         params: {
                             receipt: receipt,
                             group_id: group_id,

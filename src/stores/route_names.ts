@@ -22,3 +22,4 @@ export const groupScreen = "GroupScreen"
 export const groupDetails = "GroupDetails"
 export const createGroupName = "createGroupName"
 export const addMember = "addMember"
+export const splitAmountScreen = "splitAmountScreen";
