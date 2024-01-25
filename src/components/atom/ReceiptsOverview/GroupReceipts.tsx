@@ -13,12 +13,15 @@ interface GroupReceiptsProps {
     navigation: any;
 }
 export default function GroupReceipts({ receipts, navigation }: GroupReceiptsProps) {
+    receipts.forEach((receipt: any) => {
+        receipt.date_created = receipt.date_created.split("T")[0];
+    });
     const sortedReceipts: Receipt[] = receipts.sort((a, b) =>
-        b.date_payed.localeCompare(a.date_payed)
+        b.date_created.localeCompare(a.date_created)
     );
     let groupedReceipts = _.mapValues(
-        _.groupBy(sortedReceipts, "date_payed"),
-        (clist) => clist.map((receipt) => _.omit(receipt, "date_payed"))
+        _.groupBy(sortedReceipts, "date_created"),
+        (clist) => clist.map((receipt) => _.omit(receipt, "date_created"))
     );
     const groupedReceiptsArray = Object.entries(groupedReceipts).map(
         ([key, value]) => ({
@@ -26,6 +29,7 @@ export default function GroupReceipts({ receipts, navigation }: GroupReceiptsPro
             data: value,
         })
     );
+    useEffect(() => { console.log(groupedReceiptsArray)}, [groupedReceiptsArray]);
 
     function openReceipt(receipt: Receipt){
         navigation.navigate({

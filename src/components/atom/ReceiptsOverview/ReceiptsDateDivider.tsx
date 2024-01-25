@@ -22,7 +22,13 @@ export default function ReceiptsDateDivider({
                 borderColor: COLORS.gray_dark,
             }}
         >
-            <CustomText style={{ color: COLORS.gray_darker, paddingLeft: 25, paddingTop:2 }}>
+            <CustomText
+                style={{
+                    color: COLORS.gray_darker,
+                    paddingLeft: 25,
+                    paddingTop: 2,
+                }}
+            >
                 {dateFormatter.format(date)}
             </CustomText>
         </View>
