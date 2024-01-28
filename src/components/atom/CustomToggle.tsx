@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, {useState} from "react";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import CustomText from "./CustomText";
-import { COLORS } from "../../styles/colors";
+import {COLORS} from "../../styles/colors";
 
-export default function CustomSliderToggle() {
+export default function CustomSliderToggle({update}: any) {
     const [isActive, setIsActive] = useState(false);
     const toggleSwitch = () => {
         setIsActive(!isActive);
+        update();
     };
     return (
         <TouchableOpacity onPress={toggleSwitch}>

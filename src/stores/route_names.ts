@@ -4,7 +4,7 @@ export const groupName = "Groups"
 export const homeName = "Home";
 export const homeNavName = "HomeNav";
 export const notificationName = "Notification"
-export const profileName = "Profile"
+export const profileNavName = "Profile"
 //endregion
 
 //region -----------------------------  -----------------------------
@@ -23,3 +23,6 @@ export const groupDetails = "GroupDetails"
 export const createGroupName = "createGroupName"
 export const addMember = "addMember"
 export const splitAmountScreen = "splitAmountScreen";
+
+
+export const profileScreen = "profileScreen";

@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
 
 //Screens
-import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import SearchScreen from "../screens/SearchScreen";
 import {
@@ -10,13 +9,14 @@ import {
     homeName,
     homeNavName,
     notificationName,
-    profileName,
+    profileNavName,
     searchName,
 } from "../stores/route_names";
 import HomeNavigation from "./HomeNavigation";
 import GroupNavigation from "./GroupNavigation";
 import { Icon } from "../styles/fonts";
 import { t } from "i18next";
+import ProfileNavigation from "./ProfileNavigation";
 
 const Tab = createBottomTabNavigator();
 
@@ -77,8 +77,8 @@ export default function BottomBarNavigation() {
                 }}
             ></Tab.Screen>
             <Tab.Screen
-                name={profileName}
-                component={ProfileScreen}
+                name={profileNavName}
+                component={ProfileNavigation}
                 options={{
                     title: t("common.profile"),
                     unmountOnBlur: true,
