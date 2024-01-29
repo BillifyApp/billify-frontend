@@ -6,27 +6,31 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {url} from "../../stores/constants";
 import {useAuth} from "../../context/AuthContext";
-import {Text, TextInput, View} from "react-native";
+import {StyleSheet, Text, TextInput, View} from "react-native";
 import CustomToggle from "../../components/atom/CustomToggle";
 import {useIsFocused} from "@react-navigation/native";
 import {toNumber} from "lodash";
 import {Checkbox} from "expo-checkbox";
+import CustomButton from "../../components/atom/CustomButton";
+import {groupDetails, groupName} from "../../stores/route_names";
 
 interface SplitAmountScreenProps {
     route: any;
+    navigation: any;
 }
 
-export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
+export default function SplitAmountScreen({route, navigation}: SplitAmountScreenProps) {
     const receipt: Receipt = route.params.receipt;
     const group_id: string = route.params.group_id;
     const [group, setGroup] = useState<Group>({} as Group);
-    const [payedBy, setPayedBy] = useState<string>("");
-    const [users, setUsers] = useState<any>([]);
+    const [payedBy, setPayedBy] = useState("");
     const [customSplit, setCustomSplit] = useState<any>(false);
     const [mainCheckbox, setMainCheckbox] = useState<any>(false);
     const [count, setCount] = useState(0);
+    const [sumSplit, setSumSplit] = useState(0);
     const authState = useAuth().authState;
     const [data, setData] = useState([]);
+
 
     const isFocused = useIsFocused();
 
@@ -35,10 +39,9 @@ export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
             try {
                 const result = await axios.get(`${url}/groups/${group_id}`);
                 setGroup(result.data);
-                console.log(result.data);
                 await getUsers(result.data);
             } catch (e) {
-                //console.log(e);
+                console.log(e);
             }
         }
 
@@ -56,13 +59,10 @@ export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
             });
         }
         //users = all users in group;
-
         try {
             const result = await axios.post(`${url}/users/find-many`, {"users": users});
             if (result.data.length > 0) {
                 setPayedBy(result.data[0]._id);
-
-                setUsers(result.data)
 
                 let dataC = result.data.map((user: any) => {
                     return {
@@ -72,16 +72,27 @@ export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
                         sum: 0
                     }
                 })
+
                 setData(dataC)
+                setSumSplit(dataC.map((user: any) => user.sum).reduce((a, b) => {
+                    return a + b
+                }))
             }
         } catch (e) {
-            //console.log(e);
+            console.log(e);
         }
     }
 
     const changeSplit = () => {
         setCustomSplit(!customSplit);
-        //TODO change value wenn man von benutzerdefiniert kommt
+
+        if (!(!customSplit)) {
+            //TODO change value wenn man von benutzerdefiniert kommt
+        }
+
+        /*setSumSplit(dataC.map((user) => user.sum).reduce((a, b) => {
+            return a + b
+        }))*/
         console.log(customSplit);
     }
 
@@ -91,13 +102,35 @@ export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
 
     const changeValue = (text: string, id: string) => {
         let dataC = data;
-        dataC.map((entry: any) => {
-            if (entry._id == id) {
-                entry.sum = toNumber(text);
+        if (text != "") {
+            if (text.endsWith(".") || text.endsWith(",")) {
+                dataC.map((entry: any) => {
+                    if (entry._id == id) {
+                        entry.sum = Number(text).toFixed(2);
+                        console.log(entry.sum)
+                    }
+                })
+            } else {
+                dataC.map((entry: any) => {
+                    if (entry._id == id) {
+                        entry.sum = Number(text);
+                    }
+                })
             }
-        })
-        console.log(dataC)
+
+        } else {
+            dataC.map((entry: any) => {
+                if (entry._id == id) {
+                    entry.sum = 0;
+                }
+            })
+        }
+
         setData(dataC);
+        setSumSplit(dataC.map((user) => user.sum).reduce((a, b) => {
+            return a + b
+        }))
+
     }
 
     const changeCheckbox = (checked: boolean, id: string) => {
@@ -141,6 +174,9 @@ export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
         console.log(sumPart);
         console.log(count)
         setData(dataC);
+        setSumSplit(dataC.map((user) => user.sum).reduce((a, b) => {
+            return a + b
+        }))
         console.log(data);
 
     }
@@ -150,7 +186,7 @@ export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
 
         if (checked) {
             setCount(data.length);
-            sumPart = toNumber(receipt.total) / (data.length);
+            sumPart = Number(receipt.total) / (data.length);
         } else if (!checked) {
             setCount(0)
             sumPart = 0;
@@ -172,57 +208,101 @@ export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
 
         setMainCheckbox(checked);
         setData(dataC);
+        setSumSplit(dataC.map((user) => user.sum).reduce((a, b) => {
+            return a + b
+        }))
         console.log(sumPart);
         console.log(data);
     }
 
+    const addAndNext = async () => {
+        console.log("button pressed")
+        try {
+            console.log(group_id, payedBy, receipt._id)
+            const result = await axios.post(`${url}/receipts-group`, {
+                "group_id": group_id,
+                "user_id": payedBy,
+                "receipt_id": receipt._id,
+                "sum": receipt.total,
+                "users": data.map((user) => {
+                    return ({
+                            "_id": user._id,
+                            "sum": user.sum
+                        }
+                    )
+                })
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
+        navigation.navigate(groupName, {screen: groupDetails, params: {group: group}});
+    }
     return (
         <SafeAreaView>
             <View style={{justifyContent: "center", alignItems: "center"}}>
                 <CustomText>{receipt.comp_name}</CustomText>
                 <CustomText>{group.name}</CustomText>
 
-                <Picker
-                    placeholder="Bezahlt von"
-                    selectedValue={payedBy}
-                    onValueChange={(itemValue, itemIndex) => onPayedByChange(itemValue)}
-                >
-                    {users.length > 0 ? users.map((user: any, key: number) => {
-                            return (
+                <View>
+                    <Picker
+                        style={{
+                            height: 50,
+                            width: 150
+                        }} /*note: muss so sein sonst kann der picker nicht angezeigt werden*/
+                        //placeholder="Bezahlt von"
+                        selectedValue={payedBy}
+                        onValueChange={onPayedByChange}
+                        mode={'dropdown'}>
+
+                        {data.length > 0 ? data.map((user: any, key: number) =>
                                 <Picker.Item
                                     key={key}
-                                    label={user?.firstname ? user?.firstname as string : user?.username as string}
-                                    value={user?._id}
-                                ></Picker.Item>
+                                    label={user?.firstname ? user.firstname as string : user.username as string}
+                                    value={user._id}
+                                />
                             )
+                            : <Picker.Item
+                                label="Bezaht von"
+                                value=""
+                            />
                         }
-                    ) : <></>}
-                    {/*  <Picker.Item
+                        {/*  <Picker.Item
                         label={authState!.firstname as string}
                         value={authState?.id}
                     />
                     <Picker.Item label={"test"} value={"test"}/>*/}
-                </Picker>
+                    </Picker>
+                </View>
                 <CustomToggle update={changeSplit}/>
                 {customSplit ?
                     data.length > 0 ?
-                        data.map((user: any, key: number) => {
+                        <View>
+                            {data.map((user: any, key: number) => {
                                 return (
                                     <View key={key}>
                                         <Text>{user?.firstname}</Text>
-                                        <TextInput style={{backgroundColor: "fff"}}
-                                                   keyboardType="numeric"
-                                                   defaultValue={user.sum as string}
-                                                   value={user.sum as string}
-                                                   onChangeText={(text) => {
-                                                       changeValue(text, user?._id)
-                                                   }}
+                                        <TextInput
+                                            placeholder="0"
+                                            keyboardType="numeric"
+                                            value={user.sum == 0 ? "" : user.sum.toString()}
+                                            onChangeText={(text) => {
+                                                changeValue(text, user?._id)
+                                            }}
                                         />
+                                        {/*  <Text style={{padding: 10, fontSize: 42}}>
+                                            {user.sum}
+                                        </Text>*/}
+
                                     </View>
                                 )
-                            }
-                        ) : <></>
-                    : <View>
+                            })}
+                            <Text>{sumSplit}</Text>
+                            <Text>{receipt.total}</Text>
+                        </View>
+                        : <></>
+                    :
+                    <View>
                         <Checkbox
                             value={mainCheckbox}
                             onValueChange={(newVal) => {
@@ -251,10 +331,27 @@ export default function SplitAmountScreen({route}: SplitAmountScreenProps) {
                                         </View>
                                     )
                                 }
-                            ) : <></>}
+                            ) : <></>
+                        }
                     </View>
                 }
             </View>
+            <CustomButton title='Add' onPress={() => addAndNext()}></CustomButton>
         </SafeAreaView>
-    );
+    )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    pickerStyles: {
+        width: '100%',
+        height: '50%',
+        backgroundColor: 'gray',
+        color: 'white',
+    }
+});

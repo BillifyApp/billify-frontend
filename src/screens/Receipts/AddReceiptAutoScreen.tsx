@@ -95,6 +95,7 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                 user_id: auth?.id,
                 receipt: receipt,
                 image_path: image_path,
+                in_group: groupSelected ? groupSelected : false
             });
         } catch (e) {
             //todo print fail
@@ -108,14 +109,15 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
             }
         }
         if (result && groupSelected) {
-            try {
+            //TODO check
+            /*  try {
                 groupResult = await axios.patch(
                     `${url}/groups/addReceipt/${groupSelected}`,
                     { receipt_id: result.data._id }
                 );
             } catch (e) {
                 console.log(e);
-            }
+            }*/
             if (groupResult) {
                 showToast();
                 if (group_id) {

@@ -1,34 +1,27 @@
-import {
-    Dimensions,
-    Image,
-    ImageSourcePropType,
-    Modal,
-    TouchableOpacity,
-    View,
-} from "react-native";
-import { styles } from "../../styles/styles";
-import { popup } from "../../styles/popup";
-import { blur } from "../../styles/blur";
+import {Dimensions, Image, ImageSourcePropType, Modal, TouchableOpacity, View,} from "react-native";
+import {styles} from "../../styles/styles";
+import {popup} from "../../styles/popup";
+import {blur} from "../../styles/blur";
 import CustomText from "../../components/atom/CustomText";
-import { useTranslation } from "react-i18next";
-import { Group, Receipt } from "../../stores/types";
-import { RouteProp, useFocusEffect, useRoute } from "@react-navigation/native";
-import { COLORS } from "../../styles/colors";
+import {useTranslation} from "react-i18next";
+import {Group, Receipt} from "../../stores/types";
+import {RouteProp, useFocusEffect, useRoute} from "@react-navigation/native";
+import {COLORS} from "../../styles/colors";
 import CustomButton from "../../components/atom/CustomButton";
-import { useCallback, useMemo, useRef, useState } from "react";
+import {useCallback, useMemo, useRef, useState} from "react";
 import axios from "axios";
-import { url } from "../../stores/constants";
+import {url} from "../../stores/constants";
 import AddReceiptButton from "../../components/atom/AddReceiptButton";
 import FadeView from "../../components/atom/FadeView";
-import { BlurView } from "expo-blur";
-import { addMember } from "../../stores/route_names";
-import { Icon } from "../../styles/fonts";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {BlurView} from "expo-blur";
+import {addMember} from "../../stores/route_names";
+import {Icon} from "../../styles/fonts";
+import {SafeAreaView} from "react-native-safe-area-context";
 import UploadModal from "../UploadModal";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { GroupIcons } from "../../utils/groupIcons";
+import {BottomSheetModal} from "@gorhom/bottom-sheet";
+import {GroupIcons} from "../../utils/groupIcons";
 import GroupReceipts from "../../components/atom/ReceiptsOverview/GroupReceipts";
-import { rh, rw } from "../../utils/responsiveDimenstions";
+import {rh, rw} from "../../utils/responsiveDimenstions";
 
 type ParamList = {
     Group: {
@@ -36,13 +29,13 @@ type ParamList = {
     };
 };
 
-export default function GroupDetailsScreen({ navigation }: any) {
-    const { t } = useTranslation();
+export default function GroupDetailsScreen({navigation}: any) {
+    const {t} = useTranslation();
     const [modalVisible, setModalVisible] = useState(false);
     const [addGroupOptionsVisible, setAddGroupOptionsVisible] = useState(false);
     //typescript is eh cool owa monchmoi bin i froh das mei laptop nu ned ausm fenster gflogn is
     const route = useRoute<RouteProp<ParamList, "Group">>();
-    const { group } = route.params;
+    const {group} = route.params;
     const [receipts, setReceipts] = useState<Receipt[] | null>(null);
     const [groupIcon, setGroupIcon] = useState<ImageSourcePropType | null>(
         null
@@ -64,7 +57,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
     async function getReceipts() {
         try {
             const result = await axios.post(`${url}/receipts/findManyById`, {
-                receipt_id: group.receipts,
+                receipt_id: group.receipts_group.map((obj => obj.receipt_id)),
             });
             setReceipts(result.data);
         } catch (e) {
@@ -109,17 +102,17 @@ export default function GroupDetailsScreen({ navigation }: any) {
             <TouchableOpacity
                 style={[
                     styles.headingMargin,
-                    { justifyContent: "flex-start", alignItems: "baseline" },
+                    {justifyContent: "flex-start", alignItems: "baseline"},
                 ]}
                 onPress={() => navigation.navigate("GroupScreen")}
             >
-                <Icon name="pfeil_l" size={20} style={{ marginRight: 20 }} />
+                <Icon name="pfeil_l" size={20} style={{marginRight: 20}}/>
                 <CustomText style={styles.h1}>
                     {t("groups.group_overview")}
                 </CustomText>
             </TouchableOpacity>
-            <View style={{ alignItems: "center", marginTop: 30 }}>
-                <View style={{ width: rw(100), minHeight: rh(80.5), alignItems:"center" }}>
+            <View style={{alignItems: "center", marginTop: 30}}>
+                <View style={{width: rw(100), minHeight: rh(80.5), alignItems: "center"}}>
                     <View
                         style={{
                             width: "90%",
@@ -127,7 +120,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                             justifyContent: "space-between",
                         }}
                     >
-                        <View style={{ flexDirection: "row" }}>
+                        <View style={{flexDirection: "row"}}>
                             {groupIcon && (
                                 <Image
                                     source={groupIcon}
@@ -138,13 +131,13 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                     }}
                                 />
                             )}
-                            <View style={{ marginLeft: 20 }}>
+                            <View style={{marginLeft: 20}}>
                                 <CustomText style={styles.pMedium}>
                                     {group.name}
                                 </CustomText>
-                                <View style={{ flexDirection: "row" }}>
+                                <View style={{flexDirection: "row"}}>
                                     <CustomText
-                                        style={{ color: COLORS.gray_dark }}
+                                        style={{color: COLORS.gray_dark}}
                                     >
                                         {t("common.groups.one") + " ·"}
                                     </CustomText>
@@ -154,9 +147,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                             color: COLORS.gray_dark,
                                         }}
                                     >
-                                        {group.users.length +
-                                            1 +
-                                            " " +
+                                        {group.users.length + " " +
                                             t("groups.members")}
                                     </CustomText>
                                 </View>
@@ -202,10 +193,10 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                                 setModalVisible(false);
                                             }}
                                         >
-                                            <Icon name="x" size={18} />
+                                            <Icon name="x" size={18}/>
                                         </TouchableOpacity>
                                     </View>
-                                    <View style={{ marginTop: 20 }}>
+                                    <View style={{marginTop: 20}}>
                                         <CustomButton
                                             title={t("groups.add_member")}
                                             onPress={() => {
@@ -217,7 +208,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                         />
                                         <CustomButton
                                             title={t("groups.delete")}
-                                            style={{ backgroundColor: "red" }}
+                                            style={{backgroundColor: "red"}}
                                             onPress={deleteGroup}
                                         />
                                     </View>
@@ -225,8 +216,8 @@ export default function GroupDetailsScreen({ navigation }: any) {
                             </View>
                         </Modal>
                     </View>
-                    {group.receipts.length > 0 && receipts && (
-                        <GroupReceipts receipts={receipts} navigation={navigation} />
+                    {group.receipts_group.length > 0 && receipts && (
+                        <GroupReceipts receipts={receipts} navigation={navigation}/>
                     )}
                     {!addGroupOptionsVisible && (
                         <AddReceiptButton
@@ -262,11 +253,11 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                     }}
                                 >
                                     <CustomText
-                                        style={[styles.p, { paddingRight: 15 }]}
+                                        style={[styles.p, {paddingRight: 15}]}
                                     >
                                         {"TODO Schulden begleichen"}
                                     </CustomText>
-                                    <Icon name="schulden" size={20} />
+                                    <Icon name="schulden" size={20}/>
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={{
@@ -281,11 +272,11 @@ export default function GroupDetailsScreen({ navigation }: any) {
                                     }}
                                 >
                                     <CustomText
-                                        style={[styles.p, { paddingRight: 15 }]}
+                                        style={[styles.p, {paddingRight: 15}]}
                                     >
                                         {"Rechnung dieser Gruppe hinzufügen"}
                                     </CustomText>
-                                    <Icon name="add" size={20} />
+                                    <Icon name="add" size={20}/>
                                 </TouchableOpacity>
                                 <AddReceiptButton
                                     name="x"
@@ -301,7 +292,7 @@ export default function GroupDetailsScreen({ navigation }: any) {
                         index={1}
                         snapPoints={snapPoints}
                         onChange={handleSheetChanges}
-                        backgroundStyle={{ backgroundColor: COLORS.gray_light }}
+                        backgroundStyle={{backgroundColor: COLORS.gray_light}}
                     >
                         <UploadModal
                             navigation={navigation}
