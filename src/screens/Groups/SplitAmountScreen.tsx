@@ -30,37 +30,50 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
     const [sumSplit, setSumSplit] = useState(0);
     const authState = useAuth().authState;
     const [data, setData] = useState([]);
-
+    const [loading, setLoading] = useState(true);
 
     const isFocused = useIsFocused();
 
-    useEffect(() => {
-        async function getGroup() {
-            try {
-                const result = await axios.get(`${url}/groups/${group_id}`);
-                setGroup(result.data);
-                await getUsers(result.data);
-            } catch (e) {
-                console.log(e);
-            }
-        }
+    const fetchData = async () => {
+        let group = await getGroup();
+        let users = await getUsers(group);
+        //console.log(group)
+        //console.log(users);
+        setLoading(false);
+    };
 
-        isFocused && getGroup();
-        return () => {
-        };
-    }, [isFocused, route]);
+
+    useEffect(() => {
+        fetchData()
+
+    }, [route.params]);
+
+    async function getGroup() {
+        try {
+            const result = await axios.get(`${url}/groups/${group_id}`);
+            setGroup(result.data);
+            return result.data
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     async function getUsers(group: any) {
-        const users = [];
+        console.log("get users starts here")
+        let users: any[];
+        users = [];
+        console.log(group)
         if (group != null) {
-            users.push(group.owner);
             group.users.forEach((user: any) => {
-                users.push(user._id)
+                users.push(user.id)
             });
         }
+        console.log(users)
         //users = all users in group;
         try {
             const result = await axios.post(`${url}/users/find-many`, {"users": users});
+            console.log(result.data)
+
             if (result.data.length > 0) {
                 setPayedBy(result.data[0]._id);
 
@@ -76,7 +89,7 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
                 setData(dataC)
                 setSumSplit(dataC.map((user: any) => user.sum).reduce((a, b) => {
                     return a + b
-                }))
+                }, 0))
             }
         } catch (e) {
             console.log(e);
@@ -199,11 +212,7 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
         let dataC = data;
         dataC.map((entry: any) => {
             entry.sum = sumPart;
-            if (sumPart > 0) {
-                entry.selected = true;
-            } else {
-                entry.selected = false;
-            }
+            entry.selected = sumPart > 0;
         })
 
         setMainCheckbox(checked);
@@ -219,18 +228,21 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
         console.log("button pressed")
         try {
             console.log(group_id, payedBy, receipt._id)
+            let users = data.map((user) => {
+                return ({
+                        "_id": user._id,
+                        "sum": user.sum
+                    }
+                )
+            }).filter(a => (a.sum != 0))
+
+
             const result = await axios.post(`${url}/receipts-group`, {
                 "group_id": group_id,
                 "user_id": payedBy,
                 "receipt_id": receipt._id,
                 "sum": receipt.total,
-                "users": data.map((user) => {
-                    return ({
-                            "_id": user._id,
-                            "sum": user.sum
-                        }
-                    )
-                })
+                "users": users
             });
         } catch (e) {
             console.log(e);
@@ -238,89 +250,93 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
 
         navigation.navigate(groupName, {screen: groupDetails, params: {group: group}});
     }
+
     return (
+
         <SafeAreaView>
             <View style={{justifyContent: "center", alignItems: "center"}}>
-                <CustomText>{receipt.comp_name}</CustomText>
-                <CustomText>{group.name}</CustomText>
+                {loading && <Text>Loading..</Text>}
+                {!loading &&
+                    (<>
+                        <CustomText>{receipt.comp_name}</CustomText>
+                        <CustomText>{group.name}</CustomText>
+                        <View>
+                            <Picker
+                                style={{
+                                    height: 50,
+                                    width: 150
+                                }} /*note: muss so sein sonst kann der picker nicht angezeigt werden*/
+                                //placeholder="Bezahlt von"
+                                selectedValue={payedBy}
+                                onValueChange={onPayedByChange}
+                                mode={'dropdown'}>
 
-                <View>
-                    <Picker
-                        style={{
-                            height: 50,
-                            width: 150
-                        }} /*note: muss so sein sonst kann der picker nicht angezeigt werden*/
-                        //placeholder="Bezahlt von"
-                        selectedValue={payedBy}
-                        onValueChange={onPayedByChange}
-                        mode={'dropdown'}>
-
-                        {data.length > 0 ? data.map((user: any, key: number) =>
-                                <Picker.Item
-                                    key={key}
-                                    label={user?.firstname ? user.firstname as string : user.username as string}
-                                    value={user._id}
-                                />
-                            )
-                            : <Picker.Item
-                                label="Bezaht von"
-                                value=""
-                            />
-                        }
-                        {/*  <Picker.Item
+                                {data.length > 0 ? data.map((user: any, key: number) =>
+                                        <Picker.Item
+                                            key={key}
+                                            label={user?.firstname ? user.firstname as string : user.username as string}
+                                            value={user._id}
+                                        />
+                                    )
+                                    : <Picker.Item
+                                        label="Bezaht von"
+                                        value=""
+                                    />
+                                }
+                                {/*  <Picker.Item
                         label={authState!.firstname as string}
                         value={authState?.id}
                     />
                     <Picker.Item label={"test"} value={"test"}/>*/}
-                    </Picker>
-                </View>
-                <CustomToggle update={changeSplit}/>
-                {customSplit ?
-                    data.length > 0 ?
-                        <View>
-                            {data.map((user: any, key: number) => {
-                                return (
-                                    <View key={key}>
-                                        <Text>{user?.firstname}</Text>
-                                        <TextInput
-                                            placeholder="0"
-                                            keyboardType="numeric"
-                                            value={user.sum == 0 ? "" : user.sum.toString()}
-                                            onChangeText={(text) => {
-                                                changeValue(text, user?._id)
-                                            }}
-                                        />
-                                        {/*  <Text style={{padding: 10, fontSize: 42}}>
+                            </Picker>
+                        </View>
+                        <CustomToggle update={changeSplit}/>
+                        {customSplit ?
+                            data.length > 0 ?
+                                <View>
+                                    {data.map((user: any, key: number) => {
+                                        return (
+                                            <View key={key}>
+                                                <Text>{user?.firstname}</Text>
+                                                <TextInput
+                                                    placeholder="0"
+                                                    keyboardType="numeric"
+                                                    value={user.sum == 0 ? "" : user.sum.toString()}
+                                                    onChangeText={(text) => {
+                                                        changeValue(text, user?._id)
+                                                    }}
+                                                />
+                                                {/*  <Text style={{padding: 10, fontSize: 42}}>
                                             {user.sum}
                                         </Text>*/}
 
-                                    </View>
-                                )
-                            })}
-                            <Text>{sumSplit}</Text>
-                            <Text>{receipt.total}</Text>
-                        </View>
-                        : <></>
-                    :
-                    <View>
-                        <Checkbox
-                            value={mainCheckbox}
-                            onValueChange={(newVal) => {
-                                changeAllCheckboxes(newVal);
-                            }}
-                        />
-                        {data.length > 0 ?
-                            data.map((user: any, key: number) => {
-                                    return (
-                                        <View key={key}>
-                                            <Text>{user?.firstname}</Text>
-                                            <Checkbox
-                                                value={user.selected}
-                                                onValueChange={(newVal) => {
-                                                    changeCheckbox(newVal, user._id);
-                                                }}
-                                            />
-                                            {/*<BouncyCheckbox
+                                            </View>
+                                        )
+                                    })}
+                                    <Text>{sumSplit}</Text>
+                                    <Text>{receipt.total}</Text>
+                                </View>
+                                : <></>
+                            :
+                            <View>
+                                <Checkbox
+                                    value={mainCheckbox}
+                                    onValueChange={(newVal) => {
+                                        changeAllCheckboxes(newVal);
+                                    }}
+                                />
+                                {data.length > 0 ?
+                                    data.map((user: any, key: number) => {
+                                            return (
+                                                <View key={key}>
+                                                    <Text>{user?.firstname}</Text>
+                                                    <Checkbox
+                                                        value={user.selected}
+                                                        onValueChange={(newVal) => {
+                                                            changeCheckbox(newVal, user._id);
+                                                        }}
+                                                    />
+                                                    {/*<BouncyCheckbox
                                                 onPress={(e) => {
                                                     changeCheckbox(e, user?._id);
 
@@ -328,12 +344,14 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
                                                 disableBuiltInState
                                                 isChecked={user.selected}
                                             />*/}
-                                        </View>
-                                    )
+                                                </View>
+                                            )
+                                        }
+                                    ) : <></>
                                 }
-                            ) : <></>
+                            </View>
                         }
-                    </View>
+                    </>)
                 }
             </View>
             <CustomButton title='Add' onPress={() => addAndNext()}></CustomButton>

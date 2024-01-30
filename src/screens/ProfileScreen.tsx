@@ -131,7 +131,7 @@ export default function ProfileScreen({navigation}: any) {
             <CustomButton title="Splitscreen" onPress={() => navigation.navigate(splitAmountScreen,
                 {
                     receipt: receipt,
-                    group_id: '65abe937d11e01fd16267903'
+                    group_id: '65b82a69ab5093e7551adb04'
                 }
             )}/>
         </View>

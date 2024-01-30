@@ -35,7 +35,7 @@ export default function GroupDetailsScreen({navigation}: any) {
     const [addGroupOptionsVisible, setAddGroupOptionsVisible] = useState(false);
     //typescript is eh cool owa monchmoi bin i froh das mei laptop nu ned ausm fenster gflogn is
     const route = useRoute<RouteProp<ParamList, "Group">>();
-    const {group} = route.params;
+    let {group} = route.params;
     const [receipts, setReceipts] = useState<Receipt[] | null>(null);
     const [groupIcon, setGroupIcon] = useState<ImageSourcePropType | null>(
         null
@@ -54,10 +54,25 @@ export default function GroupDetailsScreen({navigation}: any) {
         }
     }
 
+
+    async function getGroup() {
+        try {
+            let result = await axios.get(`${url}/groups/${group._id}`);
+            group = result.data;
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     async function getReceipts() {
         try {
+            let group_id = group._id;
+            let _group = await axios.get(`${url}/receipts-group/by-group/${group_id}`)
+            console.log(_group.data)
+            const receipt_ids = _group.data.map((obj:any) => obj.receipt_id);
+
             const result = await axios.post(`${url}/receipts/findManyById`, {
-                receipt_id: group.receipts_group.map((obj => obj.receipt_id)),
+                receipt_id: receipt_ids,
             });
             setReceipts(result.data);
         } catch (e) {
@@ -87,6 +102,7 @@ export default function GroupDetailsScreen({navigation}: any) {
     const snapPoints = useMemo(() => ["25%", "66%"], []);
     useFocusEffect(
         useCallback(() => {
+            getGroup();
             getReceipts();
             getGroupIcon();
             console.log(group);

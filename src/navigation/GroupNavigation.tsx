@@ -8,7 +8,7 @@ import {
     editReceiptName,
     groupDetails,
     groupScreen,
-    oneReceiptName,
+    oneReceiptName, splitAmountScreen,
 } from "../stores/route_names";
 import AddMember from "../screens/Groups/AddMember";
 import AddReceiptAutoScreen from "../screens/Receipts/AddReceiptAutoScreen";
@@ -18,7 +18,7 @@ import EditReceiptScreen from "../screens/Receipts/EditReceiptScreen";
 
 const GroupStack = createNativeStackNavigator();
 
-function GroupNavigation({route}) {
+function GroupNavigation() {
 
     return (
         <>
@@ -30,6 +30,7 @@ function GroupNavigation({route}) {
                 }}
             >
                 <GroupStack.Screen name={groupScreen} component={GroupScreen}/>
+
                 <GroupStack.Screen
                     name={groupDetails}
                     component={GroupDetailsScreen}
@@ -40,7 +41,7 @@ function GroupNavigation({route}) {
                     initialParams={{receipts_id: null}}
                 />
                 <GroupStack.Screen
-                    name={"splitAmountScreen"}
+                    name={splitAmountScreen}
                     component={SplitAmountScreen}/>
                 <GroupStack.Screen
                     name={oneReceiptName}
