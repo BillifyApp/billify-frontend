@@ -87,7 +87,7 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
                 })
 
                 setData(dataC)
-                setSumSplit(dataC.map((user: any) => user.sum).reduce((a, b) => {
+                setSumSplit(dataC.map((user: any) => user.sum).reduce((a: number, b: number) => {
                     return a + b
                 }, 0))
             }
@@ -140,7 +140,7 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
         }
 
         setData(dataC);
-        setSumSplit(dataC.map((user) => user.sum).reduce((a, b) => {
+        setSumSplit(dataC.map((user: { _id: string, sum: number }) => user.sum).reduce((a, b) => {
             return a + b
         }))
 
@@ -149,7 +149,7 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
     const changeCheckbox = (checked: boolean, id: string) => {
         let sumPart = 0;
 
-        let count = data.map((user) => {
+        let count = data.map((user: { _id: string, sum: number, selected: boolean }) => {
             return (user.selected)
         }).filter(Boolean).length;
 
@@ -187,7 +187,7 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
         console.log(sumPart);
         console.log(count)
         setData(dataC);
-        setSumSplit(dataC.map((user) => user.sum).reduce((a, b) => {
+        setSumSplit(dataC.map((user: { _id: string, sum: number }) => user.sum).reduce((a, b) => {
             return a + b
         }))
         console.log(data);
@@ -217,7 +217,7 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
 
         setMainCheckbox(checked);
         setData(dataC);
-        setSumSplit(dataC.map((user) => user.sum).reduce((a, b) => {
+        setSumSplit(dataC.map((user: { _id: string, sum: number }) => user.sum).reduce((a, b) => {
             return a + b
         }))
         console.log(sumPart);
@@ -228,7 +228,7 @@ export default function SplitAmountScreen({route, navigation}: SplitAmountScreen
         console.log("button pressed")
         try {
             console.log(group_id, payedBy, receipt._id)
-            let users = data.map((user) => {
+            let users = data.map((user: { _id: string, sum: number }) => {
                 return ({
                         "_id": user._id,
                         "sum": user.sum
