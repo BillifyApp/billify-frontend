@@ -352,6 +352,7 @@ export default function GroupDetailsScreen({navigation}: any) {
                                         paddingRight: 20
                                     }}
                                     onPress={() => {
+                                        setAddGroupOptionsVisible(false);
                                         setModalVisible(false);
                                         navigation.navigate(clearDebts, {users: group.users})
                                     }}
