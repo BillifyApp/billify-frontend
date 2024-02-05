@@ -1,4 +1,4 @@
-import { Group, Receipt } from "../../stores/types";
+import {Group, Receipt} from "../../stores/types";
 import CustomText from "../../components/atom/CustomText";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from "@react-native-picker/picker";
@@ -22,6 +22,7 @@ import { numberFormatter } from "../../utils/formatters";
 
 interface SplitAmountScreenProps {
     route: any;
+    navigation: any;
 }
 
 export default function SplitAmountScreen({
@@ -31,7 +32,11 @@ export default function SplitAmountScreen({
     const receipt: Receipt = route.params.receipt;
     const group_id: string = route.params.group_id;
     const [group, setGroup] = useState<Group>({} as Group);
-    const [payedBy, setPayedBy] = useState<string>("");
+    const [payedBy, setPayedBy] = useState("");
+    const [customSplit, setCustomSplit] = useState<any>(false);
+    const [mainCheckbox, setMainCheckbox] = useState<any>(false);
+    const [count, setCount] = useState(0);
+    const [sumSplit, setSumSplit] = useState(0);
     const authState = useAuth().authState;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -46,37 +51,37 @@ export default function SplitAmountScreen({
         setLoading(false);
     };
 
+
     useEffect(() => {
-        fetchData();
+        fetchData()
+
     }, [route.params]);
 
     async function getGroup() {
         try {
-            const result = await axios.get(`${url}/groups?id=${group_id}`);
+            const result = await axios.get(`${url}/groups/${group_id}`);
             setGroup(result.data);
-            return result.data;
+            return result.data
         } catch (e) {
             console.log(e);
         }
     }
 
     async function getUsers(group: any) {
-        console.log("get users starts here");
+        console.log("get users starts here")
         let users: any[];
         users = [];
-        console.log(group);
+        console.log(group)
         if (group != null) {
             group.users.forEach((user: any) => {
-                users.push(user.id);
+                users.push(user.id)
             });
         }
-        console.log(users);
+        console.log(users)
         //users = all users in group;
         try {
-            const result = await axios.post(`${url}/users/find-many`, {
-                users: users,
-            });
-            console.log(result.data);
+            const result = await axios.post(`${url}/users/find-many`, {"users": users});
+            console.log(result.data)
 
             if (result.data.length > 0) {
                 setPayedBy(result.data[0]._id);
@@ -84,22 +89,16 @@ export default function SplitAmountScreen({
                 let dataC = result.data.map((user: any) => {
                     return {
                         _id: user?._id,
-                        firstname: user?.firstname
-                            ? (user?.firstname as string)
-                            : (user.username as string),
+                        firstname: user?.firstname ? user?.firstname as string : user.username as string,
                         selected: false,
-                        sum: 0,
-                    };
-                });
+                        sum: 0
+                    }
+                })
 
-                setData(dataC);
-                setSumSplit(
-                    dataC
-                        .map((user: any) => user.sum)
-                        .reduce((a: number, b: number) => {
-                            return a + b;
-                        }, 0)
-                );
+                setData(dataC)
+                setSumSplit(dataC.map((user: any) => user.sum).reduce((a: number, b: number) => {
+                    return a + b
+                }, 0))
             }
         } catch (e) {
             console.log(e);
@@ -109,7 +108,7 @@ export default function SplitAmountScreen({
     const changeSplit = () => {
         setCustomSplit(!customSplit);
 
-        if (!!customSplit) {
+        if (!(!customSplit)) {
             //TODO change value wenn man von benutzerdefiniert kommt
         }
 
@@ -117,7 +116,7 @@ export default function SplitAmountScreen({
             return a + b
         }))*/
         console.log(customSplit);
-    };
+    }
 
     const onPayedByChange = (itemValue: string) => {
         setPayedBy(itemValue);
@@ -130,55 +129,52 @@ export default function SplitAmountScreen({
                 dataC.map((entry: any) => {
                     if (entry._id == id) {
                         entry.sum = Number(text).toFixed(2);
-                        console.log(entry.sum);
+                        console.log(entry.sum)
                     }
-                });
+                })
             } else {
                 dataC.map((entry: any) => {
                     if (entry._id == id) {
                         entry.sum = Number(text);
                     }
-                });
+                })
             }
+
         } else {
             dataC.map((entry: any) => {
                 if (entry._id == id) {
                     entry.sum = 0;
                 }
-            });
+            })
         }
 
         setData(dataC);
-        setSumSplit(
-            dataC
-                .map((user: { _id: string; sum: number }) => user.sum)
-                .reduce((a, b) => {
-                    return a + b;
-                })
-        );
-    };
+        setSumSplit(dataC.map((user: { _id: string, sum: number }) => user.sum).reduce((a, b) => {
+            return a + b
+        }))
+
+    }
 
     const changeCheckbox = (checked: boolean, id: string) => {
         let sumPart = 0;
 
-        let count = data
-            .map((user: { _id: string; sum: number; selected: boolean }) => {
-                return user.selected;
-            })
-            .filter(Boolean).length;
+        let count = data.map((user: { _id: string, sum: number, selected: boolean }) => {
+            return (user.selected)
+        }).filter(Boolean).length;
 
         if (checked) {
-            count++;
-            console.log("add");
+            count++
+            console.log("add")
         } else {
-            count--;
-            console.log("sub");
+            count--
+            console.log("sub")
         }
-        sumPart = toNumber(receipt.total) / count;
+        sumPart = toNumber(receipt.total) / (count);
 
         if (sumPart == Infinity) {
             sumPart = 0;
         }
+
 
         let dataC = data;
         dataC.map((entry: any) => {
@@ -194,30 +190,27 @@ export default function SplitAmountScreen({
             if (entry._id == id) {
                 entry.selected = checked;
             }
-        });
+        })
 
         setCount(count);
         console.log(sumPart);
-        console.log(count);
+        console.log(count)
         setData(dataC);
-        setSumSplit(
-            dataC
-                .map((user: { _id: string; sum: number }) => user.sum)
-                .reduce((a, b) => {
-                    return a + b;
-                })
-        );
+        setSumSplit(dataC.map((user: { _id: string, sum: number }) => user.sum).reduce((a, b) => {
+            return a + b
+        }))
         console.log(data);
-    };
+
+    }
 
     const changeAllCheckboxes = (checked: boolean) => {
-        let sumPart = 0;
+        let sumPart = 0
 
         if (checked) {
             setCount(data.length);
-            sumPart = Number(receipt.total) / data.length;
+            sumPart = Number(receipt.total) / (data.length);
         } else if (!checked) {
-            setCount(0);
+            setCount(0)
             sumPart = 0;
         }
 
@@ -229,52 +222,46 @@ export default function SplitAmountScreen({
         dataC.map((entry: any) => {
             entry.sum = sumPart;
             entry.selected = sumPart > 0;
-        });
+        })
 
         setMainCheckbox(checked);
         setData(dataC);
-        setSumSplit(
-            dataC
-                .map((user: { _id: string; sum: number }) => user.sum)
-                .reduce((a, b) => {
-                    return a + b;
-                })
-        );
+        setSumSplit(dataC.map((user: { _id: string, sum: number }) => user.sum).reduce((a, b) => {
+            return a + b
+        }))
         console.log(sumPart);
         console.log(data);
-    };
+    }
 
     const addAndNext = async () => {
-        console.log("button pressed");
+        console.log("button pressed")
         try {
-            console.log(group_id, payedBy, receipt._id);
-            let users = data
-                .map((user: { _id: string; sum: number }) => {
-                    return {
-                        _id: user._id,
-                        sum: user.sum,
-                    };
-                })
-                .filter((a) => a.sum != 0);
+            console.log(group_id, payedBy, receipt._id)
+            let users = data.map((user: { _id: string, sum: number }) => {
+                return ({
+                        "_id": user._id,
+                        "sum": user.sum
+                    }
+                )
+            }).filter(a => (a.sum != 0))
+
 
             const result = await axios.post(`${url}/receipts-group`, {
-                group_id: group_id,
-                user_id: payedBy,
-                receipt_id: receipt._id,
-                sum: receipt.total,
-                users: users,
+                "group_id": group_id,
+                "user_id": payedBy,
+                "receipt_id": receipt._id,
+                "sum": receipt.total,
+                "users": users
             });
         } catch (e) {
             console.log(e);
         }
 
-        navigation.navigate(groupName, {
-            screen: groupDetails,
-            params: { group: group },
-        });
-    };
+        navigation.navigate(groupName, {screen: groupDetails, params: {group: group}});
+    }
 
     return (
+
         <SafeAreaView>
             <View style={{ justifyContent: "flex-start", alignItems: "center", minHeight: rh(75) }}>
                 <View style={defaultStyles.headingMargin}><Icon name="x" size={rh(2)}/><CustomText style={defaultStyles.h1}>Betrag Aufteilen</CustomText><View></View></View>
@@ -436,7 +423,7 @@ export default function SplitAmountScreen({
                 onPress={() => addAndNext()}
             />
         </SafeAreaView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({

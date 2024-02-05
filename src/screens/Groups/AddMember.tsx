@@ -4,6 +4,7 @@ import axios from "axios";
 import {url} from "../../stores/constants";
 import {SearchBarDefault} from "@rneui/base/dist/SearchBar/SearchBar-default";
 import UserListItem from "../../components/atom/UserListItem";
+import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 
 interface AddMemberProps {
     group_id: string;
@@ -43,7 +44,7 @@ function AddMember({route, props}: any) {
     }
 
     return (
-        <View>
+        <CustomSafeAreaView>
             <SearchBarDefault
                 placeholder={"type here"}
                 onChangeText={getUsers}
@@ -64,10 +65,10 @@ function AddMember({route, props}: any) {
                         )
                     })
                     :
-                    <Text>Empty</Text>
+                    <Text>TODO CHANGE Empty</Text>
                 }
             </View>
-        </View>
+        </CustomSafeAreaView>
     );
 }
 

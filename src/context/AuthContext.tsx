@@ -19,7 +19,7 @@ interface AuthProps {
 }
 
 const AuthContext = createContext<AuthProps>({});
-const addtion = 'Bearer';
+const addition = 'Bearer';
 
 
 export const useAuth = () => {
@@ -51,7 +51,7 @@ export const AuthProvider = ({children}: any) => {
 
             if (access_token) {
                 //TODO check validation send request to backend
-                axios.defaults.headers.common['Authorization'] = `${addtion} ${access_token}`; //TODO
+                axios.defaults.headers.common['Authorization'] = `${addition} ${access_token}`; //TODO
 
                 const isValid: boolean = await validation();
                 if (isValid) {
@@ -117,7 +117,7 @@ export const AuthProvider = ({children}: any) => {
                 firstname: result.data?.firstname
             });
 
-            axios.defaults.headers.common['Authorization'] = `${addtion} ${result.data.access_token}`; //TODO
+            axios.defaults.headers.common['Authorization'] = `${addition} ${result.data.access_token}`; //TODO
             try {
                 console.log(result.data)
                 await SecureStore.setItemAsync(TOKEN_KEY, result.data.access_token);

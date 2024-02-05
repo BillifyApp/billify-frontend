@@ -18,3 +18,4 @@ export const Icon = createIconSetFromIcoMoon(
     "Icon-Font",
     "icomoon.ttf"
 )
+

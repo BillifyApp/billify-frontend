@@ -1,6 +1,5 @@
-import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CreateGroupScreen from "../screens/Groups/CreateGroupScreen";
+import React, {useEffect} from "react";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import GroupDetailsScreen from "../screens/Groups/GroupDetailsScreen";
 import GroupScreen from "../screens/Groups/GroupScreen";
 import {
@@ -9,7 +8,7 @@ import {
     editReceiptName,
     groupDetails,
     groupScreen,
-    oneReceiptName,
+    oneReceiptName, splitAmountScreen,
 } from "../stores/route_names";
 import AddMember from "../screens/Groups/AddMember";
 import AddReceiptAutoScreen from "../screens/Receipts/AddReceiptAutoScreen";
@@ -20,16 +19,18 @@ import EditReceiptScreen from "../screens/Receipts/EditReceiptScreen";
 const GroupStack = createNativeStackNavigator();
 
 function GroupNavigation() {
+
     return (
         <>
             <GroupStack.Navigator
                 initialRouteName={groupScreen}
                 screenOptions={{
                     headerShown: false,
-                    contentStyle: { backgroundColor: "#fff" },
+                    contentStyle: {backgroundColor: "#fff"},
                 }}
             >
-                <GroupStack.Screen name={groupScreen} component={GroupScreen} />
+                <GroupStack.Screen name={groupScreen} component={GroupScreen}/>
+
                 <GroupStack.Screen
                     name={groupDetails}
                     component={GroupDetailsScreen}
@@ -37,20 +38,20 @@ function GroupNavigation() {
                 <GroupStack.Screen
                     name={addReceiptAutoName}
                     component={AddReceiptAutoScreen}
-                    initialParams={{ receipts_id: null }}
+                    initialParams={{receipts_id: null}}
                 />
                 <GroupStack.Screen
-                    name={"splitAmountScreen"}
+                    name={splitAmountScreen}
                     component={SplitAmountScreen}/>
                 <GroupStack.Screen
-                        name={oneReceiptName}
-                        component={oneReceiptScreen}
-                    />
-                    <GroupStack.Screen
-                        name={editReceiptName}
-                        component={EditReceiptScreen}
-                    />
-                <GroupStack.Screen name={addMember} component={AddMember} />
+                    name={oneReceiptName}
+                    component={oneReceiptScreen}
+                />
+                <GroupStack.Screen
+                    name={editReceiptName}
+                    component={EditReceiptScreen}
+                />
+                <GroupStack.Screen name={addMember} component={AddMember}/>
             </GroupStack.Navigator>
         </>
     );

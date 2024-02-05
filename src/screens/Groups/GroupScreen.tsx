@@ -42,9 +42,11 @@ export default function GroupScreen({ navigation }: any) {
     const createGroup = () => {
         navigation.navigate("CreateGroup");
     };
+
     function openGroup(group: Group) {
         navigation.navigate("GroupDetails", { group: group });
     }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
             <View style={styles.headingMargin}>

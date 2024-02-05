@@ -1,36 +1,20 @@
-import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import React, {useCallback, useEffect, useMemo, useRef, useState,} from "react";
 import CustomSafeAreaView from "../../components/CustomSafeAreaView";
-import {
-    Dimensions,
-    Pressable,
-    ScrollView,
-    Switch,
-    Text,
-    View,
-} from "react-native";
+import {Dimensions, Pressable, ScrollView, Switch, Text, View,} from "react-native";
 import ReceiptItemEntry from "../../components/atom/ReceiptItemEntry";
-import { homeName } from "../../stores/route_names";
+import {groupScreen, homeName, splitAmountScreen} from "../../stores/route_names";
 import axios from "axios";
-import { url } from "../../stores/constants";
-import { useAuth } from "../../context/AuthContext";
-import {
-    BottomSheetModal,
-    BottomSheetModalProvider,
-} from "@gorhom/bottom-sheet";
-import { styles } from "../../styles/styles";
+import {url} from "../../stores/constants";
+import {useAuth} from "../../context/AuthContext";
+import {BottomSheetModal, BottomSheetModalProvider,} from "@gorhom/bottom-sheet";
+import {styles} from "../../styles/styles";
 import CustomButton from "../../components/atom/CustomButton";
-import { useFocusEffect } from "@react-navigation/native";
-import { Group } from "../../stores/types";
-import { CheckBox } from "@rneui/base";
+import {useFocusEffect} from "@react-navigation/native";
+import {Group} from "../../stores/types";
+import {CheckBox} from "@rneui/base";
 import CustomText from "../../components/atom/CustomText";
 import Toast from "react-native-toast-message";
-import { t } from "i18next";
+import {t} from "i18next";
 
 interface Item {
     quantity: number;
@@ -38,6 +22,7 @@ interface Item {
     unitPrice: number;
     subtotal: number;
 }
+
 interface ScreenProps {
     route: any;
     navigation: any;
@@ -45,9 +30,9 @@ interface ScreenProps {
 }
 
 // @ts-ignore
-function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
+function AddReceiptAutoScreen({route, navigation}: ScreenProps) {
     const auth = useAuth().authState;
-    const { image_path, ocr_receipt: receipt, group_id } = route.params;
+    let {image_path, ocr_receipt: receipt, group_id} = route.params;
     const [isEnabled, setIsEnabled] = useState(false);
     const [groups, setGroups] = useState<Group[] | null>(null);
     const [groupSelected, setGroupSelected] = useState<null | string>(null);
@@ -62,6 +47,7 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
             console.log(e);
         }
     }
+
     function showToast() {
         Toast.show({
             type: "receiptAdded",
@@ -69,6 +55,7 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
             text2: t("common.added_receipt"),
         });
     }
+
     const numberFormatter = new Intl.NumberFormat("de-DE", {
         style: "currency",
         currency: "EUR",
@@ -89,12 +76,13 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
     const addReceipt = async () => {
         //todo post receipt
         let result = null;
-        let groupResult = null;
         try {
+
             result = await axios.post(`${url}/receipts/add-receipt`, {
                 user_id: auth?.id,
                 receipt: receipt,
                 image_path: image_path,
+                in_group: groupSelected != null //true or false
             });
         } catch (e) {
             //todo print fail
@@ -102,33 +90,24 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
         if (!groupSelected) {
             showToast();
             if (group_id) {
-                navigation.navigate("GroupScreen");
+                navigation.navigate(groupScreen);
             } else {
                 navigation.navigate(homeName);
             }
         }
         if (result && groupSelected) {
-            try {
-                groupResult = await axios.patch(
-                    `${url}/groups/addReceipt/${groupSelected}`,
-                    { receipt_id: result.data._id }
-                );
-            } catch (e) {
-                console.log(e);
-            }
-            if (groupResult) {
-                showToast();
-                if (group_id) {
-                    navigation.navigate({
-                        name: "splitAmountScreen",
-                        params: {
-                            receipt: receipt,
-                            group_id: group_id,
-                        },
-                    });
-                } else {
-                    navigation.navigate(homeName);
-                }
+            showToast();
+            group_id = groupSelected;
+            if (group_id) {
+                navigation.navigate({
+                    name: splitAmountScreen,
+                    params: {
+                        receipt: result.data,
+                        group_id: group_id,
+                    },
+                });
+            } else {
+                navigation.navigate(homeName);
             }
         }
 
@@ -161,13 +140,13 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
         console.log("handleSheetChanges", index);
     }, []);
     const snapPoints = useMemo(() => ["25%", "66%"], []);
-    const { height, width } = Dimensions.get("window");
+    const {height, width} = Dimensions.get("window");
     return (
         <CustomSafeAreaView>
             <ScrollView>
                 <BottomSheetModalProvider>
                     <View
-                        style={{ marginHorizontal: 25, alignItems: "center" }}
+                        style={{marginHorizontal: 25, alignItems: "center"}}
                     >
                         <View
                             style={{
@@ -187,12 +166,12 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                             >
                                 <Text>Shop</Text>
                             </View>
-                            <View style={{ paddingLeft: 20, paddingTop: 10 }}>
+                            <View style={{paddingLeft: 20, paddingTop: 10}}>
                                 <Text>{receipt?.comp_name}</Text>
-                                <Text style={{ color: "#858585" }}>
+                                <Text style={{color: "#858585"}}>
                                     {receipt?.address}
                                 </Text>
-                                <Text style={{ color: "#858585" }}>
+                                <Text style={{color: "#858585"}}>
                                     {receipt?.date_payed}
                                 </Text>
                                 <Pressable onPress={handlePresentModalPress}>
@@ -209,18 +188,18 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                         <View style={styles.horizontalDivider}></View>
                         {receipt
                             ? receipt.items.map((i: Item, key: number) => {
-                                  calculatedTotal += i.subtotal;
-                                  return (
-                                      <ReceiptItemEntry
-                                          count={key}
-                                          key={key}
-                                          itemName={i.itemName}
-                                          quantity={i.quantity}
-                                          unitPrice={i.unitPrice}
-                                          subtotal={i.subtotal}
-                                      />
-                                  );
-                              })
+                                calculatedTotal += i.subtotal;
+                                return (
+                                    <ReceiptItemEntry
+                                        count={key}
+                                        key={key}
+                                        itemName={i.itemName}
+                                        quantity={i.quantity}
+                                        unitPrice={i.unitPrice}
+                                        subtotal={i.subtotal}
+                                    />
+                                );
+                            })
                             : undefined}
                         <View style={styles.horizontalDivider}></View>
                         <View
@@ -235,14 +214,14 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                                     {numberFormatter.format(receipt.total)}
                                 </Text>
                             ) : (
-                                <Text style={{ color: "red" }}>
+                                <Text style={{color: "red"}}>
                                     {numberFormatter.format(receipt.total)}
                                 </Text>
                             )}
                         </View>
 
                         <Switch
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
+                            trackColor={{false: "#767577", true: "#81b0ff"}}
                             thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={toggleSwitch}
@@ -261,7 +240,14 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                                                     groupSelected === g._id
                                                 }
                                                 onPress={() => {
-                                                    setGroupSelected(g._id);
+                                                    //TODO check, wenn man von gruppe kommt kann man nicht toggeln
+                                                    if (group_id == null) {
+                                                        if (groupSelected !== g._id) {
+                                                            setGroupSelected(g._id);
+                                                        } else {
+                                                            setGroupSelected(null)
+                                                        }
+                                                    }
                                                 }}
                                             />
                                         </View>
@@ -271,7 +257,7 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                         ) : (
                             <></>
                         )}
-                        <View style={{ flexDirection: "row" }}>
+                        <View style={{flexDirection: "row"}}>
                             <CustomButton
                                 title="Save"
                                 onPress={addReceipt}
@@ -288,7 +274,7 @@ function AddReceiptAutoScreen({ route, navigation }: ScreenProps) {
                             index={1}
                             snapPoints={snapPoints}
                             onChange={handleSheetChanges}
-                            backgroundStyle={{ backgroundColor: "#E0E0E0" }}
+                            backgroundStyle={{backgroundColor: "#E0E0E0"}}
                         >
                             <View
                                 style={{

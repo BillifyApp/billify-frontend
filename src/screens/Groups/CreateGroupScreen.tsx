@@ -41,7 +41,6 @@ export default function CreateGroupScreen({ navigation }: any) {
       const result = await axios.post(`${url}/groups/create`, {
         name: groupName,
         owner: auth?.id,
-        //users: [auth?.id], //NOTE maybe brauch mas nicht wegen owner
         icon: groupIcon,
       });
       //console.log(result.data);
@@ -117,7 +116,7 @@ export default function CreateGroupScreen({ navigation }: any) {
                   setActiveStep("icon");
                 }
                 else{
-                    //TODO show error message and highlight nameinput
+                    //TODO show error message and highlight name input
                   alert("todo: show error message");
                 }
               }}
