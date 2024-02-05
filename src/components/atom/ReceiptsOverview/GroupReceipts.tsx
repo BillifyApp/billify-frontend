@@ -1,7 +1,5 @@
-import { ScrollView, SectionList, View } from "react-native";
+import { SectionList, View } from "react-native";
 import { Receipt } from "../../../stores/types";
-import CustomText from "../CustomText";
-import { styles } from "../../../styles/styles";
 import { useEffect } from "react";
 import * as _ from "lodash";
 import ReceiptItem from "./ReceiptItem";
