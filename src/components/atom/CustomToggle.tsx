@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import CustomText from "./CustomText";
-import { COLORS } from "../../styles/colors";
+import {COLORS} from "../../styles/colors";
+import { rh, rw } from "../../utils/responsiveDimenstions";
 
 export default function CustomSliderToggle() {
     const [isActive, setIsActive] = useState(false);
@@ -46,16 +47,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     slider: {
-        width: 300,
-        height: 60,
-        borderRadius: 30,
+        width: rw(90),
+        height: rh(8),
+        borderRadius: rh(4),
         justifyContent: "center",
         backgroundColor: COLORS.gray_mid,
     },
     handle: {
-        width: 150,
-        height: 58,
-        borderRadius: 30,
+        width: rw(48),
+        height: rh(8),
+        borderRadius: rh(4),
         backgroundColor: "white",
         position: "absolute",
         justifyContent: "center",
@@ -64,22 +65,22 @@ const styles = StyleSheet.create({
         shadowColor: COLORS.gray_darker,
     },
     handleLeft: {
-        left: 2,
+        left: 0,
     },
     handleRight: {
-        right: 2,
+        right: 0,
     },
     inactiveText: {
         position: "absolute",
         color: COLORS.gray_darker,
         justifyContent: "center",
         alignItems: "center",
-        width: 150,
+        width: rw(45),
     },
     inactiveTextLeft: {
-        left: 2,
+        left: rw(2),
     },
     inactiveTextRight: {
-        right: 2,
+        right: rw(2),
     },
 });
