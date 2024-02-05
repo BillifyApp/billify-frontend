@@ -112,7 +112,7 @@ export default function HomeScreen({ navigation }) {
           </CustomText>
           <View style={homeStyles.searchContainer}>
             <CustomInput
-              placeholder={t("common.search")}
+              placeholder={t("common.search") + " (coming soon...)"}
               style={{ width: "90%"}}
             />
           </View>

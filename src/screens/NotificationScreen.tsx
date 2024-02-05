@@ -43,6 +43,7 @@ export default function NotificationScreen({navigation}) {
                 <View style={styles.headingMargin}>
             <CustomText style={styles.h1}>Notification Screen</CustomText>
             </View>
+            {invitations.length === 0 && <CustomText style={{paddingLeft: 20}}>Gruppeneinladungen werden hier angezeigt.</CustomText>}
             {invitations.length > 0 ?
                 invitations.map((inv: any, key) => {
                     return (<InviteListItem
