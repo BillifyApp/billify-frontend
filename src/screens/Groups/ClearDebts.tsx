@@ -1,80 +1,113 @@
-import {SafeAreaView} from "react-native-safe-area-context";
-import {Picker} from "@react-native-picker/picker";
-import React, {useEffect, useState} from "react";
+import React, {StyleSheet, Text, TextInput, View} from "react-native";
 import {useAuth} from "../../context/AuthContext";
-import {StyleSheet, Text, View} from "react-native";
-import {useIsFocused} from "@react-navigation/native";
+import {Picker} from "@react-native-picker/picker";
+import {useEffect, useState} from "react";
+import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import CustomButton from "../../components/atom/CustomButton";
+import axios from "axios";
+import {url} from "../../stores/constants";
+import {groupDetails, groupScreen} from "../../stores/route_names";
 
-interface SplitAmountScreenProps {
-    route: any;
-    navigation: any;
-}
-
-export default function ClearDebts({route, navigation}: SplitAmountScreenProps) {
+export default function ClearDebts({route, navigation}) {
     //const users: [] = route.params.users;
-    const [payedBy, setPayedBy] = useState("");
+    const [payedTo, setPayedTo] = useState("");
     const [users, setUsers] = useState([]);
     const authState = useAuth().authState;
     const [loading, setLoading] = useState(true);
+    const [value, setValue] = useState("");
+    const [valueNum, setValueNum] = useState(0);
+
+    const manip = () => {
+        setUsers(route.params.users.filter((user: any) => user.id !== authState?.id));
+        setPayedTo(route.params.users.filter((user: any) => user.id !== authState?.id)[0].id);
+    }
 
     useEffect(() => {
-        setLoading(false);
         console.log(route.params.users)
-        setUsers(route.params.users.filter(user => user.id !== authState?.id));
-        setPayedBy(route.params.users.filter(user => user.id !== authState?.id)[0].id);
+
+        loading && manip();
+        console.log("did something")
+        console.log(users, payedTo, authState.id)
+        setLoading(false);
     }, [route.params]);
 
+
     const onPayedByChange = (itemValue: string) => {
-        setPayedBy(itemValue);
+        setPayedTo(itemValue);
     };
 
     const addAndNext = async () => {
         console.log("button pressed")
         try {
-            //TODO route mit summe schicken und im backend berechnen
+            const result = axios.post(`${url}/receipts-group/clear-debt`, {
+                user_id: authState?.id,
+                to_user: payedTo,
+                sum: valueNum,
+                group_id: route.params.group._id
+            })
 
+            navigation.navigate(groupScreen);
         } catch (e) {
             console.log(e);
         }
+    }
 
-        //navigation.navigate(groupName, {screen: groupDetails, params: {group: group}});
+    function changeValue(text: string) {
+        console.log(text)
+        let result = text.trim().match(/(\d*)((\.|,)(\d*))?/);
+        console.log(result)
+        if (result != null) {
+            setValue(result[0])
+            setValueNum(Number(result[0].trim()))
+        } else {
+            setValue("")
+            setValueNum(0)
+        }
     }
 
     return (
-        <SafeAreaView>
+        <CustomSafeAreaView>
             <View style={{justifyContent: "center", alignItems: "center"}}>
-                <Text>Hallo</Text>
                 {loading && <Text>Loading..</Text>}
                 {!loading &&
-                    (<>
-                        <View>
-                            <Picker
-                                style={{
-                                    height: 50,
-                                    width: 400
-                                }}
-                                placeholder="Schulden begleichen bei..."
-                                selectedValue={payedBy}
-                                onValueChange={onPayedByChange}
-                                mode={'dropdown'}>
+                    <View>
+                        <Picker
+                            style={{
+                                height: 50,
+                                width: 400
+                            }}
+                            //placeholder="Schulden begleichen bei..."
+                            selectedValue={payedTo}
+                            onValueChange={onPayedByChange}
+                            mode={'dropdown'}>
 
-                                {users && users.length > 0 ? users.map((user: any, key: number) =>
-                                    <Picker.Item
-                                        key={key}
-                                        label={user.username as string}
-                                        value={user.id}
-                                    />
-                                ) : <></>
-                                }
-                            </Picker>
-
-                        </View>
-                    </>)
+                            {users.length > 0 ? users.map((user: any, key: number) =>
+                                <Picker.Item
+                                    key={key}
+                                    label={user.name as string}
+                                    value={user.id}
+                                />
+                            ) : <></>
+                            }
+                        </Picker>
+                        {users.length > 0 &&
+                            <Text>{`Zu begleichen: ${users.filter((user) => user.id === payedTo).map((user) => {
+                                return (user.sum.toFixed(2))
+                            })} €`}</Text>}
+                        <TextInput
+                            placeholder="0"
+                            keyboardType="numeric"
+                            value={value}
+                            onChangeText={(text) => {
+                                changeValue(text)
+                            }}
+                        />
+                        <Text>{` €`}</Text>
+                    </View>
                 }
+                <CustomButton title='Begleichen' onPress={() => addAndNext()}></CustomButton>
             </View>
-            <CustomButton title='Begleichen' onPress={() => addAndNext()}></CustomButton>
-        </SafeAreaView>
+        </CustomSafeAreaView>
     )
 }
 
