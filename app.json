@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "billify-frontend",
-    "slug": "billify-frontend",
+    "name": "billify",
+    "slug": "billify",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./src/assets/logo.png",
+    "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./src/assets/logo.png",
@@ -32,7 +32,7 @@
       "package": "billify.app"
     },
     "web": {
-      "favicon": "./assets/logo.png"
+      "favicon": "./assets/icon.png"
     }
   }
 }
