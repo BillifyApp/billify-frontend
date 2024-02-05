@@ -4,7 +4,7 @@ import {popup} from "../../styles/popup";
 import {blur} from "../../styles/blur";
 import CustomText from "../../components/atom/CustomText";
 import {useTranslation} from "react-i18next";
-import {Group, Receipt} from "../../stores/types";
+import {Group, Receipt, ReceiptsGroup} from "../../stores/types";
 import {RouteProp, useFocusEffect, useRoute} from "@react-navigation/native";
 import {COLORS} from "../../styles/colors";
 import CustomButton from "../../components/atom/CustomButton";
@@ -20,15 +20,16 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import UploadModal from "../UploadModal";
 import {BottomSheetModal} from "@gorhom/bottom-sheet";
 import {GroupIcons} from "../../utils/groupIcons";
-import GroupReceipts from "../../components/atom/ReceiptsOverview/GroupReceipts";
 import {rh, rw} from "../../utils/responsiveDimenstions";
 import {useAuth} from "../../context/AuthContext";
+import ReceiptsGroupOverview from "../../components/atom/ReceiptsOverview/ReceiptsGroupOverview";
 
 type ParamList = {
     Group: {
         group: Group;
     };
 };
+
 
 export default function GroupDetailsScreen({navigation}: any) {
     let {authState} = useAuth();
@@ -39,8 +40,13 @@ export default function GroupDetailsScreen({navigation}: any) {
     const route = useRoute<RouteProp<ParamList, "Group">>();
     let {group} = route.params;
     const [receipts, setReceipts] = useState<Receipt[] | null>(null);
+    const [receipts_group, setReceiptsGroup] = useState<ReceiptsGroup[] | null>(null);
     const [debts, setDebts] = useState([]);
-    const [overview, setOverview] = useState<{ name: any; sum: number; id: any; }[]>([]);
+    const [overview, setOverview] = useState<{
+        name: any;
+        sum: number;
+        id: any;
+    }[]>([]);
     const [groupIcon, setGroupIcon] = useState<ImageSourcePropType | null>(
         null
     );
@@ -72,13 +78,19 @@ export default function GroupDetailsScreen({navigation}: any) {
     async function getReceipts() {
         try {
             let group_id = group._id;
-            let _group = await axios.get(`${url}/receipts-group/by-group/${group_id}`)
-            const receipt_ids = _group.data.map((obj: any) => obj.receipt_id);
+            let _group = await axios.get(`${url}/receipts-group/by-group/${group_id}`);
+            setReceiptsGroup(_group.data);
+            console.log(_group.data)
+
+            const receipt_ids = _group.data.map((obj: any) => {
+                if (obj.sum >= 0) return obj.receipt_id
+            });
 
             const result = await axios.post(`${url}/receipts/findManyById`, {
                 receipt_id: receipt_ids,
             });
             setReceipts(result.data);
+
         } catch (e) {
             console.log(e);
         }
@@ -313,9 +325,11 @@ export default function GroupDetailsScreen({navigation}: any) {
                         </Modal>
                     </View>
                     {
-                        group.receipts_group.length > 0 && receipts && (
-                            <GroupReceipts receipts={receipts} navigation={navigation}/>
+                        group.receipts_group.length > 0 && receipts && receipts_group && receipts_group?.length > 0 && receipts?.length > 0 && (
+                            <ReceiptsGroupOverview receipts_group={receipts_group} receipts={receipts}
+                                                   navigation={navigation}/>
                         )
+                        /* //<GroupReceipts receipts={receipts} navigation={navigation}/>*/
                     }
                     {
                         !addGroupOptionsVisible && (
@@ -354,7 +368,7 @@ export default function GroupDetailsScreen({navigation}: any) {
                                     onPress={() => {
                                         setAddGroupOptionsVisible(false);
                                         setModalVisible(false);
-                                        navigation.navigate(clearDebts, {users: group.users})
+                                        navigation.navigate(clearDebts, {users: overview.filter((debt) => debt.sum < 0), group_id: group._id})
                                     }}
                                 >
                                     <CustomText

@@ -114,7 +114,6 @@ export default function ProfileScreen({navigation}: any) {
 
     return (
         <View style={{backgroundColor: "#fff", height: "100%"}}>
-            <Text>WTF</Text>
             <CustomText
                 style={[
                     styles.h1,
@@ -128,12 +127,6 @@ export default function ProfileScreen({navigation}: any) {
                 onPress={() => navigation.navigate(settingsName)}
             />
             <CustomButton title="Logout" onPress={logout}/>
-            <CustomButton title="Splitscreen" onPress={() => navigation.navigate(splitAmountScreen,
-                {
-                    receipt: receipt,
-                    group_id: '65b82a69ab5093e7551adb04'
-                }
-            )}/>
         </View>
     );
 }

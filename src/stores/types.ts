@@ -23,7 +23,8 @@ export type Receipt_Group = {
     sum: number;
     users: Array<UsersReceiptGroup>;
 }
-export interface UsersReceiptGroup{
+
+export interface UsersReceiptGroup {
     readonly id: string;
     readonly sum: number;
     readonly name?: string
@@ -48,4 +49,15 @@ export interface Receipt {
     items: Array<Item>;
     total: string;
     category_id?: string;
+}
+
+export interface ReceiptsGroup {
+    _id: string;
+    group_id: string;
+    user_id: string;
+    receipt_id: string;
+    date_added: string;
+    sum: number;
+    users: [];
+    is_debt?: boolean;
 }
