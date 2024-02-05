@@ -15,7 +15,7 @@ export const toastConfig = {
         <View
             style={{
                 height: 60,
-                width: "60%",
+                width: "75%",
                 backgroundColor: "#fff",
                 justifyContent: "space-evenly",
                 alignItems: "center",
