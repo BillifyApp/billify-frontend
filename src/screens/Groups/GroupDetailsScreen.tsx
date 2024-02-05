@@ -378,6 +378,7 @@ export default function GroupDetailsScreen({navigation}: any) {
                                     onPress={() => {
                                         setAddGroupOptionsVisible(false);
                                     }}
+                                    style={{top: "40%"}}
                                 />
                             </View>
                         </View>
