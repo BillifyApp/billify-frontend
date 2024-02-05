@@ -29,7 +29,8 @@ export default function BottomBarNavigation() {
                 headerShown: false,
                 gestureEnabled: true, // If you want to swipe back like iOS on Android
                 tabBarActiveTintColor:"#24AFFE",
-                tabBarInactiveTintColor:"#888888"
+                tabBarInactiveTintColor:"#888888",
+                contentStyle: {backgroundColor: "#fff"},
             })}
         >
             <Tab.Screen

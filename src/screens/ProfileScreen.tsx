@@ -8,6 +8,7 @@ import CustomText from "../components/atom/CustomText";
 import {useFocusEffect} from "@react-navigation/native";
 import axios from "axios";
 import {url} from "../stores/constants";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 export default function ProfileScreen({navigation}: any) {
@@ -113,8 +114,8 @@ export default function ProfileScreen({navigation}: any) {
     );
 
     return (
+        <SafeAreaView>
         <View style={{backgroundColor: "#fff", height: "100%"}}>
-            <Text>WTF</Text>
             <CustomText
                 style={[
                     styles.h1,
@@ -135,5 +136,6 @@ export default function ProfileScreen({navigation}: any) {
                 }
             )}/>
         </View>
+        </SafeAreaView>
     );
 }

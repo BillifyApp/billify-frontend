@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
-        bottom: rh(2),
+        top: rh(88),
         right: rh(2),
     },
 });

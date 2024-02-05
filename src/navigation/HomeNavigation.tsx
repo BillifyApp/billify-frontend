@@ -16,6 +16,7 @@ import oneReceiptScreen from "../screens/Receipts/OneReceiptScreen";
 import SuccessfullyAddedScreen from "../screens/Receipts/SuccessfullyAddedScreen";
 import AllReceiptsScreen from "../screens/Receipts/AllReceiptsScreen";
 import EditReceiptScreen from "../screens/Receipts/EditReceiptScreen";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 
 //https://reactnavigation.org/docs/modal/
@@ -23,12 +24,15 @@ import EditReceiptScreen from "../screens/Receipts/EditReceiptScreen";
 //https://medium.com/@my.maithi/react-native-navigation-add-custom-button-in-the-middle-of-tabbar-6c390201a2bb
 //https://www.npmjs.com/package/@gorhom/bottom-sheet
 
-const HomeRootStack = createStackNavigator();
+const HomeRootStack = createNativeStackNavigator();
 
 function HomeNavigation() {
     return (
         <>
-            <HomeRootStack.Navigator screenOptions={{headerShown: false}}>
+            <HomeRootStack.Navigator screenOptions={{
+                    headerShown: false, 
+                    contentStyle: {backgroundColor: "#fff"}
+                    }}>
                 <HomeRootStack.Group>
                     <HomeRootStack.Screen name={homeName} component={HomeScreen}/>
                     <HomeRootStack.Screen

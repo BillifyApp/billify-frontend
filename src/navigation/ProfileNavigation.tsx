@@ -9,7 +9,7 @@ const ProfileStack = createNativeStackNavigator();
 function ProfileNavigation() {
     return (
         <>
-            <ProfileStack.Navigator initialRouteName={profileScreen}>
+            <ProfileStack.Navigator initialRouteName={profileScreen} screenOptions={{headerShown: false}}>
                 <ProfileStack.Screen name={profileScreen} component={ProfileScreen}/>
                 <ProfileStack.Screen name={splitAmountScreen} component={SplitAmountScreen}/>
             </ProfileStack.Navigator>

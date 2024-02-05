@@ -317,16 +317,7 @@ export default function GroupDetailsScreen({navigation}: any) {
                             <GroupReceipts receipts={receipts} navigation={navigation}/>
                         )
                     }
-                    {
-                        !addGroupOptionsVisible && (
-                            <AddReceiptButton
-                                name="begleichen"
-                                onPress={() => {
-                                    setAddGroupOptionsVisible(true);
-                                }}
-                            />
-                        )
-                    }
+                    
 
                     <Modal
                         transparent={true}
@@ -422,6 +413,16 @@ export default function GroupDetailsScreen({navigation}: any) {
                     </FadeView>
                 ))
             }
+            {
+                        !addGroupOptionsVisible && (
+                            <AddReceiptButton
+                                name="begleichen"
+                                onPress={() => {
+                                    setAddGroupOptionsVisible(true);
+                                }}
+                            />
+                        )
+                    }
         </SafeAreaView>
     )
         ;
