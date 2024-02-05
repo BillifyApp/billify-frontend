@@ -32,6 +32,7 @@ import { Receipt } from "../../stores/types";
 import { rh, rw } from "../../utils/responsiveDimenstions";
 import CustomNumberText from "../../components/atom/CustomNumberText";
 import CustomText from "../../components/atom/CustomText";
+import { numberFormatter } from "../../utils/formatters";
 
 // @ts-ignore
 function AddReceiptAutoScreen({ route, navigation }) {
@@ -47,15 +48,12 @@ function AddReceiptAutoScreen({ route, navigation }) {
     useEffect(() => {
         async function getReceipt() {
             return await axios
-                .post(`${url}/receipts/findById`, {
-                    receipt_id: receipt_id,
-                })
+                .get(`${url}/receipts/${receipt_id}`)
                 .then((res) => {
                     console.log(res.data);
                     setReceipt(res.data);
                 });
         }
-
         getReceipt();
         return () => {};
     }, [route]);
@@ -207,7 +205,7 @@ function AddReceiptAutoScreen({ route, navigation }) {
                                 >
                                     Total:
                                 </CustomText>
-                                <CustomNumberText>{`${receipt?.total} €`}</CustomNumberText>
+                                <CustomNumberText>{numberFormatter.format(Number(receipt?.total))}</CustomNumberText>
                             </View>
                             <View style={styles.horizontalDivider}></View>
                             <View style={{ flexDirection: "row" }}>
