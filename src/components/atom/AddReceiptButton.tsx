@@ -3,7 +3,7 @@ import { Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import CustomText from "./CustomText";
 import { COLORS } from "../../styles/colors";
 import { Icon } from "../../styles/fonts";
-import { rh } from "../../utils/responsiveDimenstions";
+import { rh, rw } from "../../utils/responsiveDimenstions";
 
 interface Props {
     onPress: Function;
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
-        top: rh(88),
+        top: "92%",
         right: rh(2),
     },
 });
