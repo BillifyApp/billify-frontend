@@ -1,4 +1,4 @@
-import {Dimensions, Image, ImageSourcePropType, Modal, TouchableOpacity, View,} from "react-native";
+import React, {Dimensions, Image, ImageSourcePropType, Modal, Text, TouchableOpacity, View} from "react-native";
 import {styles} from "../../styles/styles";
 import {popup} from "../../styles/popup";
 import {blur} from "../../styles/blur";
@@ -14,7 +14,7 @@ import {url} from "../../stores/constants";
 import AddReceiptButton from "../../components/atom/AddReceiptButton";
 import FadeView from "../../components/atom/FadeView";
 import {BlurView} from "expo-blur";
-import {addMember} from "../../stores/route_names";
+import {addMember, clearDebts} from "../../stores/route_names";
 import {Icon} from "../../styles/fonts";
 import {SafeAreaView} from "react-native-safe-area-context";
 import UploadModal from "../UploadModal";
@@ -22,6 +22,7 @@ import {BottomSheetModal} from "@gorhom/bottom-sheet";
 import {GroupIcons} from "../../utils/groupIcons";
 import GroupReceipts from "../../components/atom/ReceiptsOverview/GroupReceipts";
 import {rh, rw} from "../../utils/responsiveDimenstions";
+import {useAuth} from "../../context/AuthContext";
 
 type ParamList = {
     Group: {
@@ -30,6 +31,7 @@ type ParamList = {
 };
 
 export default function GroupDetailsScreen({navigation}: any) {
+    let {authState} = useAuth();
     const {t} = useTranslation();
     const [modalVisible, setModalVisible] = useState(false);
     const [addGroupOptionsVisible, setAddGroupOptionsVisible] = useState(false);
@@ -37,10 +39,13 @@ export default function GroupDetailsScreen({navigation}: any) {
     const route = useRoute<RouteProp<ParamList, "Group">>();
     let {group} = route.params;
     const [receipts, setReceipts] = useState<Receipt[] | null>(null);
+    const [debts, setDebts] = useState([]);
+    const [overview, setOverview] = useState<{ name: any; sum: number; id: any; }[]>([]);
     const [groupIcon, setGroupIcon] = useState<ImageSourcePropType | null>(
         null
     );
     let ScreenHeight = Dimensions.get("window").height;
+
 
     async function deleteGroup() {
         try {
@@ -68,8 +73,7 @@ export default function GroupDetailsScreen({navigation}: any) {
         try {
             let group_id = group._id;
             let _group = await axios.get(`${url}/receipts-group/by-group/${group_id}`)
-            console.log(_group.data)
-            const receipt_ids = _group.data.map((obj:any) => obj.receipt_id);
+            const receipt_ids = _group.data.map((obj: any) => obj.receipt_id);
 
             const result = await axios.post(`${url}/receipts/findManyById`, {
                 receipt_id: receipt_ids,
@@ -77,6 +81,66 @@ export default function GroupDetailsScreen({navigation}: any) {
             setReceipts(result.data);
         } catch (e) {
             console.log(e);
+        }
+    }
+
+    async function getDebts() {
+        try {
+            let debts_ids = group.debts;
+            let res = await axios.post(`${url}/debts/find-many`,
+                {
+                    ids: debts_ids,
+                }
+            )
+            //todo process data
+            let debts = res.data.filter(debt => debt.user_id === authState?.id)[0];
+            let users = group.users;
+
+            debts.my_debts = debts.my_debts.map(entry => {
+                let user = users.filter(user => entry.to === user.id)[0];
+
+
+                return {
+                    ...entry,
+                    name: user?.firstname ? user.firstname : user.username
+                }
+            })
+
+            debts.other_debts = debts.other_debts.map(entry => {
+                let user: {} = users.filter(user => entry.from === user.id)[0];
+
+                return {
+                    ...entry,
+                    name: user?.firstname ? user.firstname : user.username
+                }
+            })
+            let overview = [];
+            let mydebts = debts.my_debts;
+            let otherdebts = debts.other_debts;
+
+            for (let i = 0; i < debts.my_debts.length; i++) {
+                console.log(mydebts[i]);
+                let mydebt = mydebts[i].sum;
+                let otherdebt = otherdebts.filter(debt => debt.from === mydebts[i].to)[0];
+                otherdebt = otherdebt.sum;
+                console.log(mydebt, otherdebt);
+
+                overview.push({
+                    name: mydebts[i].name,
+                    sum: otherdebt - mydebt, //positiv ist schuldet dir und negativ ist schulde ich
+                    id: mydebts[i].to
+                })
+            }
+
+            setOverview(overview);
+
+
+            //console.log(debts.data)
+            console.log("| debts ")
+            setDebts(debts)
+        } catch (e) {
+            console.log(e);
+            console.log("| debts ")
         }
     }
 
@@ -100,14 +164,18 @@ export default function GroupDetailsScreen({navigation}: any) {
         }
     }, []);
     const snapPoints = useMemo(() => ["25%", "66%"], []);
+
+
     useFocusEffect(
         useCallback(() => {
             getGroup();
             getReceipts();
+            getDebts();
             getGroupIcon();
-            console.log(group);
+            //console.log(group);
         }, [])
     );
+
     useFocusEffect(
         useCallback(() => {
             return () => bottomSheetModalRef.current?.close();
@@ -167,6 +235,18 @@ export default function GroupDetailsScreen({navigation}: any) {
                                             t("groups.members")}
                                     </CustomText>
                                 </View>
+                                {overview.length > 0 && overview.map((debt) => {
+                                        if (debt.sum > 0) {
+                                            return (
+                                                <Text>{`${debt.name} schuldet dir ${debt.sum.toFixed(2).replace(".", ",")} €`}</Text>)
+                                        } else if (debt.sum == 0) {
+                                            return (<></>);
+                                        } else {
+                                            return (
+                                                <Text>{`Du schuldest ${debt.name} ${(debt.sum * -1).toFixed(2).replace(".", ",")} €`}</Text>)
+                                        }
+                                    }
+                                )}
                             </View>
                         </View>
                         <TouchableOpacity
@@ -232,17 +312,21 @@ export default function GroupDetailsScreen({navigation}: any) {
                             </View>
                         </Modal>
                     </View>
-                    {group.receipts_group.length > 0 && receipts && (
-                        <GroupReceipts receipts={receipts} navigation={navigation}/>
-                    )}
-                    {!addGroupOptionsVisible && (
-                        <AddReceiptButton
-                            name="begleichen"
-                            onPress={() => {
-                                setAddGroupOptionsVisible(true);
-                            }}
-                        />
-                    )}
+                    {
+                        group.receipts_group.length > 0 && receipts && (
+                            <GroupReceipts receipts={receipts} navigation={navigation}/>
+                        )
+                    }
+                    {
+                        !addGroupOptionsVisible && (
+                            <AddReceiptButton
+                                name="begleichen"
+                                onPress={() => {
+                                    setAddGroupOptionsVisible(true);
+                                }}
+                            />
+                        )
+                    }
 
                     <Modal
                         transparent={true}
@@ -267,11 +351,15 @@ export default function GroupDetailsScreen({navigation}: any) {
                                         paddingBottom: 15,
                                         paddingRight: 20
                                     }}
+                                    onPress={() => {
+                                        setModalVisible(false);
+                                        navigation.navigate(clearDebts, {users: group.users})
+                                    }}
                                 >
                                     <CustomText
                                         style={[styles.p, {paddingRight: 15}]}
                                     >
-                                        {"TODO Schulden begleichen"}
+                                        {"Schulden begleichen"}
                                     </CustomText>
                                     <Icon name="schulden" size={20}/>
                                 </TouchableOpacity>
@@ -283,8 +371,8 @@ export default function GroupDetailsScreen({navigation}: any) {
                                         paddingRight: 20
                                     }}
                                     onPress={() => {
-                                        handlePresentModalPress(),
-                                            setAddGroupOptionsVisible(false);
+                                        handlePresentModalPress();
+                                        setAddGroupOptionsVisible(false);
                                     }}
                                 >
                                     <CustomText
@@ -317,7 +405,8 @@ export default function GroupDetailsScreen({navigation}: any) {
                     </BottomSheetModal>
                 </View>
             </View>
-            {modalActive ||
+            {
+                modalActive ||
                 (addGroupOptionsVisible && (
                     <FadeView style={blur.absolute} duration={500}>
                         <BlurView
@@ -331,7 +420,9 @@ export default function GroupDetailsScreen({navigation}: any) {
                             tint="light"
                         />
                     </FadeView>
-                ))}
+                ))
+            }
         </SafeAreaView>
-    );
+    )
+        ;
 }

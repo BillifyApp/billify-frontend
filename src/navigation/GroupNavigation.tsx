@@ -1,20 +1,23 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import GroupDetailsScreen from "../screens/Groups/GroupDetailsScreen";
 import GroupScreen from "../screens/Groups/GroupScreen";
 import {
     addMember,
     addReceiptAutoName,
+    clearDebts,
     editReceiptName,
     groupDetails,
     groupScreen,
-    oneReceiptName, splitAmountScreen,
+    oneReceiptName,
+    splitAmountScreen,
 } from "../stores/route_names";
 import AddMember from "../screens/Groups/AddMember";
 import AddReceiptAutoScreen from "../screens/Receipts/AddReceiptAutoScreen";
 import oneReceiptScreen from "../screens/Receipts/OneReceiptScreen";
 import SplitAmountScreen from "../screens/Groups/SplitAmountScreen";
 import EditReceiptScreen from "../screens/Receipts/EditReceiptScreen";
+import ClearDebts from "../screens/Groups/ClearDebts";
 
 const GroupStack = createNativeStackNavigator();
 
@@ -34,6 +37,7 @@ function GroupNavigation() {
                 <GroupStack.Screen
                     name={groupDetails}
                     component={GroupDetailsScreen}
+                    initialParams={[]}
                 />
                 <GroupStack.Screen
                     name={addReceiptAutoName}
@@ -51,6 +55,7 @@ function GroupNavigation() {
                     name={editReceiptName}
                     component={EditReceiptScreen}
                 />
+                <GroupStack.Screen name={clearDebts} component={ClearDebts}/>
                 <GroupStack.Screen name={addMember} component={AddMember}/>
             </GroupStack.Navigator>
         </>
