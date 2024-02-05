@@ -6,6 +6,7 @@ export type Group = {
     icon: string;
     date_created: Date;
     receipts_group: Receipt_Group[];
+    debts: [];
 }
 
 export interface Image {

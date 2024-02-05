@@ -23,6 +23,7 @@ export const groupDetails = "GroupDetails"
 export const createGroupName = "createGroupName"
 export const addMember = "addMember"
 export const splitAmountScreen = "splitAmountScreen";
+export const clearDebts = "clearDebts";
 
 
 export const profileScreen = "profileScreen";

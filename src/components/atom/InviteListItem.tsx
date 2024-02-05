@@ -28,6 +28,7 @@ function InviteListItem({_id, to, from, to_group, date_created, reload, navigati
 
     const acceptInvite = async () => {
         try {
+            console.log(_id)
             let result = await axios.get(`${url}/invitations/accept/${_id}`)
                 .then((res) => {
                 return res.data

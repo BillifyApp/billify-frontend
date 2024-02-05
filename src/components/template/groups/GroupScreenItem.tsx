@@ -87,7 +87,6 @@ export default function GroupScreenItem({ group, onPress }: Props) {
                                 }}
                             >
                                 {group.users.length +
-                                    1 +
                                     " " +
                                     t("groups.members")}
                             </CustomText>
