@@ -10,6 +10,12 @@ import ReceiptItem from "../../components/atom/ReceiptsOverview/ReceiptItem";
 import ReceiptsDateDivider from "../../components/atom/ReceiptsOverview/ReceiptsDateDivider";
 import _ from "lodash";
 import { Receipt } from "../../stores/types";
+import { rh } from "../../utils/responsiveDimenstions";
+import { Icon } from "../../styles/fonts";
+import CustomText from "../../components/atom/CustomText";
+import { styles } from "../../styles/styles";
+import CustomInput from "../../components/atom/CustomInput";
+import { t } from "i18next";
 
 // @ts-ignore
 function AllReceiptsScreen({ route, navigation }) {
@@ -56,7 +62,20 @@ function AllReceiptsScreen({ route, navigation }) {
         });
     }
     return (
-        <View style={{ width: "100%", paddingTop: 30, height: "75%" }}>
+        <View style={{ width: "100%", paddingTop: 30, minHeight: rh(100) }}>
+            <View style={[styles.headingMargin,{flexDirection:"row", alignItems:"center", justifyContent:"flex-start", width: "90%", alignSelf:"center"}]}>
+                <Icon name="pfeil_l" size={20} onPress={()=>{
+                    navigation.navigate(homeName);
+                }}/>
+                <CustomText style={[styles.h1, {paddingLeft: 25}]}>Meine Einkäufe</CustomText> 
+                </View>
+                <View style={{flexDirection:"row", alignItems:"center", width: "90%", alignSelf:"center", paddingVertical: 20}}>
+            <CustomInput
+              placeholder={t("common.search") + " (coming soon...)"}
+              style={{ width: "90%"}}
+            />
+            <Icon name="filter" size={20} style={{paddingLeft: 20}}/>
+          </View>
             {receipts && (
                 <SectionList
                     sections={groupedReceiptsArray}
