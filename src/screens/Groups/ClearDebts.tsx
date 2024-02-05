@@ -6,6 +6,7 @@ import CustomSafeAreaView from "../../components/CustomSafeAreaView";
 import CustomButton from "../../components/atom/CustomButton";
 import axios from "axios";
 import {url} from "../../stores/constants";
+import {groupDetails, groupScreen} from "../../stores/route_names";
 
 export default function ClearDebts({route, navigation}) {
     //const users: [] = route.params.users;
@@ -38,19 +39,17 @@ export default function ClearDebts({route, navigation}) {
     const addAndNext = async () => {
         console.log("button pressed")
         try {
-            //TODO route mit summe schicken und im backend berechnen
             const result = axios.post(`${url}/receipts-group/clear-debt`, {
                 user_id: authState?.id,
                 to_user: payedTo,
                 sum: valueNum,
-                group_id: route.params.group_id
+                group_id: route.params.group._id
             })
 
+            navigation.navigate(groupScreen);
         } catch (e) {
             console.log(e);
         }
-
-        //navigation.navigate(groupName, {screen: groupDetails, params: {group: group}});
     }
 
     function changeValue(text: string) {
@@ -91,9 +90,10 @@ export default function ClearDebts({route, navigation}) {
                             ) : <></>
                             }
                         </Picker>
-                        {users.length > 0 && <Text>{`Zu begleichen: ${users.filter((user) => user.id === payedTo).map((user) => {
-                            return (user.sum.toFixed(2))
-                        })} €`}</Text>}
+                        {users.length > 0 &&
+                            <Text>{`Zu begleichen: ${users.filter((user) => user.id === payedTo).map((user) => {
+                                return (user.sum.toFixed(2))
+                            })} €`}</Text>}
                         <TextInput
                             placeholder="0"
                             keyboardType="numeric"

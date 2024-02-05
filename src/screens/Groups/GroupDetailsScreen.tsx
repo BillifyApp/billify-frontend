@@ -368,7 +368,7 @@ export default function GroupDetailsScreen({navigation}: any) {
                                     onPress={() => {
                                         setAddGroupOptionsVisible(false);
                                         setModalVisible(false);
-                                        navigation.navigate(clearDebts, {users: overview.filter((debt) => debt.sum < 0), group_id: group._id})
+                                        navigation.navigate(clearDebts, {users: overview.filter((debt) => debt.sum < 0), group: group})
                                     }}
                                 >
                                     <CustomText
