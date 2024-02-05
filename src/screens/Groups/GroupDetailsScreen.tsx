@@ -182,6 +182,7 @@ export default function GroupDetailsScreen({navigation}: any) {
         }, [])
     );
     return (
+        <>
         <SafeAreaView>
             <TouchableOpacity
                 style={[
@@ -414,17 +415,18 @@ export default function GroupDetailsScreen({navigation}: any) {
                     </FadeView>
                 ))
             }
-            {
-                        !addGroupOptionsVisible && (
-                            <AddReceiptButton
-                                name="begleichen"
-                                onPress={() => {
-                                    setAddGroupOptionsVisible(true);
-                                }}
-                            />
-                        )
-                    }
+            
         </SafeAreaView>
+        {
+            !addGroupOptionsVisible && (
+                <AddReceiptButton
+                    name="begleichen"
+                    onPress={() => {
+                        setAddGroupOptionsVisible(true);
+                    }}
+                />
+            )
+        }</>
     )
         ;
 }

@@ -100,6 +100,7 @@ export default function HomeScreen({ navigation }) {
   );
 
   return (
+    <>
     <SafeAreaView>
          
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -127,7 +128,7 @@ export default function HomeScreen({ navigation }) {
           {<GroupOverview groups={latestGroups} isLoading={loading} navigation={navigation} />}
         </View>
       </ScrollView>
-      <AddReceiptButton name="plus" onPress={handlePresentModalPress} />
+      
       <BottomSheetModal
         ref={bottomSheetModalRef}
         index={1}
@@ -146,7 +147,10 @@ export default function HomeScreen({ navigation }) {
           />
         </FadeView>
       )}
+     
     </SafeAreaView>
+     <AddReceiptButton name="plus" onPress={handlePresentModalPress} />
+</>
   );
 }
 const homeStyles = StyleSheet.create({

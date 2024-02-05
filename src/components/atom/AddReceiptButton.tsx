@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
-        top: "92%",
+        top: "88%",
         right: rh(2),
     },
 });
