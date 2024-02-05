@@ -17,7 +17,7 @@ import {
 import axios from "axios";
 import { url } from "../../stores/constants";
 import ReceiptItemEntry from "../../components/atom/ReceiptItemEntry";
-import { editReceiptName, homeName } from "../../stores/route_names";
+import { editReceiptName, homeName, homeNavName } from "../../stores/route_names";
 import FlexImage from "../../components/atom/FlexImage";
 import { styles } from "../../styles/styles";
 import CustomButton from "../../components/atom/CustomButton";
@@ -64,7 +64,7 @@ function AddReceiptAutoScreen({ route, navigation }) {
                 receipt_id: receipt_id,
             },
         });
-        navigation.navigate(homeName);
+        navigation.navigate(homeNavName);
     };
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const handlePresentModalPress = useCallback(() => {

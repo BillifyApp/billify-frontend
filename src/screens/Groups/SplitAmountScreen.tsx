@@ -269,14 +269,15 @@ export default function SplitAmountScreen({
                 sum: receipt.total,
                 users: users,
             });
+            navigation.navigate(groupName, {
+                screen: groupDetails,
+                params: { group: group },
+            });
         } catch (e) {
             console.log(e);
         }
 
-        navigation.navigate(groupName, {
-            screen: groupDetails,
-            params: { group: group },
-        });
+        
     };
 
     return (
